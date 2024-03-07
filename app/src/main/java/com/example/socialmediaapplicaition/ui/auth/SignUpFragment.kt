@@ -99,6 +99,7 @@ class SignUpFragment : Fragment() {
                     is NetworkResult.Error -> {
                         Log.d("TAGSignUp", it.message.toString())
                         Toast.makeText(requireContext(), "error", Toast.LENGTH_SHORT).show()
+                        
                     }
                     is NetworkResult.Success -> {
                         Log.d("TAGSignUp", "Success")
