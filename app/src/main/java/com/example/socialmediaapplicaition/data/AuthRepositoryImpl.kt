@@ -1,6 +1,7 @@
 package com.example.socialmediaapplicaition.data
 
 
+import android.net.Uri
 import android.util.Log
 import com.example.socialmediaapplicaition.models.User
 import com.example.socialmediaapplicaition.utils.NetworkResult
@@ -10,9 +11,11 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
+import java.util.UUID
 import javax.inject.Inject
 
-class AuthRepositoryImpl @Inject constructor(private val firebaseAuth:FirebaseAuth, private val firestore: FirebaseFirestore) :
+class AuthRepositoryImpl @Inject constructor(private val firebaseAuth:FirebaseAuth, private val firestore: FirebaseFirestore,private val storage:FirebaseStorage) :
     AuthRepository {
 
     override val currentUser: FirebaseUser?
@@ -62,6 +65,22 @@ class AuthRepositoryImpl @Inject constructor(private val firebaseAuth:FirebaseAu
         } catch (e: Exception) {
             Log.d("crash123", e.toString())
             NetworkResult.Error(e.toString())
+        }
+    }
+
+    override suspend fun uploadPhotoToFireStore(photoUri: Uri): NetworkResult<Uri> {
+        return try {
+            val storageRef = storage.reference
+            val imageRef = storageRef.child("images/${UUID.randomUUID()}")
+            val uploadTask = imageRef.putFile(photoUri)
+            uploadTask.await()
+
+            // Get the download URL of the uploaded photo
+            val downloadUrl = imageRef.downloadUrl.await()
+            Log.d("ShobhitResponse",downloadUrl.toString())
+            NetworkResult.Success(downloadUrl)
+        }catch (e:Exception){
+            NetworkResult.Error(e.message ?: "Failed to upload photo")
         }
     }
 

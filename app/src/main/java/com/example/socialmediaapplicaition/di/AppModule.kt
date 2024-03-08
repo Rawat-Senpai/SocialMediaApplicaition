@@ -4,6 +4,7 @@ import com.example.socialmediaapplicaition.data.AuthRepository
 import com.example.socialmediaapplicaition.data.AuthRepositoryImpl
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -26,6 +27,9 @@ class AppModule {
     @Singleton
     fun provideFireStoreInstance(): FirebaseFirestore = FirebaseFirestore.getInstance()
 
+    @Provides
+    @Singleton
+    fun provideFirebaseStorageInstance(): FirebaseStorage = FirebaseStorage.getInstance()
 
 
 }

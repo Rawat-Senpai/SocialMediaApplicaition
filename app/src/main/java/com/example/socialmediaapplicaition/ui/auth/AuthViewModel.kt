@@ -1,5 +1,6 @@
 package com.example.socialmediaapplicaition.ui.auth
 
+import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -27,41 +28,49 @@ class AuthViewModel @Inject constructor(private val repository:AuthRepository) :
     private val _addUserResultState = MutableStateFlow<NetworkResult<Unit>?>(null)
     val addUserResultState: StateFlow<NetworkResult<Unit>?> = _addUserResultState
 
+
+
+    private val _uploadPhotoResult = MutableStateFlow<NetworkResult<Uri>?>(null)
+    val uploadPhotoResult: StateFlow<NetworkResult<Uri>?> = _uploadPhotoResult
+
+
     val currentUser:FirebaseUser?
         get() = repository.currentUser
 
     init {
-//        if(repository.currentUser != null){
-//            _loginFlow.value= NetworkResult.Success(repository.currentUser)
-//        }
+        if(repository.currentUser != null){
+            _loginFlow.value= NetworkResult.Success(repository.currentUser)
+        }
     }
 
     fun login(email:String,password:String) = viewModelScope.launch {
         _loginFlow.value= NetworkResult.Loading()
         val result = repository.login(email,password)
         _loginFlow.value= result
-
-        Log.d("RESPONSE",result.toString())
     }
 
     fun signup(name:String,email:String,password:String) = viewModelScope.launch {
         _signupFlow.value = NetworkResult.Loading()
         val result = repository.signup(name,email,password)
         _signupFlow.value = result
-        Log.d("RESPONSE",result.toString())
-        Log.d("RESPONSE",result.data.toString())
     }
 
 
     fun addUserToDatabase(user:User) = viewModelScope.launch {
-            Log.d("checkingResultS","inside function")
             _addUserResultState.value = NetworkResult.Loading()
             val result = repository.addUserToDatabase(user)
-            Log.d("checkingResultS",result.toString())
             _addUserResultState.value = result
 
     }
 
+    fun uploadImageToFireStore(photoUri:Uri) = viewModelScope.launch {
+
+        _uploadPhotoResult.value = NetworkResult.Loading()
+        val result = repository.uploadPhotoToFireStore(photoUri)
+        _uploadPhotoResult.value= result
+        Log.d("checking",result.toString())
+
+    }
 
     fun logout(){
         repository.logout()

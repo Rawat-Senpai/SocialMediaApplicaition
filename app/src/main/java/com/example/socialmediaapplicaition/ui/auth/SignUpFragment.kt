@@ -1,5 +1,6 @@
 package com.example.socialmediaapplicaition.ui.auth
 
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -13,23 +14,36 @@ import androidx.lifecycle.lifecycleScope
 import com.example.socialmediaapplicaition.databinding.FragmentSignUpBinding
 import com.example.socialmediaapplicaition.models.User
 import com.example.socialmediaapplicaition.utils.NetworkResult
+import com.example.socialmediaapplicaition.utils.Utils
 import com.google.firebase.auth.FirebaseUser
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.launch
+import androidx.appcompat.app.AppCompatActivity
+import android.Manifest
+import android.app.Activity
+import android.content.ContentValues
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
+import android.os.Build
+import android.os.Environment
+import android.provider.MediaStore
+import androidx.appcompat.app.AlertDialog
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import com.permissionx.guolindev.PermissionX
 
 @AndroidEntryPoint
 class SignUpFragment : Fragment() {
+
+
+
 
     private var _binding:FragmentSignUpBinding?= null
 
     private val binding get() = _binding!!
 
     private val viewModel by viewModels<AuthViewModel> ()
-
 
 
     override fun onCreateView(
@@ -57,11 +71,24 @@ class SignUpFragment : Fragment() {
                 val password = txtPassword.text.toString()
                 viewModel.signup(name,email,password)
             }
+
+            imageView.setOnClickListener{
+
+                if (!Utils.isStoragePermissionGranted(requireActivity())) {
+                    Utils.requestStoragePermission(requireActivity())
+                } else {
+                    // Storage permission already granted
+                    // Proceed with your logic here
+                }
+            }
         }
 
     }
 
+
+
     private fun bindObserver() {
+
         viewLifecycleOwner.lifecycleScope.launch {
             // First collect viewModel.signupFlow
 
@@ -90,7 +117,6 @@ class SignUpFragment : Fragment() {
                 }
             }
         }
-
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.addUserResultState.collect { it ->
                 binding.progressBar.isVisible = it is NetworkResult.Loading
@@ -99,7 +125,7 @@ class SignUpFragment : Fragment() {
                     is NetworkResult.Error -> {
                         Log.d("TAGSignUp", it.message.toString())
                         Toast.makeText(requireContext(), "error", Toast.LENGTH_SHORT).show()
-                        
+
                     }
                     is NetworkResult.Success -> {
                         Log.d("TAGSignUp", "Success")
@@ -111,8 +137,6 @@ class SignUpFragment : Fragment() {
                 }
             }
         }
-
-
 
     }
 
@@ -128,5 +152,26 @@ class SignUpFragment : Fragment() {
         super.onDestroy()
         _binding=  null
     }
+
+
+    private fun uploadImageFromGallery() {
+        Utils.pickImageFromGallery(requireActivity(), this) { uri ->
+            // Handle the selected image URI here
+            Log.d("SelectedImageURI", uri.toString())
+            viewModel.uploadImageToFireStore(uri)
+            binding.imageView.setImageURI(uri)
+        }
+    }
+
+
+
+
+  
+
+
+
+
+
+
 
 }

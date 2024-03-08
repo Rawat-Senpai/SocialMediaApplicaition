@@ -86,7 +86,13 @@ dependencies {
     implementation("com.intuit.sdp:sdp-android:1.1.0")
 
 
-    // spin kit loader
+    // for permissions
+    implementation ("com.guolindev.permissionx:permissionx:1.6.1")
+
+
+    // glide
+    implementation ("com.github.bumptech.glide:glide:4.13.2")
+    annotationProcessor ("com.github.bumptech.glide:compiler:4.13.2")
 
 
 }
