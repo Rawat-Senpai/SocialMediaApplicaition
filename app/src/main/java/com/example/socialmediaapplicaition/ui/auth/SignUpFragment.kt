@@ -26,6 +26,8 @@ import android.provider.MediaStore
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
+import androidx.navigation.fragment.findNavController
+import com.example.socialmediaapplicaition.R
 
 @AndroidEntryPoint
 class SignUpFragment : Fragment() {
@@ -128,6 +130,7 @@ class SignUpFragment : Fragment() {
                 }
             }
         }
+
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.addUserResultState.collect { it ->
                 binding.progressBar.isVisible = it is NetworkResult.Loading
@@ -141,6 +144,7 @@ class SignUpFragment : Fragment() {
                     is NetworkResult.Success -> {
                         Log.d("TAGSignUp", "Success")
                         Log.d("TAGSignUp", it.data.toString())
+                        findNavController().navigate(R.id.action_signUpFragment_to_mainFragment)
                     }
                     else -> {
 

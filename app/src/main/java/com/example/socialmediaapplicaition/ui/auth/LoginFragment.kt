@@ -82,8 +82,7 @@ class LoginFragment : Fragment() {
                     }
                     is NetworkResult.Success -> {
                         Log.d("TAG","Success")
-                        Toast.makeText(requireContext(),"successful",Toast.LENGTH_SHORT).show()
-
+                        findNavController().navigate(R.id.action_loginFragment_to_mainFragment)
                     }
 
                     else -> {

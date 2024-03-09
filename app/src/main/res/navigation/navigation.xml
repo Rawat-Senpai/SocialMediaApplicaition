@@ -32,7 +32,7 @@
     </fragment>
     <fragment
         android:id="@+id/mainFragment"
-        android:name="com.example.socialmediaapplicaition.MainFragment"
+        android:name="com.example.socialmediaapplicaition.ui.mainPackage.MainFragment"
         android:label="fragment_main"
         tools:layout="@layout/fragment_main" />
 </navigation>
