@@ -45,21 +45,110 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="#2d1058"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
+        app:layout_constraintWidth_percent=".5"
+        android:paddingHorizontal="50dp" >
 
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="50dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                style="@style/sideMenuImage"
+                android:src="@drawable/ic_chat"
+                 />
+
+            <TextView
+                style="@style/sideMenuText"
+                android:text="video call"
+        />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp">
+
+            <ImageView
+                style="@style/sideMenuImage"
+                android:src="@drawable/ic_contact" />
+
+            <TextView
+                 style="@style/sideMenuText"
+                android:text="Contacts" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp">
+
+            <ImageView
+                style="@style/sideMenuImage"
+                android:src="@drawable/ic_saved"
+              />
+
+            <TextView
+                style="@style/sideMenuText"
+                android:text="Saved Items" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp">
+
+            <ImageView
+                style="@style/sideMenuImage"
+                android:src="@drawable/ic_setting" />
+
+            <TextView
+                style="@style/sideMenuText"
+                android:text="Setting" />
+
+        </LinearLayout>
 
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <ImageView
+                style="@style/sideMenuImage"
+                android:src="@drawable/ic_share" />
+
+            <TextView
+                style="@style/sideMenuText"
+                android:text="Share this app" />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
