@@ -13,7 +13,6 @@ interface AuthRepository {
     suspend fun login(email:String,password:String):NetworkResult<FirebaseUser>
     suspend fun signup(name:String,email:String,password: String):NetworkResult<FirebaseUser>
     suspend fun addUserToDatabase(user:User):NetworkResult<Unit>
-
     suspend fun uploadPhotoToFireStore(photoUri:Uri):NetworkResult<Uri>
     fun logout()
 
