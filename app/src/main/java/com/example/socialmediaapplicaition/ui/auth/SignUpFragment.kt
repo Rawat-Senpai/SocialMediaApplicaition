@@ -1,6 +1,5 @@
 package com.example.socialmediaapplicaition.ui.auth
 
-import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -18,53 +17,40 @@ import com.example.socialmediaapplicaition.utils.Utils
 import com.google.firebase.auth.FirebaseUser
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import androidx.appcompat.app.AppCompatActivity
 import android.Manifest
-import android.app.Activity
 import android.content.ContentValues
 import android.content.Context
-import android.content.Intent
 import android.net.Uri
 import android.os.Build
-import android.os.Environment
 import android.provider.MediaStore
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
-import com.bumptech.glide.Glide
-import com.permissionx.guolindev.PermissionX
 
 @AndroidEntryPoint
 class SignUpFragment : Fragment() {
+
 
 
     private var _binding:FragmentSignUpBinding?= null
     private val binding get() = _binding!!
     private val viewModel by viewModels<AuthViewModel> ()
 
+    private lateinit var cameraLauncher: ActivityResultLauncher<Uri>
+    private lateinit var galleryLauncher: ActivityResultLauncher<String>
+
+    private var commonImageUri: Uri? = null
+    private  var imageUrl :String = "";
 
 
-    private var CommonImageUri: Uri? = null
-    private val CAMERA_PERMISSION_CODE = 100
-    private val STORAGE_PERMISSION_CODE = 101
-    private var cameraPermession = false
-    private var SELECT_PICTURE = 200
-    private val REQUEST_EXTERNAL_STORAGE = 1
-    private val PERMISSIONS_STORAGE = arrayOf(
-        Manifest.permission.READ_EXTERNAL_STORAGE,
-        Manifest.permission.WRITE_EXTERNAL_STORAGE,
-        Manifest.permission.CAMERA
-    )
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
 
-
-
         _binding= FragmentSignUpBinding.inflate(layoutInflater,container,false)
-
         return binding.root
 
     }
@@ -73,6 +59,29 @@ class SignUpFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         bindObserver()
+
+        cameraLauncher = registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
+            if (success) {
+
+                commonImageUri?.let { uri ->
+                    viewModel.uploadImageToFireStore(uri)
+                    binding.imageView.setImageURI(uri)
+                }
+            } else {
+                Toast.makeText(requireContext(),"photo capture failed",Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        galleryLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+            Log.d("Checking", "selectedPic")
+
+            if(uri!= null){
+                commonImageUri = uri
+                viewModel.uploadImageToFireStore(commonImageUri!!)
+                binding.imageView.setImageURI(commonImageUri!!)
+            }
+
+        }
 
         binding.apply {
             btnSignUp.setOnClickListener(){
@@ -83,37 +92,17 @@ class SignUpFragment : Fragment() {
             }
 
             imageView.setOnClickListener{
+                chooseImage(requireActivity())
 
-
-                checkPermission(
-                    Manifest.permission.CAMERA,
-                    CAMERA_PERMISSION_CODE
-                )
-
-                if (cameraPermession) {
-                    chooseImage(requireActivity())
-                }
-
-
-//                if (!Utils.isStoragePermissionGranted(requireActivity())) {
-//                    Utils.requestStoragePermission(requireActivity())
-//                } else {
-//                    uploadImageFromGallery()
-//                    // Storage permission already granted
-//                    // Proceed with your logic here
-//                }
             }
         }
 
     }
 
-
-
     private fun bindObserver() {
 
         viewLifecycleOwner.lifecycleScope.launch {
             // First collect viewModel.signupFlow
-
 
             viewModel.signupFlow.collect { it ->
                 binding.progressBar.isVisible = it is NetworkResult.Loading
@@ -160,46 +149,35 @@ class SignUpFragment : Fragment() {
             }
         }
 
-    }
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.uploadPhotoResult.collect{
 
+                when(it){
+                    is NetworkResult.Error -> {}
+                    is NetworkResult.Loading -> {}
+                    is NetworkResult.Success -> {
+                        Log.d("response",it.data.toString())
+                        imageUrl= it.data.toString()
+                    }
+                    null -> {
+
+                    }
+                }
+            }
+        }
+
+    }
 
     private fun addUserToDatabase(networkResult: NetworkResult.Success<FirebaseUser>) {
         Log.d("TAGSignUp","insideAddUser")
         val name = binding.txtUsername.text.toString()
-        val requestModel = User(name,networkResult.data?.uid.toString(),"")
+        val requestModel = User(name,networkResult.data?.uid.toString(),imageUrl)
         viewModel.addUserToDatabase(requestModel)
     }
 
     override fun onDestroy() {
         super.onDestroy()
         _binding=  null
-    }
-
-
-    private fun uploadImageFromGallery() {
-        Utils.pickImageFromGallery(requireActivity(), this) { uri ->
-            // Handle the selected image URI here
-            Log.d("SelectedImageURI", uri.toString())
-            viewModel.uploadImageToFireStore(uri)
-            binding.imageView.setImageURI(uri)
-        }
-    }
-
-
-    fun checkPermission(permission: String, requestCode: Int) {
-        if (ContextCompat.checkSelfPermission(
-                requireActivity(),
-                permission
-            ) == PackageManager.PERMISSION_DENIED
-        ) {
-            ActivityCompat.requestPermissions(
-                requireActivity(),
-                arrayOf(permission),
-                requestCode
-            )
-        } else {
-            cameraPermession = true
-        }
     }
 
     private fun chooseImage(context: Context) {
@@ -214,9 +192,26 @@ class SignUpFragment : Fragment() {
             optionsMenu
         ) { dialogInterface, i ->
             if (optionsMenu[i] == "Take Photo") {
-                takeImageFromCameraUri()
+//
+
+                if (Utils.checkPermission(requireActivity(), Manifest.permission.CAMERA)) {
+                    takeImageFromCameraUri()
+                } else {
+                    Utils.requestPermission(requireActivity(), Manifest.permission.CAMERA,Utils.CAMERA_PERMISSION_CODE)
+                }
+
             } else if (optionsMenu[i] == "Choose from Gallery") {
-                imageChooser()
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                    imageChooser()
+                } else {
+                    if (Utils.checkPermission(requireActivity(), Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                        imageChooser()
+                    } else {
+                        Utils.requestPermission(requireActivity(), Manifest.permission.READ_EXTERNAL_STORAGE, Utils.STORAGE_PERMISSION_CODE)
+                    }
+                }
+
             } else if (optionsMenu[i] == "Exit") {
                 dialogInterface.dismiss()
             }
@@ -224,88 +219,18 @@ class SignUpFragment : Fragment() {
         builder.show()
     }
 
-
     private fun takeImageFromCameraUri() {
         val values = ContentValues()
         values.put(MediaStore.Images.Media.TITLE, "MyPicture")
-        values.put(
-            MediaStore.Images.Media.DESCRIPTION,
-            "Photo taken on " + System.currentTimeMillis()
-        )
-        CommonImageUri = requireActivity().application.contentResolver.insert(
-            MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-            values
-        )
-        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, CommonImageUri)
-        startActivityForResult(intent, 0)
-    }
-
-    fun imageChooser() {
-        verifyStoragePermissions(requireActivity())
-        // create an instance of the
-        // intent of the type image
-        val intent = Intent(Intent.ACTION_GET_CONTENT)
-        intent.type = "image/*"
-        // pass the constant to compare it
-        // with the returned requestCode
-        startActivityForResult(Intent.createChooser(intent, "Open Gallery"), SELECT_PICTURE)
-        //   CropImage.activity().setGuidelines(CropImageView.Guidelines.ON).start(FormSix.this);
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        Log.d("checking",requestCode.toString()+"  "+resultCode.toString())
-
-        if (resultCode == AppCompatActivity.RESULT_OK) {
-
-            if (requestCode == 0) {
-                Log.d("Checking","camera")
-//                binding.profilePic.setImageURI(CommonImageUri)
-//                uploadPhotoFunction(CommonImageUri)
-//                viewModel.uploadImageToFireStore(CommonImageUri!!)
-//                binding.imageView.setImageURI(CommonImageUri!!)
-                try {
-
-                } catch (e: Exception) {
-                    Log.d("crash_check", e.toString())
-                }
-            } else if (requestCode == SELECT_PICTURE) {
-                Log.d("Checking","selectedPic")
-                CommonImageUri = data!!.data
-
-                viewModel.uploadImageToFireStore(CommonImageUri!!)
-                binding.imageView.setImageURI(CommonImageUri!!)
-              
-
-            }
-        }
+        values.put(MediaStore.Images.Media.DESCRIPTION, "Photo taken on " + System.currentTimeMillis())
+        commonImageUri = requireActivity().contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
+        cameraLauncher.launch(commonImageUri)
 
     }
 
-
-
-    private fun verifyStoragePermissions(activity: Activity?) {
-        val permission = ActivityCompat.checkSelfPermission(
-            requireActivity(),
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
-        )
-        if (permission != PackageManager.PERMISSION_GRANTED) {
-            if (activity != null) {
-                ActivityCompat.requestPermissions(
-                    activity,
-                    PERMISSIONS_STORAGE,
-                    REQUEST_EXTERNAL_STORAGE
-                )
-            }
-        } else {
-            Log.d("camera permission", "else statement 1026")
-        }
+    private fun imageChooser() {
+        galleryLauncher.launch("image/*")
     }
-
-
-
 
 
 }
