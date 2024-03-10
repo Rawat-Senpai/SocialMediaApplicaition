@@ -1,11 +1,14 @@
-package com.example.socialmediaapplicaition.repository.UserData
+package com.example.socialmediaapplicaition.repository.postData
 
 import android.util.Log
+import com.example.socialmediaapplicaition.models.Post
 import com.example.socialmediaapplicaition.models.User
 import com.example.socialmediaapplicaition.utils.NetworkResult
+import com.example.socialmediaapplicaition.utils.addDataToFirestore
 
 import com.example.socialmediaapplicaition.utils.getDataOfUserFromDatabase
 import com.google.firebase.firestore.FirebaseFirestore
+import java.util.UUID
 import javax.inject.Inject
 
 class PostRepositoryImpl  @Inject constructor(private val firebaseFirestore: FirebaseFirestore):PostRepository {
@@ -30,6 +33,25 @@ class PostRepositoryImpl  @Inject constructor(private val firebaseFirestore: Fir
             }
         } catch (e: Exception) {
             NetworkResult.Error("An error occurred: ${e.message}")
+        }
+    }
+
+    override suspend fun getAllPost(): NetworkResult<ArrayList<Post>> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun createPost(post: Post): NetworkResult<Unit> {
+        return try {
+            // Add user data to Firestore
+            firebaseFirestore.collection("posts")
+                .document(UUID.randomUUID().toString())
+                .set(post)
+                .addDataToFirestore()
+            Log.d("responseData", "successfully")
+            NetworkResult.Success(Unit)
+        } catch (e: Exception) {
+            Log.d("crash123", e.toString())
+            NetworkResult.Error(e.toString())
         }
     }
 

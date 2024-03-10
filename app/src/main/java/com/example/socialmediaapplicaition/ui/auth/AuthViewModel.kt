@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.socialmediaapplicaition.repository.AuthData.AuthRepository
 import com.example.socialmediaapplicaition.models.User
 import com.example.socialmediaapplicaition.utils.NetworkResult
+import com.example.socialmediaapplicaition.utils.TokenManager
 import com.google.firebase.auth.FirebaseUser
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,6 +18,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AuthViewModel @Inject constructor(private val repository: AuthRepository) :ViewModel() {
+
+    @Inject
+    lateinit var tokenManager: TokenManager
 
     private val _loginFlow = MutableStateFlow<NetworkResult<FirebaseUser>?>(null)
     val loginFlow :StateFlow<NetworkResult<FirebaseUser>?> = _loginFlow
@@ -73,6 +77,9 @@ class AuthViewModel @Inject constructor(private val repository: AuthRepository) 
         _uploadPhotoResult.value= result
         Log.d("checking",result.toString())
 
+
+
+
     }
 
     fun getUserFullDetails(userId:String) = viewModelScope.launch {
@@ -82,7 +89,9 @@ class AuthViewModel @Inject constructor(private val repository: AuthRepository) 
         _userData.value = result
 
         Log.d("checkingRes",result.data?.profile.toString())
-
+        tokenManager.saveProfile(result.data?.profile.toString())
+        tokenManager.saveId(result.data?.id.toString())
+        tokenManager.saveUserName(result.data?.name.toString())
     }
 
     fun logout(){
