@@ -1,4 +1,4 @@
-package com.example.socialmediaapplicaition.data
+package com.example.socialmediaapplicaition.repository.AuthData
 
 
 import android.net.Uri
@@ -7,6 +7,7 @@ import com.example.socialmediaapplicaition.models.User
 import com.example.socialmediaapplicaition.utils.NetworkResult
 import com.example.socialmediaapplicaition.utils.addDataToFirestore
 import com.example.socialmediaapplicaition.utils.await
+import com.example.socialmediaapplicaition.utils.getDataOfUserFromDatabase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
@@ -68,6 +69,28 @@ class AuthRepositoryImpl @Inject constructor(private val firebaseAuth:FirebaseAu
         }
     }
 
+    override suspend fun getUserData(uid: String): NetworkResult<User> {
+        return try {
+            val snapshot = firestore.collection("users").document(uid).get().getDataOfUserFromDatabase()
+            Log.d("checkingRes1",snapshot.toString())
+            if (snapshot != null && snapshot.exists()) {
+                val user = snapshot.toObject(User::class.java)
+                Log.d("checkingRes2",user.toString())
+                if (user != null) {
+                    NetworkResult.Success(user)
+                } else {
+                    NetworkResult.Error("Failed to parse user data")
+                }
+            } else {
+                Log.d("checkingRes2","user not found ")
+                NetworkResult.Error("User not found")
+            }
+        } catch (e: Exception) {
+            Log.e("checkingRes3", "Error fetching user data: ${e.message}", e)
+            NetworkResult.Error(e.message ?: "An error occurred")
+        }
+    }
+
     override suspend fun uploadPhotoToFireStore(photoUri: Uri): NetworkResult<Uri> {
 
         Log.d("CheckingResponse","here")
@@ -89,6 +112,8 @@ class AuthRepositoryImpl @Inject constructor(private val firebaseAuth:FirebaseAu
             NetworkResult.Error(e.message ?: "Failed to upload photo")
         }
     }
+
+
 
 
     override fun logout() {

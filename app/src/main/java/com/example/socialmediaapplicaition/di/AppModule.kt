@@ -1,7 +1,7 @@
 package com.example.socialmediaapplicaition.di
 
-import com.example.socialmediaapplicaition.data.AuthRepository
-import com.example.socialmediaapplicaition.data.AuthRepositoryImpl
+import com.example.socialmediaapplicaition.repository.AuthData.AuthRepository
+import com.example.socialmediaapplicaition.repository.AuthData.AuthRepositoryImpl
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
@@ -20,7 +20,7 @@ class AppModule {
     fun provideFirebaseAuth():FirebaseAuth = FirebaseAuth.getInstance()
 
     @Provides
-    fun provideAuthRepository(impl:AuthRepositoryImpl):AuthRepository = impl
+    fun provideAuthRepository(impl: AuthRepositoryImpl): AuthRepository = impl
 
 
     @Provides

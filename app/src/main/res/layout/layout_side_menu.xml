@@ -8,7 +8,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
-        android:layout_height="250dp"
+        android:layout_height="180dp"
         android:background="#6830ba"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -17,8 +17,9 @@
 
         <ImageView
             android:id="@+id/profileImage"
-            android:layout_width="@dimen/_130sdp"
-            android:layout_height="@dimen/_130sdp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@color/black"
             android:layout_marginTop="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

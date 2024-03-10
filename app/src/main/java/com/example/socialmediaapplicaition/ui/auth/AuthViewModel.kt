@@ -4,7 +4,7 @@ import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.socialmediaapplicaition.data.AuthRepository
+import com.example.socialmediaapplicaition.repository.AuthData.AuthRepository
 import com.example.socialmediaapplicaition.models.User
 import com.example.socialmediaapplicaition.utils.NetworkResult
 import com.google.firebase.auth.FirebaseUser
@@ -16,7 +16,7 @@ import javax.inject.Inject
 
 
 @HiltViewModel
-class AuthViewModel @Inject constructor(private val repository:AuthRepository) :ViewModel() {
+class AuthViewModel @Inject constructor(private val repository: AuthRepository) :ViewModel() {
 
     private val _loginFlow = MutableStateFlow<NetworkResult<FirebaseUser>?>(null)
     val loginFlow :StateFlow<NetworkResult<FirebaseUser>?> = _loginFlow
@@ -32,6 +32,9 @@ class AuthViewModel @Inject constructor(private val repository:AuthRepository) :
 
     private val _uploadPhotoResult = MutableStateFlow<NetworkResult<Uri>?>(null)
     val uploadPhotoResult: StateFlow<NetworkResult<Uri>?> = _uploadPhotoResult
+
+    private val _userData = MutableStateFlow<NetworkResult<User>?>(null)
+    val userData :StateFlow<NetworkResult<User>?> = _userData
 
 
     val currentUser:FirebaseUser?
@@ -69,6 +72,16 @@ class AuthViewModel @Inject constructor(private val repository:AuthRepository) :
         val result = repository.uploadPhotoToFireStore(photoUri)
         _uploadPhotoResult.value= result
         Log.d("checking",result.toString())
+
+    }
+
+    fun getUserFullDetails(userId:String) = viewModelScope.launch {
+
+        _userData.value = NetworkResult.Loading()
+        val result = repository.getUserData(userId)
+        _userData.value = result
+
+        Log.d("checkingRes",result.data?.profile.toString())
 
     }
 
