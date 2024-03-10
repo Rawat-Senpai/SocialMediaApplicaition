@@ -20,8 +20,10 @@ class MainFragment : Fragment() {
     private var _binding: FragmentMainBinding? = null
     private val binding get() = _binding!!
 
+
     private val viewModel by viewModels<AuthViewModel>()
 
+    private val postViewModel by viewModels<MainViewModel> ()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,6 +43,8 @@ class MainFragment : Fragment() {
 
         bindViews()
 
+
+        postViewModel.getAllUser()
 
         binding.apply {
             menuImg.setOnClickListener {

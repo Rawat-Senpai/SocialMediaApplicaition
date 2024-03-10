@@ -22,9 +22,7 @@ class AuthRepositoryImpl @Inject constructor(private val firebaseAuth:FirebaseAu
     override val currentUser: FirebaseUser?
         get() = firebaseAuth.currentUser
 
-
     override suspend fun login(email: String, password: String): NetworkResult<FirebaseUser> {
-
         return try {
             val result = firebaseAuth.signInWithEmailAndPassword(email,password).await()
             NetworkResult.Success(result.user)
@@ -32,9 +30,7 @@ class AuthRepositoryImpl @Inject constructor(private val firebaseAuth:FirebaseAu
             Log.d("crash",e.toString())
             NetworkResult.Error(e.toString())
         }
-
     }
-
 
     override suspend fun signup(
         name: String,
