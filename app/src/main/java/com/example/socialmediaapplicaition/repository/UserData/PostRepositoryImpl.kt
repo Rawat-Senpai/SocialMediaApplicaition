@@ -5,12 +5,10 @@ import com.example.socialmediaapplicaition.models.User
 import com.example.socialmediaapplicaition.utils.NetworkResult
 
 import com.example.socialmediaapplicaition.utils.getDataOfUserFromDatabase
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
-class UserRepositoryImpl  @Inject constructor(private val firebaseFirestore: FirebaseFirestore):PostRepository {
+class PostRepositoryImpl  @Inject constructor(private val firebaseFirestore: FirebaseFirestore):PostRepository {
 
 
     override suspend fun getAllUser(): NetworkResult<ArrayList<User>> {
