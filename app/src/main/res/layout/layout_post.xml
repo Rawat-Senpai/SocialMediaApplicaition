@@ -66,17 +66,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-
-
-
             android:layout_marginLeft="20dp"
             android:layout_toEndOf="@+id/user_image"
             android:layout_toRightOf="@+id/user_image"
-            android:text="Nupur supra "
+            tools:text="Person Name"
             android:textColor="@color/white"
             android:textSize="16sp"
             android:textStyle="bold"
-
             app:layout_constraintStart_toEndOf="@+id/user_image"
             app:layout_constraintTop_toTopOf="@+id/user_image" />
 
@@ -87,7 +83,7 @@
             android:layout_below="@+id/user_name"
             android:layout_toEndOf="@+id/user_image"
             android:layout_toRightOf="@+id/user_image"
-            android:text="10 minuts ago"
+            tools:text="10 minuts ago"
             android:textColor="@color/white"
             android:textSize="12sp"
             app:layout_constraintStart_toStartOf="@+id/user_name"
@@ -112,9 +108,9 @@
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_marginTop="15dp"
-
             app:layout_constraintStart_toStartOf="@+id/user_image_post"
-            app:layout_constraintTop_toBottomOf="@+id/user_image_post" />
+            app:layout_constraintTop_toBottomOf="@+id/user_image_post"
+            android:src="@drawable/fav_unlike"/>
 
 
         <TextView
@@ -123,7 +119,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
             android:padding="5dp"
-            android:text="10 people like this"
+            tools:text="10 people like this"
             android:textColor="@color/white"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="@+id/likeButton"
@@ -144,10 +140,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
-
                 android:letterSpacing="0.02"
                 android:padding="2dp"
-                android:text="Nupur Supra"
+                tools:text="Person Name"
                 android:textColor="@color/white"
                 android:textSize="14sp"
                 android:textStyle="bold"
@@ -160,7 +155,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/user_image"
                 android:padding="5dp"
-                android:text="heelo bhai kese ho "
+                tools:text="heelo bhai kese ho "
 
 
                 android:textColor="@color/white"
@@ -175,44 +170,29 @@
         </LinearLayout>
 
 
-        <TextView
-            android:id="@+id/textView14"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="3dp"
-            android:text="View all 4 comments "
-            android:textColor="#A5A1A1"
-            android:textSize="10sp"
-            android:layout_marginStart="10dp"
-            app:layout_constraintStart_toStartOf="@+id/linearLayout"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
-
         <ImageView
-            android:id="@+id/image_for_comment"
+
+            android:id="@+id/myImage"
             android:layout_width="23dp"
             android:layout_height="23dp"
-            android:layout_marginTop="5dp"
-
-            android:layout_marginBottom="5dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-
-            app:layout_constraintStart_toStartOf="@+id/textView14"
-            app:layout_constraintTop_toBottomOf="@+id/textView14"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout"
             tools:srcCompat="@tools:sample/avatars" />
 
-        <TextView
+        <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="5dp"
-            android:text="Add a comment here ..."
+            tools:text="Add a comment here ..."
             android:textColor="#CDC9C9"
             android:textSize="12sp"
+            android:background="@null"
             android:layout_marginBottom="5dp"
             android:layout_marginTop="5dp"
             android:layout_marginLeft="2dp"
-            app:layout_constraintBottom_toBottomOf="@+id/image_for_comment"
-            app:layout_constraintStart_toEndOf="@+id/image_for_comment"
-            app:layout_constraintTop_toTopOf="@+id/image_for_comment" />
+            app:layout_constraintBottom_toBottomOf="@+id/myImage"
+            app:layout_constraintStart_toEndOf="@+id/myImage"
+            app:layout_constraintTop_toTopOf="@+id/myImage" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

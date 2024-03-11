@@ -15,8 +15,10 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.socialmediaapplicaition.R
 import com.example.socialmediaapplicaition.databinding.FragmentMainBinding
+import com.example.socialmediaapplicaition.models.Post
 import com.example.socialmediaapplicaition.ui.auth.AuthViewModel
 import com.example.socialmediaapplicaition.utils.NetworkResult
+import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -49,7 +51,7 @@ class PostFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        adapter = PostListAdapter()
+        adapter = PostListAdapter(::onPostClicked)
         binding.recyclerView.layoutManager = LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false)
         binding.recyclerView.adapter = adapter
 
@@ -73,6 +75,12 @@ class PostFragment : Fragment() {
 
         }
 
+    }
+
+    private fun onPostClicked(postResponse: Post){
+        val bundle = Bundle()
+        bundle.putString("post", Gson().toJson(postResponse))
+        findNavController().navigate(R.id.action_mainFragment_to_postDetailsFragment, bundle)
     }
 
     private fun bindObserver() {

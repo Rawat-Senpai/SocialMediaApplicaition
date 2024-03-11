@@ -2,14 +2,23 @@ package com.example.socialmediaapplicaition.ui.postPackage
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.example.socialmediaapplicaition.R
 import com.example.socialmediaapplicaition.databinding.LayoutPostBinding
 import com.example.socialmediaapplicaition.models.Post
+import com.example.socialmediaapplicaition.utils.TokenManager
+import com.example.socialmediaapplicaition.utils.Utils
+import javax.inject.Inject
 
 
-class PostListAdapter : ListAdapter<Post, PostListAdapter.PostViewHolder>(ComparatorDiffUtil()) {
+class PostListAdapter(private val onPostClicked: (Post) -> Unit) : ListAdapter<Post, PostListAdapter.PostViewHolder>(ComparatorDiffUtil()) {
+
+    @Inject
+    lateinit var tokenManager: TokenManager
 
     private var onClickedAt = 0L
 
@@ -17,7 +26,32 @@ class PostListAdapter : ListAdapter<Post, PostListAdapter.PostViewHolder>(Compar
         RecyclerView.ViewHolder(binding.root) {
         fun bind(post: Post) {
             binding.apply {
-                // Bind your data to the views here
+
+                    val isLiked= post.likedBy.contains(tokenManager.getId())
+                    // Bind your data to the views here
+                    userName.text = post.createdBy.name
+                    Glide.with(root.context).load(post.createdBy.profile).into(userImage)
+                    Glide.with(root.context).load(post.imageUrl).into(userImagePost)
+
+                    postTime.text = Utils.getTimeAgo(post.createdAt)
+
+//                    likeButton.setOnClickListener(){
+//
+//                    }
+
+                if(isLiked){
+                    likeButton.setImageDrawable(ContextCompat.getDrawable(likeButton.context,R.drawable.liked))
+                }
+                else{
+                    likeButton.setImageDrawable(ContextCompat.getDrawable(likeButton.context,R.drawable.fav_unlike))
+                }
+
+
+                    root.setOnClickListener(){
+                        onPostClicked(post)
+                    }
+
+
             }
         }
     }

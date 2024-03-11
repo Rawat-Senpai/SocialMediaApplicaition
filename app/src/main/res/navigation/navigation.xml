@@ -43,7 +43,10 @@
             app:destination="@id/createPostFragmnet" />
         <action
             android:id="@+id/action_mainFragment_to_blankFragment"
-            app:destination="@id/blankFragment" />
+            app:destination="@id/infoSection" />
+        <action
+            android:id="@+id/action_mainFragment_to_postDetailsFragment"
+            app:destination="@id/postDetailsFragment" />
     </fragment>
     <fragment
         android:id="@+id/chatFragment"
@@ -56,8 +59,13 @@
         android:label="fragment_create_post_fragmnet"
         tools:layout="@layout/fragment_create_post_fragmnet" />
     <fragment
-        android:id="@+id/blankFragment"
+        android:id="@+id/infoSection"
         android:name="com.example.socialmediaapplicaition.ui.infoPackage.InfoFragment"
         android:label="fragment_blank"
         tools:layout="@layout/fragment_info" />
+    <fragment
+        android:id="@+id/postDetailsFragment"
+        android:name="com.example.socialmediaapplicaition.PostDetailsFragment"
+        android:label="fragment_post_details"
+        tools:layout="@layout/fragment_post_details" />
 </navigation>
