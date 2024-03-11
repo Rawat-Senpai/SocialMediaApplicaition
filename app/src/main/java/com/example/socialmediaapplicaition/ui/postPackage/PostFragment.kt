@@ -1,4 +1,4 @@
-package com.example.socialmediaapplicaition.ui.mainPackage
+package com.example.socialmediaapplicaition.ui.postPackage
 
 import android.os.Bundle
 import android.util.Log
@@ -12,28 +12,27 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.socialmediaapplicaition.R
 import com.example.socialmediaapplicaition.databinding.FragmentMainBinding
 import com.example.socialmediaapplicaition.ui.auth.AuthViewModel
 import com.example.socialmediaapplicaition.utils.NetworkResult
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.observeOn
 import kotlinx.coroutines.launch
-import kotlin.math.log10
 
 
 @AndroidEntryPoint
-class MainFragment : Fragment() {
+class PostFragment : Fragment() {
 
 
     private var _binding: FragmentMainBinding? = null
     private val binding get() = _binding!!
 
+    private lateinit var adapter:PostListAdapter
 
     private val viewModel by viewModels<AuthViewModel>()
 
-    private val postViewModel by viewModels<MainViewModel> ()
+    private val postViewModel by viewModels<PostViewModel> ()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,11 +49,12 @@ class MainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        adapter = PostListAdapter()
+        binding.recyclerView.layoutManager = LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false)
+        binding.recyclerView.adapter = adapter
+
         bindObserver()
-
         bindViews()
-
-
 
 
         binding.apply {
@@ -93,6 +93,7 @@ class MainFragment : Fragment() {
                     is NetworkResult.Success -> {
                         Toast.makeText(requireContext(), "successful", Toast.LENGTH_SHORT).show()
                         Log.d("checkingPostResponse",it.data.toString())
+                        adapter.submitList(it.data)
                     }
 
                     else -> {

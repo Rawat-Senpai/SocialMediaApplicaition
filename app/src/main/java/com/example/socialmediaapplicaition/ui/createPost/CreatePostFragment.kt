@@ -20,12 +20,11 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.example.socialmediaapplicaition.R
 import com.example.socialmediaapplicaition.databinding.FragmentCreatePostFragmnetBinding
 import com.example.socialmediaapplicaition.models.Post
 import com.example.socialmediaapplicaition.models.User
 import com.example.socialmediaapplicaition.ui.auth.AuthViewModel
-import com.example.socialmediaapplicaition.ui.mainPackage.MainViewModel
+import com.example.socialmediaapplicaition.ui.postPackage.PostViewModel
 import com.example.socialmediaapplicaition.utils.NetworkResult
 import com.example.socialmediaapplicaition.utils.TokenManager
 import com.example.socialmediaapplicaition.utils.Utils
@@ -50,7 +49,7 @@ class CreatePostFragment : Fragment() {
 
     private val viewModel by viewModels<AuthViewModel> ()
 
-    private val postViewModel by viewModels<MainViewModel> ()
+    private val postViewModel by viewModels<PostViewModel> ()
 
 
     override fun onCreateView(

@@ -95,6 +95,16 @@ dependencies {
     annotationProcessor ("com.github.bumptech.glide:compiler:4.13.2")
 
 
+    // transfromation layout
+    implementation("com.github.skydoves:transformationlayout:1.1.3")
+    implementation ("com.github.skydoves:bundler:1.0.4")
+    implementation ("com.github.skydoves:progressview:1.1.3")
+    implementation ("com.github.skydoves:androidribbon:1.0.4")
+
+    implementation("androidx.palette:palette:1.0.0")
+
+
+
 }
 
 

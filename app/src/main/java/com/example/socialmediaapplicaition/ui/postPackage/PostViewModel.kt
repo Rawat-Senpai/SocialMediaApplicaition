@@ -1,7 +1,6 @@
-package com.example.socialmediaapplicaition.ui.mainPackage
+package com.example.socialmediaapplicaition.ui.postPackage
 
 import android.util.Log
-import android.view.View
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.socialmediaapplicaition.models.Post
@@ -15,7 +14,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class MainViewModel @Inject constructor(private val repository:PostRepository): ViewModel() {
+class PostViewModel @Inject constructor(private val repository:PostRepository): ViewModel() {
 
     private val _allUsers = MutableStateFlow<NetworkResult<ArrayList<User>>?>(null)
     val allUsers :StateFlow<NetworkResult<ArrayList<User>>?> = _allUsers
