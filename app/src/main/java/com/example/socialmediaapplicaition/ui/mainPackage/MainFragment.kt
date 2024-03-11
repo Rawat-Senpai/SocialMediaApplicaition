@@ -5,7 +5,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.view.GravityCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -16,7 +18,9 @@ import com.example.socialmediaapplicaition.ui.auth.AuthViewModel
 import com.example.socialmediaapplicaition.utils.NetworkResult
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.observeOn
 import kotlinx.coroutines.launch
+import kotlin.math.log10
 
 
 @AndroidEntryPoint
@@ -51,7 +55,7 @@ class MainFragment : Fragment() {
         bindViews()
 
 
-        postViewModel.getAllUser()
+
 
         binding.apply {
             menuImg.setOnClickListener {
@@ -74,35 +78,47 @@ class MainFragment : Fragment() {
     private fun bindObserver() {
 
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.userData.collect{
-                when(it){
-                    is NetworkResult.Error -> {}
-                    is NetworkResult.Loading -> {}
-                    is NetworkResult.Success -> {}
-                    null -> {}
+            postViewModel.allPosts.collect {
+                binding.progressBar.isVisible = it is NetworkResult.Loading
+                when (it) {
+                    is NetworkResult.Error -> {
+                        Log.d("TAGSignUp", it.message.toString())
+                        Toast.makeText(requireContext(), "error", Toast.LENGTH_SHORT).show()
+                    }
+
+                    is NetworkResult.Loading -> {
+                        binding.progressBar.isVisible = true
+                    }
+
+                    is NetworkResult.Success -> {
+                        Toast.makeText(requireContext(), "successful", Toast.LENGTH_SHORT).show()
+                        Log.d("checkingPostResponse",it.data.toString())
+                    }
+
+                    else -> {
+
+                    }
                 }
             }
         }
 
 
-
     }
 
     private fun bindViews() {
+
         binding.apply {
 
             userName.text = viewModel.currentUser?.displayName.toString()
             Log.d("checkingResponse",viewModel.currentUser?.uid.toString())
             viewModel.getUserFullDetails(viewModel.currentUser?.uid.toString())
 
-
             addPost.setOnClickListener(){
                 findNavController().navigate(R.id.action_mainFragment_to_createPostFragmnet)
             }
 
-
-
         }
+
     }
 
     override fun onDestroy() {

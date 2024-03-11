@@ -97,7 +97,6 @@ class SignUpFragment : Fragment() {
 
             imageView.setOnClickListener{
                 chooseImage(requireActivity())
-
             }
         }
 
@@ -198,7 +197,6 @@ class SignUpFragment : Fragment() {
             optionsMenu
         ) { dialogInterface, i ->
             if (optionsMenu[i] == "Take Photo") {
-//
 
                 if (Utils.checkPermission(requireActivity(), Manifest.permission.CAMERA)) {
                     takeImageFromCameraUri()
@@ -231,7 +229,6 @@ class SignUpFragment : Fragment() {
         values.put(MediaStore.Images.Media.DESCRIPTION, "Photo taken on " + System.currentTimeMillis())
         commonImageUri = requireActivity().contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
         cameraLauncher.launch(commonImageUri)
-
     }
 
     private fun imageChooser() {

@@ -37,7 +37,27 @@ class PostRepositoryImpl  @Inject constructor(private val firebaseFirestore: Fir
     }
 
     override suspend fun getAllPost(): NetworkResult<ArrayList<Post>> {
-        TODO("Not yet implemented")
+
+        return try {
+            val snapshot = firebaseFirestore.collection("posts").get().getDataOfUserFromDatabase()
+
+            if (snapshot != null && !snapshot.isEmpty) {
+                val userList = ArrayList<Post>()
+                for (document in snapshot.documents) {
+                    val posts = document.toObject(Post::class.java)
+                    posts?.let {
+                        userList.add(it)
+                    }
+                }
+                Log.d("checkingResponseSize",userList.size.toString())
+                NetworkResult.Success(userList)
+            } else {
+                NetworkResult.Error("No users found")
+            }
+        } catch (e: Exception) {
+            NetworkResult.Error("An error occurred: ${e.message}")
+        }
+
     }
 
     override suspend fun createPost(post: Post): NetworkResult<Unit> {

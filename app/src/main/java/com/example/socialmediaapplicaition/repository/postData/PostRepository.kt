@@ -8,6 +8,7 @@ import com.example.socialmediaapplicaition.utils.NetworkResult
 interface PostRepository {
     suspend fun getAllUser():NetworkResult<ArrayList<User>>
 
+
     suspend fun getAllPost():NetworkResult<ArrayList<Post>>
 
 

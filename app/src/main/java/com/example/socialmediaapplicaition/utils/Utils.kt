@@ -16,22 +16,6 @@ object Utils{
 
     const val CAMERA_PERMISSION_CODE = 100
     const val STORAGE_PERMISSION_CODE = 101
-    fun pickImageFromGallery(activity: Activity, fragment: Fragment, onImagePicked: (Uri) -> Unit) {
-        val launcher = fragment.registerForActivityResult(
-            ActivityResultContracts.StartActivityForResult()
-        ) { result ->
-            if (result.resultCode == Activity.RESULT_OK) {
-                val selectedImageUri: Uri? = result.data?.data
-                selectedImageUri?.let {
-                    onImagePicked(it)
-                }
-            }
-        }
-
-        val intent = Intent(Intent.ACTION_PICK)
-        intent.type = "image/*"
-        launcher.launch(intent)
-    }
 
 
     fun checkPermission(activity: Activity, permission: String): Boolean {

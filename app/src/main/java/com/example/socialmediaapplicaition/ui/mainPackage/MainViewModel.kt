@@ -1,6 +1,7 @@
 package com.example.socialmediaapplicaition.ui.mainPackage
 
 import android.util.Log
+import android.view.View
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.socialmediaapplicaition.models.Post
@@ -22,16 +23,31 @@ class MainViewModel @Inject constructor(private val repository:PostRepository): 
     private val _addPostResultState = MutableStateFlow<NetworkResult<Unit>?>(null)
     val addPostResultState: StateFlow<NetworkResult<Unit>?> = _addPostResultState
 
+    private val _allPosts = MutableStateFlow<NetworkResult<ArrayList<Post>>?>(null)
+    val allPosts :StateFlow<NetworkResult<ArrayList<Post>>?> = _allPosts
 
 
-    fun getAllUser() = viewModelScope.launch {
+    init {
+        getAllUser()
+        getAllPost()
+    }
+
+
+    private fun getAllUser() = viewModelScope.launch {
         _allUsers.value = NetworkResult.Loading()
         val result = repository.getAllUser()
         _allUsers.value = result
-
         Log.d("checkingResponse",result.toString())
-
     }
+
+    private fun getAllPost() = viewModelScope.launch {
+        _allPosts.value = NetworkResult.Loading()
+        val result = repository.getAllPost()
+        _allPosts.value = result
+        Log.d("checkingResponse",result.toString())
+    }
+
+
 
 
     fun addPostToDatabase(post:Post) = viewModelScope.launch {

@@ -24,6 +24,7 @@
 
 
         <LinearLayout
+            android:id="@+id/uploadPost"
             android:layout_width="match_parent"
             android:layout_height="180dp"
             android:orientation="vertical"
@@ -32,6 +33,7 @@
 
 
             <ImageView
+                android:id="@+id/addImgBtn"
                 android:layout_width="@dimen/_50sdp"
                 android:layout_height="@dimen/_50sdp"
                 android:layout_gravity="center"
@@ -93,6 +95,15 @@
             android:textColor="@color/white"
             android:textSize="16sp" />
 
+
+        <ProgressBar
+            android:visibility="gone"
+            android:id="@+id/progress_bar"
+            android:indeterminate="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            />
 
         
         
