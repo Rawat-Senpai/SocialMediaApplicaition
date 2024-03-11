@@ -15,29 +15,20 @@ import com.example.socialmediaapplicaition.utils.Utils
 import javax.inject.Inject
 
 
-class PostListAdapter(private val onPostClicked: (Post) -> Unit) : ListAdapter<Post, PostListAdapter.PostViewHolder>(ComparatorDiffUtil()) {
-
-    @Inject
-    lateinit var tokenManager: TokenManager
-
-    private var onClickedAt = 0L
+class PostListAdapter(private val onPostClicked: (Post) -> Unit,private val onPostLiked: (Post) -> Unit,private val userId:String) : ListAdapter<Post, PostListAdapter.PostViewHolder>(ComparatorDiffUtil()) {
 
     inner class PostViewHolder(private val binding: LayoutPostBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(post: Post) {
             binding.apply {
 
-                    val isLiked= post.likedBy.contains(tokenManager.getId())
+                    val isLiked= post.likedBy.contains(userId)
                     // Bind your data to the views here
                     userName.text = post.createdBy.name
                     Glide.with(root.context).load(post.createdBy.profile).into(userImage)
                     Glide.with(root.context).load(post.imageUrl).into(userImagePost)
 
                     postTime.text = Utils.getTimeAgo(post.createdAt)
-
-//                    likeButton.setOnClickListener(){
-//
-//                    }
 
                 if(isLiked){
                     likeButton.setImageDrawable(ContextCompat.getDrawable(likeButton.context,R.drawable.liked))
