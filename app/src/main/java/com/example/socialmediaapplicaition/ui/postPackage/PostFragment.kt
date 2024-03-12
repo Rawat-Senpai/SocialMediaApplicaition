@@ -1,10 +1,13 @@
 package com.example.socialmediaapplicaition.ui.postPackage
 
+import android.media.Image
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.view.GravityCompat
 import androidx.core.view.isVisible
@@ -13,8 +16,10 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.example.socialmediaapplicaition.R
 import com.example.socialmediaapplicaition.databinding.FragmentMainBinding
+import com.example.socialmediaapplicaition.databinding.LayoutSideMenuBinding
 import com.example.socialmediaapplicaition.models.Post
 import com.example.socialmediaapplicaition.ui.auth.AuthViewModel
 import com.example.socialmediaapplicaition.utils.NetworkResult
@@ -39,7 +44,7 @@ class PostFragment : Fragment() {
     private val viewModel by viewModels<AuthViewModel>()
 
     private val postViewModel by viewModels<PostViewModel> ()
-
+    var imageView :ImageView ?= null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -64,6 +69,10 @@ class PostFragment : Fragment() {
         bindViews()
 
 
+        val sideBinding = LayoutSideMenuBinding.bind(binding.sideMenu)
+        imageView = sideBinding.profileImage
+
+
         binding.apply {
             menuImg.setOnClickListener {
                 if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
@@ -74,6 +83,11 @@ class PostFragment : Fragment() {
             }
             Log.d("response", viewModel.currentUser?.displayName.toString())
             Log.d("response", viewModel.currentUser?.uid.toString())
+
+
+            // Access the included layout within the fragment's layout
+            val includedLayoutBinding = binding.sideMenu
+
         }
     }
 
@@ -129,6 +143,9 @@ class PostFragment : Fragment() {
             addPost.setOnClickListener(){
                 findNavController().navigate(R.id.action_mainFragment_to_createPostFragmnet)
             }
+
+
+
 
         }
 

@@ -33,7 +33,6 @@
              app:layout_constraintStart_toStartOf="parent"
              app:layout_constraintTop_toTopOf="parent" />
 
-
          <TextView
              android:id="@+id/userName"
              android:layout_width="wrap_content"
@@ -47,7 +46,6 @@
              app:layout_constraintTop_toTopOf="parent"
              tools:text="Rahul" />
 
-
          <ImageView
              android:id="@+id/infoImg"
              android:layout_width="@dimen/_20sdp"
@@ -58,9 +56,7 @@
              app:layout_constraintEnd_toEndOf="parent"
              app:layout_constraintTop_toTopOf="parent" />
 
-
      </androidx.constraintlayout.widget.ConstraintLayout>
-
 
      <androidx.recyclerview.widget.RecyclerView
          android:id="@+id/recyclerView"
@@ -119,7 +115,6 @@
          app:layout_constraintStart_toStartOf="@+id/recyclerView"
          app:layout_constraintTop_toBottomOf="@+id/constraintLayout2" />
 
-
  </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
@@ -129,6 +124,7 @@
         android:layout_gravity="start"
         android:background="@android:color/white">
         <include layout="@layout/layout_side_menu"/>
+
     </LinearLayout>
 
 </androidx.drawerlayout.widget.DrawerLayout>
