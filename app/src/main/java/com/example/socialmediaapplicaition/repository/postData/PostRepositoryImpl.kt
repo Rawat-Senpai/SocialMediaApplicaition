@@ -11,8 +11,8 @@ import com.google.firebase.firestore.FirebaseFirestore
 import java.util.UUID
 import javax.inject.Inject
 
-class PostRepositoryImpl  @Inject constructor(private val firebaseFirestore: FirebaseFirestore):PostRepository {
-
+class PostRepositoryImpl @Inject constructor(private val firebaseFirestore: FirebaseFirestore) :
+    PostRepository {
 
     override suspend fun getAllUser(): NetworkResult<ArrayList<User>> {
         return try {
@@ -26,7 +26,7 @@ class PostRepositoryImpl  @Inject constructor(private val firebaseFirestore: Fir
                         userList.add(it)
                     }
                 }
-                Log.d("checkingResponseSize",userList.size.toString())
+                Log.d("checkingResponseSize", userList.size.toString())
                 NetworkResult.Success(userList)
             } else {
                 NetworkResult.Error("No users found")
@@ -42,15 +42,16 @@ class PostRepositoryImpl  @Inject constructor(private val firebaseFirestore: Fir
             val snapshot = firebaseFirestore.collection("posts").get().getDataOfUserFromDatabase()
 
             if (snapshot != null && !snapshot.isEmpty) {
-                val userList = ArrayList<Post>()
+                val postList = ArrayList<Post>()
                 for (document in snapshot.documents) {
                     val posts = document.toObject(Post::class.java)
                     posts?.let {
-                        userList.add(it)
+                        postList.add(it)
                     }
                 }
-                Log.d("checkingResponseSize",userList.size.toString())
-                NetworkResult.Success(userList)
+                postList.sortByDescending { it.createdAt }
+                Log.d("checkingResponseSize", postList.size.toString())
+                NetworkResult.Success(postList)
             } else {
                 NetworkResult.Error("No users found")
             }
@@ -63,7 +64,7 @@ class PostRepositoryImpl  @Inject constructor(private val firebaseFirestore: Fir
     override suspend fun createPost(post: Post): NetworkResult<Unit> {
         return try {
             // Add user data to Firestore
-            val postId =  UUID.randomUUID().toString()
+            val postId = UUID.randomUUID().toString()
             post.id = postId
 
             firebaseFirestore.collection("posts")
@@ -84,9 +85,9 @@ class PostRepositoryImpl  @Inject constructor(private val firebaseFirestore: Fir
             // Update like of post in  Firestore
             val isLiked = post.likedBy.contains(userId)
 
-            if(isLiked){
+            if (isLiked) {
                 post.likedBy.remove(userId)
-            }else {
+            } else {
                 post.likedBy.add(userId)
             }
             firebaseFirestore.collection("posts")

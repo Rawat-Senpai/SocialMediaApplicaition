@@ -1,14 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="10dp"
+    app:cardCornerRadius="@dimen/_15sdp"
+    android:layout_marginTop="@dimen/_15sdp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:backgroundTint="#707070">
+
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="2dp"  >
+        android:padding="10dp">
 
 
         <TextView
@@ -20,10 +25,9 @@
             android:textColor="@color/white"
             android:textSize="11sp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="@+id/user_image_post"
-            app:layout_constraintStart_toStartOf="@+id/user_image_post"
+            app:layout_constraintEnd_toEndOf="@+id/user_image_post_container"
+            app:layout_constraintStart_toStartOf="@+id/user_image_post_container"
             app:layout_constraintTop_toBottomOf="@+id/progressBar2" />
-
 
         <TextView
             android:id="@+id/textView2"
@@ -35,8 +39,8 @@
             android:text="Fetching data from firebase\n may take some time"
             android:textColor="@color/white"
             android:textSize="10sp"
-            app:layout_constraintEnd_toEndOf="@+id/user_image_post"
-            app:layout_constraintStart_toStartOf="@+id/user_image_post"
+            app:layout_constraintEnd_toEndOf="@+id/user_image_post_container"
+            app:layout_constraintStart_toStartOf="@+id/user_image_post_container"
             app:layout_constraintTop_toBottomOf="@+id/textView13" />
 
         <ProgressBar
@@ -47,17 +51,15 @@
             android:layout_marginBottom="10dp"
             app:layout_constraintBottom_toTopOf="@+id/total_like"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/user_image_post"
+            app:layout_constraintStart_toStartOf="@+id/user_image_post_container"
             app:layout_constraintTop_toBottomOf="@+id/post_time" />
 
         <ImageView
             android:id="@+id/user_image"
             android:layout_width="53dp"
             android:layout_height="53dp"
-
             android:layout_alignParentTop="true"
             android:layout_margin="10dp"
-
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -70,7 +72,7 @@
             android:layout_toEndOf="@+id/user_image"
             android:layout_toRightOf="@+id/user_image"
             tools:text="Person Name"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/user_image"
@@ -84,32 +86,55 @@
             android:layout_toEndOf="@+id/user_image"
             android:layout_toRightOf="@+id/user_image"
             tools:text="10 minuts ago"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:textSize="12sp"
             app:layout_constraintStart_toStartOf="@+id/user_name"
             app:layout_constraintTop_toBottomOf="@+id/user_name" />
 
-        <ImageView
-            android:id="@+id/user_image_post"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/user_image_post_container"
+            android:minHeight="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
             android:layout_width="match_parent"
-            android:layout_margin="5dp"
-            android:layout_height="500dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="15dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:scaleType="fitCenter"
+            android:background="@drawable/rounded_background_post"
             app:layout_constraintEnd_toEndOf="parent"
+            app:cardCornerRadius="50dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/user_image" />
+            app:layout_constraintTop_toBottomOf="@+id/user_image">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:minHeight="300dp"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/user_image_post"
+                    android:layout_width="match_parent"
+                    android:layout_margin="5dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:scaleType="fitXY"
+                    />
+
+            </LinearLayout>
+
+
+
+        </androidx.cardview.widget.CardView>
+
+
 
         <ImageView
             android:id="@+id/likeButton"
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_marginTop="15dp"
-            app:layout_constraintStart_toStartOf="@+id/user_image_post"
-            app:layout_constraintTop_toBottomOf="@+id/user_image_post"
+            app:layout_constraintStart_toStartOf="@+id/user_image_post_container"
+            app:layout_constraintTop_toBottomOf="@+id/user_image_post_container"
             android:src="@drawable/fav_unlike"/>
 
 
@@ -120,7 +145,7 @@
             android:layout_marginLeft="5dp"
             android:padding="5dp"
             tools:text="10 people like this"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="@+id/likeButton"
             app:layout_constraintStart_toEndOf="@+id/likeButton"
@@ -143,10 +168,10 @@
                 android:letterSpacing="0.02"
                 android:padding="2dp"
                 tools:text="Person Name"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 android:textSize="14sp"
                 android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="@+id/user_image_post"
+                app:layout_constraintStart_toStartOf="@+id/user_image_post_container"
                 app:layout_constraintTop_toBottomOf="@+id/likeButton" />
 
             <TextView
@@ -156,10 +181,7 @@
                 android:layout_below="@id/user_image"
                 android:padding="5dp"
                 tools:text="heelo bhai kese ho "
-
-
-                android:textColor="@color/white"
-
+                android:textColor="@color/black"
                 android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="@+id/captionName"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -175,6 +197,7 @@
             android:id="@+id/myImage"
             android:layout_width="23dp"
             android:layout_height="23dp"
+            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout"
             tools:srcCompat="@tools:sample/avatars" />
@@ -186,6 +209,7 @@
             tools:text="Add a comment here ..."
             android:textColor="#CDC9C9"
             android:textSize="12sp"
+            android:visibility="gone"
             android:background="@null"
             android:layout_marginBottom="5dp"
             android:layout_marginTop="5dp"
@@ -193,6 +217,7 @@
             app:layout_constraintBottom_toBottomOf="@+id/myImage"
             app:layout_constraintStart_toEndOf="@+id/myImage"
             app:layout_constraintTop_toTopOf="@+id/myImage" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

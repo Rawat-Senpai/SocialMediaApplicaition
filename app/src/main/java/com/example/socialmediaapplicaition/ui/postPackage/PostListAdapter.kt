@@ -1,5 +1,6 @@
 package com.example.socialmediaapplicaition.ui.postPackage
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
@@ -19,32 +20,32 @@ class PostListAdapter(private val onPostClicked: (Post) -> Unit,private val onPo
 
     inner class PostViewHolder(private val binding: LayoutPostBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(post: Post) {
-            binding.apply {
+            private var isLiked =false
+            fun bind(post: Post) {
 
-                    val isLiked= post.likedBy.contains(userId)
+                binding.apply {
+
+                 isLiked= post.likedBy.contains(userId)
                     // Bind your data to the views here
                     userName.text = post.createdBy.name
                     Glide.with(root.context).load(post.createdBy.profile).into(userImage)
                     Glide.with(root.context).load(post.imageUrl).into(userImagePost)
 
-                    postTime.text = Utils.getTimeAgo(post.createdAt)
 
-                if(isLiked){
-                    likeButton.setImageDrawable(ContextCompat.getDrawable(likeButton.context,R.drawable.liked))
-                }
-                else{
-                    likeButton.setImageDrawable(ContextCompat.getDrawable(likeButton.context,R.drawable.fav_unlike))
-                }
+                postTime.text = Utils.getTimeAgo(post.createdAt)
 
+                Log.d("checkingSize_",isLiked.toString())
 
-                    userImagePost.setOnClickListener(){
-                        onPostClicked(post)
-                    }
+                likeButton.setImageDrawable(ContextCompat.getDrawable(root.context,if (isLiked) R.drawable.liked else R.drawable.fav_unlike))
 
-                    likeButton.setOnClickListener(){
+                userImagePost.setOnClickListener(){onPostClicked(post)}
+
+                likeButton.setOnClickListener{Log.d("checkingSize",post.likedBy.size.toString())
+                    isLiked = !isLiked
+                        // Update button image based on new isLiked status
+                        likeButton.setImageDrawable(ContextCompat.getDrawable(root.context,if (isLiked) R.drawable.liked else R.drawable.fav_unlike))
                         onPostLiked(post)
-                    }
+                }
 
 
             }

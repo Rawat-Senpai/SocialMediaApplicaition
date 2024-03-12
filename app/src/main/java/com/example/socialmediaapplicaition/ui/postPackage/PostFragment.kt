@@ -21,6 +21,7 @@ import com.example.socialmediaapplicaition.utils.NetworkResult
 import com.example.socialmediaapplicaition.utils.TokenManager
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -32,8 +33,6 @@ class PostFragment : Fragment() {
     lateinit var tokenManager: TokenManager
     private var _binding: FragmentMainBinding? = null
     private val binding get() = _binding!!
-
-
 
     private lateinit var adapter:PostListAdapter
 
@@ -47,7 +46,6 @@ class PostFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         // return inflater.inflate(R.layout.fragment_main, container, false)
-
         _binding = FragmentMainBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
@@ -76,9 +74,7 @@ class PostFragment : Fragment() {
             }
             Log.d("response", viewModel.currentUser?.displayName.toString())
             Log.d("response", viewModel.currentUser?.uid.toString())
-
         }
-
     }
 
     private fun onPostClicked(postResponse: Post){
@@ -90,8 +86,6 @@ class PostFragment : Fragment() {
     private fun onPostLiked(post: Post){
         postViewModel.addLikeToPost(post,tokenManager.getId().toString())
     }
-
-
 
     private fun bindObserver() {
 

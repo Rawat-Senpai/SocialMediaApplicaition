@@ -45,10 +45,9 @@ class PostViewModel @Inject constructor(private val repository:PostRepository): 
         _allPosts.value = NetworkResult.Loading()
         val result = repository.getAllPost()
         _allPosts.value = result
-        Log.d("checkingResponse",result.toString())
+         Log.d("checkingResponse",result.data?.size.toString())
+         Log.d("checkingResponse",result.toString())
     }
-
-
 
 
     fun addPostToDatabase(post:Post) = viewModelScope.launch {

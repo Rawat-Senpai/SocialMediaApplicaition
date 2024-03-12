@@ -30,12 +30,8 @@ class PostDetailsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-//      return inflater.inflate(R.layout.fragment_post_details, container, false)
-
         _binding = FragmentPostDetailsBinding.inflate(layoutInflater, container, false)
-
         return binding.root
-
     }
 
     override fun onDestroy() {
