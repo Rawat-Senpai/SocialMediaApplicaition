@@ -38,8 +38,12 @@ class PostListAdapter(private val onPostClicked: (Post) -> Unit,private val onPo
                 }
 
 
-                    root.setOnClickListener(){
+                    userImagePost.setOnClickListener(){
                         onPostClicked(post)
+                    }
+
+                    likeButton.setOnClickListener(){
+                        onPostLiked(post)
                     }
 
 

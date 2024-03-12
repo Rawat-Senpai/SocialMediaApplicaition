@@ -75,5 +75,20 @@ class PostRepositoryImpl  @Inject constructor(private val firebaseFirestore: Fir
         }
     }
 
+    override suspend fun updateLikeStatus(post: Post, userId: String): NetworkResult<Unit> {
+        return try {
+            // Update like of post in  Firestore
+            firebaseFirestore.collection("posts")
+                .document(UUID.randomUUID().toString())
+                .set(post)
+                .addDataToFirestore()
+            Log.d("responseData", "successfully")
+            NetworkResult.Success(Unit)
+        } catch (e: Exception) {
+            Log.d("crash123", e.toString())
+            NetworkResult.Error(e.toString())
+        }
+    }
+
 
 }

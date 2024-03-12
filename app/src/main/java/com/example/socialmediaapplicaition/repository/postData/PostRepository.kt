@@ -13,6 +13,7 @@ interface PostRepository {
 
 
     suspend fun createPost(post:Post):NetworkResult<Unit>
+    suspend fun updateLikeStatus(post:Post, userId: String): NetworkResult<Unit>
 
 
 

@@ -25,10 +25,12 @@ class PostViewModel @Inject constructor(private val repository:PostRepository): 
     private val _allPosts = MutableStateFlow<NetworkResult<ArrayList<Post>>?>(null)
     val allPosts :StateFlow<NetworkResult<ArrayList<Post>>?> = _allPosts
 
+    private val _addLikeResponse = MutableStateFlow<NetworkResult<Unit>?> (null)
+    val addLikeResponse:StateFlow<NetworkResult<Unit>?> = _addLikeResponse
+
 
     init {
         getAllUser()
-        getAllPost()
     }
 
 
@@ -39,7 +41,7 @@ class PostViewModel @Inject constructor(private val repository:PostRepository): 
         Log.d("checkingResponse",result.toString())
     }
 
-    private fun getAllPost() = viewModelScope.launch {
+     fun getAllPost() = viewModelScope.launch {
         _allPosts.value = NetworkResult.Loading()
         val result = repository.getAllPost()
         _allPosts.value = result
@@ -55,5 +57,12 @@ class PostViewModel @Inject constructor(private val repository:PostRepository): 
         _addPostResultState.value = result
     }
 
+
+    fun addLikeToPost(post:Post,userId:String) = viewModelScope.launch {
+        _addLikeResponse.value = NetworkResult.Loading()
+        val result = repository.updateLikeStatus(post,userId)
+        _addLikeResponse.value = result
+
+    }
 
 }

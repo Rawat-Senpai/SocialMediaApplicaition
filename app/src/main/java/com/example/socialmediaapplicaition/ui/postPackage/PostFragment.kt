@@ -60,6 +60,8 @@ class PostFragment : Fragment() {
         binding.recyclerView.layoutManager = LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false)
         binding.recyclerView.adapter = adapter
 
+        postViewModel.getAllPost()
+
         bindObserver()
         bindViews()
 
@@ -88,11 +90,11 @@ class PostFragment : Fragment() {
         findNavController().navigate(R.id.action_mainFragment_to_postDetailsFragment, bundle)
     }
 
-    private fun onPostLiked(postResponse: Post){
-//        val bundle = Bundle()
-//        bundle.putString("post", Gson().toJson(postResponse))
-//        findNavController().navigate(R.id.action_mainFragment_to_postDetailsFragment, bundle)
+    private fun onPostLiked(post: Post){
+            postViewModel.addLikeToPost(post,tokenManager.getId().toString())
     }
+
+
 
     private fun bindObserver() {
 
@@ -143,9 +145,7 @@ class PostFragment : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-
         _binding = null
-
     }
 
 
