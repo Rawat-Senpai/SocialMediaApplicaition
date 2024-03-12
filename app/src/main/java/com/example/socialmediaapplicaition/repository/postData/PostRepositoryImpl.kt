@@ -63,12 +63,16 @@ class PostRepositoryImpl  @Inject constructor(private val firebaseFirestore: Fir
     override suspend fun createPost(post: Post): NetworkResult<Unit> {
         return try {
             // Add user data to Firestore
+            val postId =  UUID.randomUUID().toString()
+            post.id = postId
+
             firebaseFirestore.collection("posts")
-                .document(UUID.randomUUID().toString())
+                .document(postId)
                 .set(post)
                 .addDataToFirestore()
             Log.d("responseData", "successfully")
             NetworkResult.Success(Unit)
+
         } catch (e: Exception) {
             Log.d("crash123", e.toString())
             NetworkResult.Error(e.toString())
@@ -78,8 +82,15 @@ class PostRepositoryImpl  @Inject constructor(private val firebaseFirestore: Fir
     override suspend fun updateLikeStatus(post: Post, userId: String): NetworkResult<Unit> {
         return try {
             // Update like of post in  Firestore
+            val isLiked = post.likedBy.contains(userId)
+
+            if(isLiked){
+                post.likedBy.remove(userId)
+            }else {
+                post.likedBy.add(userId)
+            }
             firebaseFirestore.collection("posts")
-                .document(UUID.randomUUID().toString())
+                .document(post.id)
                 .set(post)
                 .addDataToFirestore()
             Log.d("responseData", "successfully")

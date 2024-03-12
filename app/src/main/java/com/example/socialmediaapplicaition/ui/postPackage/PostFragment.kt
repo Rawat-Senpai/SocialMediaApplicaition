@@ -46,7 +46,7 @@ class PostFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-//        return inflater.inflate(R.layout.fragment_main, container, false)
+        // return inflater.inflate(R.layout.fragment_main, container, false)
 
         _binding = FragmentMainBinding.inflate(layoutInflater, container, false)
         return binding.root
@@ -74,9 +74,6 @@ class PostFragment : Fragment() {
                     drawerLayout.openDrawer(GravityCompat.START)
                 }
             }
-
-
-
             Log.d("response", viewModel.currentUser?.displayName.toString())
             Log.d("response", viewModel.currentUser?.uid.toString())
 
@@ -91,7 +88,7 @@ class PostFragment : Fragment() {
     }
 
     private fun onPostLiked(post: Post){
-            postViewModel.addLikeToPost(post,tokenManager.getId().toString())
+        postViewModel.addLikeToPost(post,tokenManager.getId().toString())
     }
 
 

@@ -1,14 +1,195 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".PostDetailsFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.postPackage.PostDetailsFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
 
-</FrameLayout>
+
+        <TextView
+            android:id="@+id/textView13"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="Wait !!!"
+            android:textColor="@color/white"
+            android:textSize="11sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@+id/user_image_post"
+            app:layout_constraintStart_toStartOf="@+id/user_image_post"
+            app:layout_constraintTop_toBottomOf="@+id/progressBar2" />
+
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:gravity="center"
+            android:padding="3dp"
+            android:text="Fetching data from firebase\n may take some time"
+            android:textColor="@color/white"
+            android:textSize="10sp"
+            app:layout_constraintEnd_toEndOf="@+id/user_image_post"
+            app:layout_constraintStart_toStartOf="@+id/user_image_post"
+            app:layout_constraintTop_toBottomOf="@+id/textView13" />
+
+        <ProgressBar
+            android:id="@+id/progressBar2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            app:layout_constraintBottom_toTopOf="@+id/total_like"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/user_image_post"
+            app:layout_constraintTop_toBottomOf="@+id/post_time" />
+
+        <ImageView
+            android:id="@+id/user_image"
+            android:layout_width="53dp"
+            android:layout_height="53dp"
+
+            android:layout_alignParentTop="true"
+            android:layout_margin="10dp"
+
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="20dp"
+            android:layout_toEndOf="@+id/user_image"
+            android:layout_toRightOf="@+id/user_image"
+            tools:text="Person Name"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/user_image"
+            app:layout_constraintTop_toTopOf="@+id/user_image" />
+
+        <TextView
+            android:id="@+id/post_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/user_name"
+            android:layout_toEndOf="@+id/user_image"
+            android:layout_toRightOf="@+id/user_image"
+            tools:text="10 minuts ago"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="@+id/user_name"
+            app:layout_constraintTop_toBottomOf="@+id/user_name" />
+
+        <ImageView
+            android:id="@+id/user_image_post"
+            android:layout_width="match_parent"
+            android:layout_margin="5dp"
+            android:layout_height="500dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:scaleType="fitCenter"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/user_image" />
+
+        <ImageView
+            android:id="@+id/likeButton"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginTop="15dp"
+            app:layout_constraintStart_toStartOf="@+id/user_image_post"
+            app:layout_constraintTop_toBottomOf="@+id/user_image_post"
+            android:src="@drawable/fav_unlike"/>
+
+
+        <TextView
+            android:id="@+id/total_like"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:padding="5dp"
+            tools:text="10 people like this"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@+id/likeButton"
+            app:layout_constraintStart_toEndOf="@+id/likeButton"
+            app:layout_constraintTop_toTopOf="@+id/likeButton" />
+
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@+id/total_like"
+            tools:layout_editor_absoluteX="2dp">
+
+            <TextView
+                android:id="@+id/captionName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:letterSpacing="0.02"
+                android:padding="2dp"
+                tools:text="Person Name"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@+id/user_image_post"
+                app:layout_constraintTop_toBottomOf="@+id/likeButton" />
+
+            <TextView
+                android:id="@+id/user_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/user_image"
+                android:padding="5dp"
+                tools:text="heelo bhai kese ho "
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="@+id/captionName"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/captionName"
+                app:layout_constraintTop_toTopOf="@+id/captionName" />
+
+
+        </LinearLayout>
+
+
+        <ImageView
+
+            android:id="@+id/myImage"
+            android:layout_width="23dp"
+            android:layout_height="23dp"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+            tools:srcCompat="@tools:sample/avatars" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            tools:text="Add a comment here ..."
+            android:textColor="#CDC9C9"
+            android:textSize="12sp"
+            android:visibility="gone"
+            android:background="@null"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="2dp"
+            app:layout_constraintBottom_toBottomOf="@+id/myImage"
+            app:layout_constraintStart_toEndOf="@+id/myImage"
+            app:layout_constraintTop_toTopOf="@+id/myImage" />
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,6 +1,7 @@
 package com.example.socialmediaapplicaition.models
 
 data class Post(
+    var id:String="",
     var text:String="",
     var imageUrl:String="",
     var createdBy:User=User(),

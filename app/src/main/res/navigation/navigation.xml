@@ -65,7 +65,7 @@
         tools:layout="@layout/fragment_info" />
     <fragment
         android:id="@+id/postDetailsFragment"
-        android:name="com.example.socialmediaapplicaition.PostDetailsFragment"
+        android:name="com.example.socialmediaapplicaition.ui.postPackage.PostDetailsFragment"
         android:label="fragment_post_details"
         tools:layout="@layout/fragment_post_details" />
 </navigation>
