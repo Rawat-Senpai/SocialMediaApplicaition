@@ -50,9 +50,13 @@
     </fragment>
     <fragment
         android:id="@+id/chatFragment"
-        android:name="com.example.socialmediaapplicaition.ui.chatFragment.ChatFragment"
+        android:name="com.example.socialmediaapplicaition.ui.chatFragment.ChatListFragment"
         android:label="fragment_chat"
-        tools:layout="@layout/fragment_chat" />
+        tools:layout="@layout/fragment_list_chat" >
+        <action
+            android:id="@+id/action_chatFragment_to_chatFragment2"
+            app:destination="@id/chatFragment2" />
+    </fragment>
     <fragment
         android:id="@+id/createPostFragmnet"
         android:name="com.example.socialmediaapplicaition.ui.createPost.CreatePostFragment"
@@ -68,4 +72,9 @@
         android:name="com.example.socialmediaapplicaition.ui.postPackage.PostDetailsFragment"
         android:label="fragment_post_details"
         tools:layout="@layout/fragment_post_details" />
+    <fragment
+        android:id="@+id/chatFragment2"
+        android:name="com.example.socialmediaapplicaition.ui.chatFragment.ChatFragment"
+        android:label="fragment_chat2"
+        tools:layout="@layout/fragment_chat" />
 </navigation>

@@ -1,32 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:background="@color/transparent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/_60sdp"
+        android:background="@color/transparent">
 
-        >
         <androidx.cardview.widget.CardView
             android:id="@+id/imgCardView"
             android:layout_width="@dimen/_45sdp"
             android:layout_height="match_parent"
-            app:cardCornerRadius="@dimen/_5sdp"
             android:layout_margin="@dimen/_7sdp"
+            app:cardCornerRadius="@dimen/_5sdp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-            >
             <ImageView
                 android:id="@+id/userProfile"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="fitXY"
-
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -38,10 +37,10 @@
             style="@style/subHeadingText"
             android:layout_marginLeft="@dimen/_10sdp"
             android:fontFamily="@font/inter_semibold"
-            tools:text="Amelia"
-
             app:layout_constraintStart_toEndOf="@+id/imgCardView"
-            app:layout_constraintTop_toTopOf="@+id/imgCardView" />
+            android:textColor="@color/white"
+            app:layout_constraintTop_toTopOf="@+id/imgCardView"
+            tools:text="Amelia" />
 
         <TextView
             android:id="@+id/userMessage"
@@ -51,6 +50,7 @@
             android:gravity="start"
             android:maxLines="2"
             android:text="Lorem Ipsum is good bouy "
+            android:textColor="#E8A1FA"
             android:textSize="@dimen/_10sdp"
             app:layout_constraintEnd_toStartOf="@+id/minAgo"
             app:layout_constraintStart_toStartOf="@+id/userName"
@@ -61,23 +61,24 @@
             android:id="@+id/minAgo"
             style="@style/subHeadingText"
             android:layout_margin="@dimen/_5sdp"
-            android:text="30 min"
             android:textSize="@dimen/_8sdp"
+            android:textColor="@color/grey"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="30 min"/>
 
 
         <TextView
             android:id="@+id/unReadMessage"
             android:layout_width="@dimen/_15sdp"
             android:layout_height="@dimen/_15sdp"
-            android:textColor="@color/black"
-            android:gravity="center"
-            android:visibility="gone"
-            android:textStyle="bold"
             android:layout_marginRight="@dimen/_5sdp"
+            android:background="@drawable/background_circular"
+            android:gravity="center"
+            android:textColor="@color/white"
             android:textSize="@dimen/_8sdp"
-
+            android:textStyle="bold"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@+id/userMessage"
             app:layout_constraintEnd_toEndOf="@+id/minAgo"
             app:layout_constraintStart_toStartOf="@+id/minAgo"
