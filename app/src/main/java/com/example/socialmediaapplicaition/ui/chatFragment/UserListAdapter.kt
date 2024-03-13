@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.socialmediaapplicaition.databinding.LayoutHistoryChatBinding
 import com.example.socialmediaapplicaition.databinding.LayoutPostBinding
 import com.example.socialmediaapplicaition.models.User
 import kotlin.reflect.KFunction2
@@ -14,15 +15,17 @@ class UserListAdapter(
     private val onActionClicked:(User,String) -> Unit,
 ) : ListAdapter<User, UserListAdapter.UserViewHolder>(ComparatorDiffUtil()) {
 
-    inner class UserViewHolder(private val binding: LayoutPostBinding) :
+    inner class UserViewHolder(private val binding: LayoutHistoryChatBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(post: User) {
-
+                binding.apply {
+                    userName.text = post.name.toString()
+                }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
-        val binding = LayoutPostBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = LayoutHistoryChatBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return UserViewHolder(binding)
     }
 

@@ -8,7 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.socialmediaapplicaition.databinding.FragmentChatBinding
+import com.example.socialmediaapplicaition.databinding.FragmentListChatBinding
 import com.example.socialmediaapplicaition.models.User
 import com.example.socialmediaapplicaition.ui.auth.AuthViewModel
 import com.example.socialmediaapplicaition.ui.postPackage.PostViewModel
@@ -23,7 +25,7 @@ class ChatListFragment : Fragment() {
     private val viewModel by viewModels<AuthViewModel>()
     private val postViewModel by viewModels<PostViewModel>()
 
-    private var _binding :FragmentChatBinding ?= null
+    private var _binding :FragmentListChatBinding?= null
     private val binding get() = _binding!!
     private lateinit var adapter: UserListAdapter
     override fun onCreateView(
@@ -32,7 +34,7 @@ class ChatListFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
 
-        _binding= FragmentChatBinding.inflate(layoutInflater,container,false)
+        _binding= FragmentListChatBinding.inflate(layoutInflater,container,false)
         return binding.root
 
     }
@@ -43,7 +45,9 @@ class ChatListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         adapter = UserListAdapter(::onActionClicked)
-
+        binding.recyclerView.layoutManager = LinearLayoutManager(context,
+            LinearLayoutManager.VERTICAL,false)
+        binding.recyclerView.adapter = adapter
 
         bindObserver()
 
@@ -63,6 +67,7 @@ class ChatListFragment : Fragment() {
                         is NetworkResult.Success -> {
                             Log.d("checkignUserLIst",it.data.toString())
                             Log.d("checkignUserLIst",it.data?.size.toString())
+                            adapter.submitList(it.data)
                         }
                         null -> {}
                     }
