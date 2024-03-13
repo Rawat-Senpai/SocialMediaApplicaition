@@ -48,6 +48,7 @@ class AuthViewModel @Inject constructor(private val repository: AuthRepository) 
         if(repository.currentUser != null){
             _loginFlow.value= NetworkResult.Success(repository.currentUser)
         }
+
     }
 
     fun login(email:String,password:String) = viewModelScope.launch {

@@ -200,4 +200,23 @@
 
     </style>
 
+    <style name="searchbar">
+        <item name="android:textColorHint">@color/grey</item>
+        <item name="android:textColor">@color/grey</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">start</item>
+        <item name="android:textSize">12sp</item>
+
+    </style>
+
+
+    <style name="cardViewLayout">
+        <item name="android:background">#333333</item>
+        <item name="cardCornerRadius">20dp</item>
+    </style>
+
+
+
+
 </resources>

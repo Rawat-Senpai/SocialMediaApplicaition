@@ -80,6 +80,7 @@
          app:layout_constraintStart_toStartOf="parent">
 
          <ImageView
+             android:id="@+id/chatLayout"
              android:layout_width="0dp"
              android:layout_height="35dp"
              android:layout_gravity="center"
@@ -95,6 +96,7 @@
              android:src="@drawable/add_post" />
 
          <ImageView
+             android:id="@+id/setting"
              android:layout_width="0dp"
              android:layout_height="35dp"
              android:layout_gravity="center"
@@ -117,7 +119,7 @@
 
  </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/side_menu"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -125,6 +127,6 @@
         android:background="@android:color/white">
         <include layout="@layout/layout_side_menu"/>
 
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.drawerlayout.widget.DrawerLayout>

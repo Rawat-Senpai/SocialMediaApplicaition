@@ -42,7 +42,7 @@
             android:id="@+id/action_mainFragment_to_createPostFragmnet"
             app:destination="@id/createPostFragmnet" />
         <action
-            android:id="@+id/action_mainFragment_to_blankFragment"
+            android:id="@+id/action_mainFragment_to_infoFragment"
             app:destination="@id/infoSection" />
         <action
             android:id="@+id/action_mainFragment_to_postDetailsFragment"

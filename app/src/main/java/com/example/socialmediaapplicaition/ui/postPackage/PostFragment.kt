@@ -1,6 +1,5 @@
 package com.example.socialmediaapplicaition.ui.postPackage
 
-import android.media.Image
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -16,7 +15,6 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bumptech.glide.Glide
 import com.example.socialmediaapplicaition.R
 import com.example.socialmediaapplicaition.databinding.FragmentMainBinding
 import com.example.socialmediaapplicaition.databinding.LayoutSideMenuBinding
@@ -26,7 +24,6 @@ import com.example.socialmediaapplicaition.utils.NetworkResult
 import com.example.socialmediaapplicaition.utils.TokenManager
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -45,6 +42,8 @@ class PostFragment : Fragment() {
 
     private val postViewModel by viewModels<PostViewModel> ()
     var imageView :ImageView ?= null
+    var userTextView:TextView? = null
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -64,6 +63,7 @@ class PostFragment : Fragment() {
         binding.recyclerView.adapter = adapter
 
         postViewModel.getAllPost()
+        viewModel.getUserFullDetails(tokenManager.getId().toString())
 
         bindObserver()
         bindViews()
@@ -71,6 +71,11 @@ class PostFragment : Fragment() {
 
         val sideBinding = LayoutSideMenuBinding.bind(binding.sideMenu)
         imageView = sideBinding.profileImage
+        userTextView = sideBinding.personName
+
+        userTextView?.text =tokenManager.getUserName().toString()
+
+
 
 
         binding.apply {
@@ -86,7 +91,7 @@ class PostFragment : Fragment() {
 
 
             // Access the included layout within the fragment's layout
-            val includedLayoutBinding = binding.sideMenu
+
 
         }
     }
@@ -102,6 +107,26 @@ class PostFragment : Fragment() {
     }
 
     private fun bindObserver() {
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.userData.collect(){it->
+                when(it){
+                    is NetworkResult.Error -> {}
+                    is NetworkResult.Loading -> {}
+                    is NetworkResult.Success -> {
+                        Log.d("checkingDataUser",it.data?.profile.toString())
+                        Log.d("checkingDataUser",it.data?.name.toString())
+
+                    }
+                    null -> {
+
+                    }
+                }
+
+            }
+        }
+
+
 
         viewLifecycleOwner.lifecycleScope.launch {
             postViewModel.allPosts.collect {
@@ -136,6 +161,14 @@ class PostFragment : Fragment() {
 
         binding.apply {
 
+            infoImg.setOnClickListener{
+                findNavController().navigate(R.id.action_mainFragment_to_infoFragment)
+            }
+
+            chatLayout.setOnClickListener(){
+                findNavController().navigate(R.id.action_mainFragment_to_chatFragment)
+            }
+
             userName.text = viewModel.currentUser?.displayName.toString()
             Log.d("checkingResponse",viewModel.currentUser?.uid.toString())
             viewModel.getUserFullDetails(viewModel.currentUser?.uid.toString())
@@ -143,12 +176,7 @@ class PostFragment : Fragment() {
             addPost.setOnClickListener(){
                 findNavController().navigate(R.id.action_mainFragment_to_createPostFragmnet)
             }
-
-
-
-
         }
-
     }
 
     override fun onDestroy() {
