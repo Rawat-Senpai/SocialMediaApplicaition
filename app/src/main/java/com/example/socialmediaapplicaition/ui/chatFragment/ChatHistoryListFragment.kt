@@ -9,8 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.socialmediaapplicaition.databinding.FragmentChatBinding
-import com.example.socialmediaapplicaition.databinding.FragmentListChatBinding
+import com.example.socialmediaapplicaition.databinding.FragmentChatHistoryBinding
 import com.example.socialmediaapplicaition.models.User
 import com.example.socialmediaapplicaition.ui.auth.AuthViewModel
 import com.example.socialmediaapplicaition.ui.postPackage.PostViewModel
@@ -20,12 +19,12 @@ import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint
-class ChatListFragment : Fragment() {
+class ChatHistoryListFragment : Fragment() {
 
     private val viewModel by viewModels<AuthViewModel>()
     private val postViewModel by viewModels<PostViewModel>()
 
-    private var _binding :FragmentListChatBinding?= null
+    private var _binding :FragmentChatHistoryBinding?= null
     private val binding get() = _binding!!
     private lateinit var adapter: UserListAdapter
     override fun onCreateView(
@@ -34,7 +33,7 @@ class ChatListFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
 
-        _binding= FragmentListChatBinding.inflate(layoutInflater,container,false)
+        _binding= FragmentChatHistoryBinding.inflate(layoutInflater,container,false)
         return binding.root
 
     }

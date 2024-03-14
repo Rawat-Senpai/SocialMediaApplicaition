@@ -37,7 +37,7 @@
         tools:layout="@layout/fragment_main" >
         <action
             android:id="@+id/action_mainFragment_to_chatFragment"
-            app:destination="@id/chatFragment" />
+            app:destination="@id/chatHistoryFragment" />
         <action
             android:id="@+id/action_mainFragment_to_createPostFragmnet"
             app:destination="@id/createPostFragmnet" />
@@ -47,15 +47,21 @@
         <action
             android:id="@+id/action_mainFragment_to_postDetailsFragment"
             app:destination="@id/postDetailsFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_chatFragment2"
+            app:destination="@id/chatFragment" />
     </fragment>
     <fragment
-        android:id="@+id/chatFragment"
-        android:name="com.example.socialmediaapplicaition.ui.chatFragment.ChatListFragment"
-        android:label="fragment_chat"
-        tools:layout="@layout/fragment_list_chat" >
+        android:id="@+id/chatHistoryFragment"
+        android:name="com.example.socialmediaapplicaition.ui.chatFragment.ChatHistoryListFragment"
+        android:label="fragment_history_chat"
+        tools:layout="@layout/fragment_chat_history" >
         <action
             android:id="@+id/action_chatFragment_to_chatFragment2"
-            app:destination="@id/chatFragment2" />
+            app:destination="@id/chatFragment" />
+        <action
+            android:id="@+id/action_chatFragment_to_allUserListFragment"
+            app:destination="@id/allUserListFragment" />
     </fragment>
     <fragment
         android:id="@+id/createPostFragmnet"
@@ -73,8 +79,13 @@
         android:label="fragment_post_details"
         tools:layout="@layout/fragment_post_details" />
     <fragment
-        android:id="@+id/chatFragment2"
+        android:id="@+id/chatFragment"
         android:name="com.example.socialmediaapplicaition.ui.chatFragment.ChatFragment"
         android:label="fragment_chat2"
         tools:layout="@layout/fragment_chat" />
+    <fragment
+        android:id="@+id/allUserListFragment"
+        android:name="com.example.socialmediaapplicaition.ui.chatFragment.SerchUserListFragment"
+        android:label="fragment_all_user_list"
+        tools:layout="@layout/fragment_all_user_list" />
 </navigation>

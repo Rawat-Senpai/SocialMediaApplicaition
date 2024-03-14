@@ -78,22 +78,6 @@ class PostFragment : Fragment() {
 
 
 
-        binding.apply {
-            menuImg.setOnClickListener {
-                if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-                    drawerLayout.closeDrawer(GravityCompat.START)
-                } else {
-                    drawerLayout.openDrawer(GravityCompat.START)
-                }
-            }
-            Log.d("response", viewModel.currentUser?.displayName.toString())
-            Log.d("response", viewModel.currentUser?.uid.toString())
-
-
-            // Access the included layout within the fragment's layout
-
-
-        }
     }
 
     private fun onPostClicked(postResponse: Post){
@@ -161,12 +145,25 @@ class PostFragment : Fragment() {
 
         binding.apply {
 
+            menuImg.setOnClickListener {
+                if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                    drawerLayout.closeDrawer(GravityCompat.START)
+                } else {
+                    drawerLayout.openDrawer(GravityCompat.START)
+                }
+            }
+
+
             infoImg.setOnClickListener{
                 findNavController().navigate(R.id.action_mainFragment_to_infoFragment)
             }
 
             chatLayout.setOnClickListener(){
                 findNavController().navigate(R.id.action_mainFragment_to_chatFragment)
+            }
+
+            setting.setOnClickListener{
+                findNavController().navigate(R.id.action_mainFragment_to_chatFragment2)
             }
 
             userName.text = viewModel.currentUser?.displayName.toString()
