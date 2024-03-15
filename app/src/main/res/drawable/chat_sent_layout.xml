@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <corners android:topRightRadius="@dimen/_80sdp"
+        android:bottomLeftRadius="@dimen/_80sdp"
+        android:topLeftRadius="@dimen/_80sdp"
+        />
+    <gradient
+        android:angle="135"
+    android:startColor="#8E2DE2"
+    android:centerColor="#6512E1"
+    android:endColor="#6512E1">
+    <!-- Define color percentages -->
+    <item
+        android:offset="0%"
+        android:color="#8E2DE2"/> <!-- Start color -->
+    <item
+        android:offset="0.83"
+        android:color="#6512E1"/> <!-- Center color -->
+    <item
+        android:offset="1"
+        android:color="#6512E1"/> <!-- End color -->
+</gradient>
+</shape>

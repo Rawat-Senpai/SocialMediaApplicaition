@@ -42,8 +42,7 @@ class ChatFragment : Fragment() {
 
 
     private val postViewModel by viewModels<PostViewModel> ()
-    var imageView : ImageView?= null
-    var userTextView: TextView? = null
+
 
 
     private var _binding :FragmentChatBinding ?= null
@@ -74,16 +73,13 @@ class ChatFragment : Fragment() {
         binding.apply {
 
         }
+        postViewModel.getAllPost()
         bindObserver()
 
     }
 
     private fun bindObserver() {
-
-
-
-
-
+        
         viewLifecycleOwner.lifecycleScope.launch {
             postViewModel.allPosts.collect {
 
