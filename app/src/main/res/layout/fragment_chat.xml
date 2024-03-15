@@ -1,90 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.motion.widget.MotionLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.chatFragment.ChatFragment">
-
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.chatFragment.ChatFragment"
+    app:layoutDescription="@xml/fragment_chat_scene">
 
     <LinearLayout
-        android:id="@+id/parentLayout"
+        android:id="@+id/top"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal">
+        android:layout_height="40dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <!-- Your other views can go here -->
+
+
+
+    <!-- Fixed layout -->
+    <LinearLayout
+        android:id="@+id/fixedLayout"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="#CCCCCC"
+        android:orientation="vertical"
+        android:padding="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/top">
+
+        <!-- Your fixed content here -->
 
     </LinearLayout>
 
-    <ScrollView
-        android:id="@+id/layoutA"
-        android:layout_width="200dp"
-        android:layout_height="500dp"
-        android:fillViewport="true"
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+         
         android:orientation="vertical"
-        android:layout_gravity="center"
-        android:background="#FF5733">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/top">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+    </androidx.recyclerview.widget.RecyclerView>
 
-            <Button
-                android:id="@+id/button"
-                android:layout_width="50dp"
-                android:layout_height="50dp"/>
-
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_130sdp"
-                android:src="@color/black"
-                android:layout_margin="10dp"/>
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_130sdp"
-                android:src="@color/black"
-                android:layout_margin="10dp"/>
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_130sdp"
-                android:layout_margin="10dp"
-                android:src="@color/black" />
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_130sdp"
-                android:src="@color/black"
-                android:layout_margin="10dp"/>
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_130sdp"
-                android:src="@color/black"
-                android:layout_margin="10dp"/>
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_130sdp"
-                android:src="@color/black"
-                android:layout_margin="10dp"/>
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_130sdp"
-                android:src="@color/black"
-                android:layout_margin="10dp"/>
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_130sdp"
-                android:src="@color/black"
-                android:layout_margin="10dp"/>
-        </LinearLayout>
-
-        <!-- Add your views inside this ConstraintLayout -->
-
-    </ScrollView>
-
-</FrameLayout>
+</androidx.constraintlayout.motion.widget.MotionLayout>

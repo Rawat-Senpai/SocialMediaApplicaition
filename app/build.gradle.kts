@@ -104,6 +104,11 @@ dependencies {
     implementation("androidx.palette:palette:1.0.0")
 
 
+    // motion layout
+    implementation("androidx.constraintlayout:constraintlayout:2.2.0-alpha13")
+    // To use constraintlayout in compose
+
+
 
 }
 
