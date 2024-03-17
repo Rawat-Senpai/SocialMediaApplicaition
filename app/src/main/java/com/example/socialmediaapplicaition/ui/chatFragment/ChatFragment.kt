@@ -88,7 +88,7 @@ class ChatFragment : Fragment() {
                         Log.d("TAGSignUp", it.message.toString())
                         Toast.makeText(requireContext(), "error", Toast.LENGTH_SHORT).show()
                     }
-                    
+
 
                     is NetworkResult.Loading -> {
 
