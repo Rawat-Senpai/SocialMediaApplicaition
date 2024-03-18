@@ -8,7 +8,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.navGraphViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.socialmediaapplicaition.R
 import com.example.socialmediaapplicaition.databinding.FragmentChatHistoryBinding
 import com.example.socialmediaapplicaition.models.User
 import com.example.socialmediaapplicaition.ui.auth.AuthViewModel
@@ -61,30 +64,39 @@ class ChatHistoryListFragment : Fragment() {
 
         binding.apply {
 
-            viewLifecycleOwner.lifecycleScope.launch {
-                postViewModel.allUsers.collect{it->
-                    when(it){
-                        is NetworkResult.Error -> {}
-                        is NetworkResult.Loading -> {}
-                        is NetworkResult.Success -> {
-                            Log.d("checkignUserLIst",it.data.toString())
-                            Log.d("checkignUserLIst",it.data?.size.toString())
-                            adapter.submitList(it.data)
-                        }
-                        null -> {}
-                    }
-                }
+            textView.setOnClickListener(){
+
+                findNavController().navigate(R.id.action_chatHistoryFragment_to_chatFragment)
             }
+
+
+
 
 
         }
     }
 
     private fun bindObserver() {
-
+        viewLifecycleOwner.lifecycleScope.launch {
+            postViewModel.allUsers.collect{it->
+                when(it){
+                    is NetworkResult.Error -> {}
+                    is NetworkResult.Loading -> {}
+                    is NetworkResult.Success -> {
+                        Log.d("checkignUserLIst",it.data.toString())
+                        Log.d("checkignUserLIst",it.data?.size.toString())
+                        adapter.submitList(it.data)
+                    }
+                    null -> {}
+                }
+            }
+        }
     }
 
     private fun onActionClicked(user:User,action:String){
+
+        findNavController().navigate(R.id.action_chatHistoryFragment_to_chatFragment)
+
     }
 
 

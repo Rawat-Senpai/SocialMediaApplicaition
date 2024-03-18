@@ -1,6 +1,8 @@
 package com.example.socialmediaapplicaition.repository.postData
 
 import android.util.Log
+import com.example.socialmediaapplicaition.models.ChatMessageModel
+import com.example.socialmediaapplicaition.models.ChatRoomModel
 import com.example.socialmediaapplicaition.models.Post
 import com.example.socialmediaapplicaition.models.User
 import com.example.socialmediaapplicaition.utils.NetworkResult
@@ -96,6 +98,46 @@ class PostRepositoryImpl @Inject constructor(private val firebaseFirestore: Fire
                 .addDataToFirestore()
             Log.d("responseData", "successfully")
             NetworkResult.Success(Unit)
+        } catch (e: Exception) {
+            Log.d("crash123", e.toString())
+            NetworkResult.Error(e.toString())
+        }
+    }
+
+    override suspend fun createChatRoom(chat:ChatRoomModel): NetworkResult<Unit> {
+        return try {
+
+            val chatId = chat.chatroomId
+            chat.chatroomId = chatId
+
+            firebaseFirestore.collection("chat_room")
+                .document(chatId)
+                .set(chat)
+                .addDataToFirestore()
+
+            Log.d("responseData", "successfully")
+            NetworkResult.Success(Unit)
+
+        } catch (e: Exception) {
+            Log.d("crash123", e.toString())
+            NetworkResult.Error(e.toString())
+        }
+    }
+
+    override suspend fun createChatMessage(chat: ChatMessageModel): NetworkResult<Unit> {
+        return try {
+
+
+
+            firebaseFirestore.collection("chat_room")
+                .document("1_2")
+                .collection("chats")
+                .add(chat)
+//                .addDataToFirestore()
+
+            Log.d("responseData", "successfully")
+            NetworkResult.Success(Unit)
+
         } catch (e: Exception) {
             Log.d("crash123", e.toString())
             NetworkResult.Error(e.toString())

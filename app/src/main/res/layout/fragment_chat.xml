@@ -16,9 +16,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
-
-
     <!-- Fixed layout -->
     <LinearLayout
         android:id="@+id/fixedLayout"
@@ -36,18 +33,33 @@
     </LinearLayout>
 
 
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-
         android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/messageText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/top">
+        app:layout_constraintTop_toBottomOf="@+id/top" />
 
-    </androidx.recyclerview.widget.RecyclerView>
+    <EditText
+        android:id="@+id/messageText"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/_50sdp"
+        android:hint="Checking Distance"
+        android:paddingStart="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/send"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/send"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:text="send"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recyclerView" />
 
 </androidx.constraintlayout.motion.widget.MotionLayout>

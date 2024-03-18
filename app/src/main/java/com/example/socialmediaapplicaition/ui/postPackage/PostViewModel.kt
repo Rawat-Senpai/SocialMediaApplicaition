@@ -3,6 +3,8 @@ package com.example.socialmediaapplicaition.ui.postPackage
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.socialmediaapplicaition.models.ChatMessageModel
+import com.example.socialmediaapplicaition.models.ChatRoomModel
 import com.example.socialmediaapplicaition.models.Post
 import com.example.socialmediaapplicaition.models.User
 import com.example.socialmediaapplicaition.repository.postData.PostRepository
@@ -16,9 +18,6 @@ import javax.inject.Inject
 @HiltViewModel
 class PostViewModel @Inject constructor(private val repository:PostRepository): ViewModel() {
 
-    init {
-        getAllUser()
-    }
 
 
     private val _allUsers = MutableStateFlow<NetworkResult<ArrayList<User>>?>(null)
@@ -33,8 +32,11 @@ class PostViewModel @Inject constructor(private val repository:PostRepository): 
     private val _addLikeResponse = MutableStateFlow<NetworkResult<Unit>?> (null)
     val addLikeResponse:StateFlow<NetworkResult<Unit>?> = _addLikeResponse
 
-    private val _addChatResultState = MutableStateFlow<NetworkResult<Unit>?>(null)
-    val addChatResultState :StateFlow<NetworkResult<Unit>?> = _addChatResultState
+    private val _addChatRoomResultState = MutableStateFlow<NetworkResult<Unit>?>(null)
+    val addChatRoomResultState :StateFlow<NetworkResult<Unit>?> = _addChatRoomResultState
+
+    private  val _addChatMessageResultState = MutableStateFlow<NetworkResult<Unit>?>(null)
+    val addChatMessageResultState:StateFlow<NetworkResult<Unit>?> = _addChatMessageResultState
 
 
 
@@ -42,6 +44,9 @@ class PostViewModel @Inject constructor(private val repository:PostRepository): 
     private val _searchedUser = MutableStateFlow<NetworkResult<List<User>>?>(null)
     val searchedUser :StateFlow<NetworkResult<List<User>>?> = _searchedUser
 
+    init {
+        getAllUser()
+    }
 
 
 
@@ -67,8 +72,18 @@ class PostViewModel @Inject constructor(private val repository:PostRepository): 
         _addPostResultState.value = result
     }
 
-    fun addChatToDatabase() = viewModelScope.launch {
-        _addChatResultState.value =
+    fun addChatRoomToDatabase(chatRoom: ChatRoomModel) = viewModelScope.launch {
+        _addChatRoomResultState.value =  NetworkResult.Loading()
+        val result = repository.createChatRoom(chatRoom)
+        _addChatRoomResultState.value = result
+    }
+
+    fun addChatMessageToDatabase(chatMessage:ChatMessageModel) = viewModelScope.launch {
+
+        _addChatMessageResultState.value = NetworkResult.Loading()
+        val result = repository.createChatMessage(chatMessage)
+        _addChatMessageResultState.value = result
+
     }
 
 

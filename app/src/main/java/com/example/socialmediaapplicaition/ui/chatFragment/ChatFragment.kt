@@ -3,13 +3,9 @@ package com.example.socialmediaapplicaition.ui.chatFragment
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -17,9 +13,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.socialmediaapplicaition.R
 import com.example.socialmediaapplicaition.databinding.FragmentChatBinding
-import com.example.socialmediaapplicaition.databinding.FragmentMainBinding
+import com.example.socialmediaapplicaition.models.ChatMessageModel
+import com.example.socialmediaapplicaition.models.ChatRoomModel
 import com.example.socialmediaapplicaition.models.Post
-import com.example.socialmediaapplicaition.ui.auth.AuthViewModel
 import com.example.socialmediaapplicaition.ui.postPackage.PostListAdapter
 import com.example.socialmediaapplicaition.ui.postPackage.PostViewModel
 import com.example.socialmediaapplicaition.utils.NetworkResult
@@ -41,7 +37,7 @@ class ChatFragment : Fragment() {
     private lateinit var adapter: PostListAdapter
 
 
-    private val postViewModel by viewModels<PostViewModel> ()
+    private val viewModel by viewModels<PostViewModel> ()
 
 
 
@@ -73,15 +69,43 @@ class ChatFragment : Fragment() {
         binding.apply {
         }
 
-        postViewModel.getAllPost()
+        viewModel.getAllPost()
         bindObserver()
+        bindViews()
+
+    }
+
+    private fun bindViews() {
+
+        binding.apply {
+
+            send.setOnClickListener(){
+
+                val chatRoomRequestModel =ChatRoomModel()
+
+                chatRoomRequestModel.chatroomId           = "1_2"
+                chatRoomRequestModel.lastMessage          = "chekcing"
+                chatRoomRequestModel.userIds              = listOf("111", "222")
+                chatRoomRequestModel.lastMessageSenderId  = "999"
+                chatRoomRequestModel.lastMessageTimestamp = 213123
+
+                viewModel.addChatRoomToDatabase(chatRoomRequestModel)
+
+
+
+
+            }
+
+        }
+
+
 
     }
 
     private fun bindObserver() {
         
         viewLifecycleOwner.lifecycleScope.launch {
-            postViewModel.allPosts.collect {
+            viewModel.allPosts.collect {
 
                 when (it) {
                     is NetworkResult.Error -> {
@@ -107,6 +131,35 @@ class ChatFragment : Fragment() {
             }
         }
 
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.addChatRoomResultState.collect {
+
+                when (it) {
+                    is NetworkResult.Error -> {
+                        Log.d("TAGSignUp", it.message.toString())
+                        Toast.makeText(requireContext(), "error", Toast.LENGTH_SHORT).show()
+                    }
+
+
+                    is NetworkResult.Loading -> {
+
+                    }
+
+                    is NetworkResult.Success -> {
+                      val chatMessageModel =ChatMessageModel()
+                        chatMessageModel.message=""
+                        chatMessageModel.timeStamp=3124123
+
+                        viewModel.addChatMessageToDatabase(chatMessageModel)
+
+                    }
+
+                    else -> {
+
+                    }
+                }
+            }
+        }
 
     }
 
@@ -117,7 +170,7 @@ class ChatFragment : Fragment() {
     }
 
     private fun onPostLiked(post: Post){
-        postViewModel.addLikeToPost(post,tokenManager.getId().toString())
+        viewModel.addLikeToPost(post,tokenManager.getId().toString())
     }
 
     override fun onDestroy() {

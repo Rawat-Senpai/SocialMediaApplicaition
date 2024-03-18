@@ -8,5 +8,4 @@ data class Post(
     var createdAt:Long=0L,
     val likedBy:ArrayList<String> = ArrayList(),
     val savedBy:ArrayList<String> = ArrayList()
-) {
-}
+)

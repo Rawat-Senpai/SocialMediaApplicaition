@@ -10,7 +10,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.socialmediaapplicaition.R
 import com.example.socialmediaapplicaition.databinding.FragmentAllUserListBinding
 import com.example.socialmediaapplicaition.models.User
 import com.example.socialmediaapplicaition.ui.postPackage.PostViewModel
@@ -86,9 +88,6 @@ class SerchUserListFragment : Fragment() {
 
         binding.apply {
             searchEdt.addTextChangedListener(textWatcher)
-
-
-
         }
 
     }
@@ -117,6 +116,7 @@ class SerchUserListFragment : Fragment() {
     }
 
     private fun onActionClicked(user: User, action:String){
+        findNavController().navigate(R.id.action_chatHistoryFragment_to_chatFragment)
     }
 
 
