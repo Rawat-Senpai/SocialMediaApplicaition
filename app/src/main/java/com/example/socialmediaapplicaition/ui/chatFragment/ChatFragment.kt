@@ -71,8 +71,8 @@ class ChatFragment : Fragment() {
 
         binding.recyclerView.adapter = adapter
         binding.apply {
-
         }
+
         postViewModel.getAllPost()
         bindObserver()
 

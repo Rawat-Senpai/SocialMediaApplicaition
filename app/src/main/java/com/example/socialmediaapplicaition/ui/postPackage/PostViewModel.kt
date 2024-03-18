@@ -16,6 +16,11 @@ import javax.inject.Inject
 @HiltViewModel
 class PostViewModel @Inject constructor(private val repository:PostRepository): ViewModel() {
 
+    init {
+        getAllUser()
+    }
+
+
     private val _allUsers = MutableStateFlow<NetworkResult<ArrayList<User>>?>(null)
     val allUsers :StateFlow<NetworkResult<ArrayList<User>>?> = _allUsers
 
@@ -28,14 +33,16 @@ class PostViewModel @Inject constructor(private val repository:PostRepository): 
     private val _addLikeResponse = MutableStateFlow<NetworkResult<Unit>?> (null)
     val addLikeResponse:StateFlow<NetworkResult<Unit>?> = _addLikeResponse
 
+    private val _addChatResultState = MutableStateFlow<NetworkResult<Unit>?>(null)
+    val addChatResultState :StateFlow<NetworkResult<Unit>?> = _addChatResultState
+
+
 
     // for search user in firebase data base
     private val _searchedUser = MutableStateFlow<NetworkResult<List<User>>?>(null)
     val searchedUser :StateFlow<NetworkResult<List<User>>?> = _searchedUser
 
-    init {
-        getAllUser()
-    }
+
 
 
     private fun getAllUser() = viewModelScope.launch {
@@ -60,6 +67,10 @@ class PostViewModel @Inject constructor(private val repository:PostRepository): 
         _addPostResultState.value = result
     }
 
+    fun addChatToDatabase() = viewModelScope.launch {
+        _addChatResultState.value =
+    }
+
 
     fun addLikeToPost(post:Post,userId:String) = viewModelScope.launch {
         _addLikeResponse.value = NetworkResult.Loading()
@@ -80,5 +91,7 @@ class PostViewModel @Inject constructor(private val repository:PostRepository): 
             _searchedUser.value = NetworkResult.Success(filteredUsers)
         }
     }
+
+
 
 }
