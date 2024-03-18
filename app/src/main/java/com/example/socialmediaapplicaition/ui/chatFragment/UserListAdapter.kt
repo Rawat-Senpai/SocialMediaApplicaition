@@ -8,18 +8,31 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.socialmediaapplicaition.databinding.LayoutHistoryChatBinding
 import com.example.socialmediaapplicaition.databinding.LayoutPostBinding
 import com.example.socialmediaapplicaition.models.User
+import com.example.socialmediaapplicaition.utils.Constants
 import kotlin.reflect.KFunction2
 
 
 class UserListAdapter(
     private val onActionClicked:(User,String) -> Unit,
+    private val action:String
 ) : ListAdapter<User, UserListAdapter.UserViewHolder>(ComparatorDiffUtil()) {
 
     inner class UserViewHolder(private val binding: LayoutHistoryChatBinding) :
         RecyclerView.ViewHolder(binding.root) {
+
+
         fun bind(post: User) {
+
+
+
                 binding.apply {
                     userName.text = post.name.toString()
+
+                    if(action==Constants.ADD_USER_ACTION){
+                        // code to hide a view and show another view
+                    }else if (action ==Constants.CALLING_ACTIONS){
+                        // code to hide a view and show another view
+                    }
                 }
         }
     }
@@ -32,6 +45,8 @@ class UserListAdapter(
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
         val post = getItem(position)
         holder.bind(post)
+
+
     }
 
     class ComparatorDiffUtil : DiffUtil.ItemCallback<User>() {

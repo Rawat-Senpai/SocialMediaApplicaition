@@ -12,7 +12,7 @@
     android:endColor="#6512E1">
     <!-- Define color percentages -->
     <item
-        android:offset="0%"
+        android:offset="0.0"
         android:color="#8E2DE2"/> <!-- Start color -->
     <item
         android:offset="0.83"

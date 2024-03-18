@@ -29,6 +29,10 @@ class PostViewModel @Inject constructor(private val repository:PostRepository): 
     val addLikeResponse:StateFlow<NetworkResult<Unit>?> = _addLikeResponse
 
 
+    // for search user in firebase data base
+    private val _searchedUser = MutableStateFlow<NetworkResult<List<User>>?>(null)
+    val searchedUser :StateFlow<NetworkResult<List<User>>?> = _searchedUser
+
     init {
         getAllUser()
     }
@@ -62,6 +66,19 @@ class PostViewModel @Inject constructor(private val repository:PostRepository): 
         val result = repository.updateLikeStatus(post,userId)
         _addLikeResponse.value = result
 
+    }
+
+    // Function to search users based on a key point
+    fun searchUsers(keyPoint: String) {
+        allUsers.value?.data?.let { users ->
+            val filteredUsers = users.filter { user ->
+                // Filter users based on the specified key point
+                // Here you can define your condition for filtering, for example, searching by name
+                user.name.contains(keyPoint, ignoreCase = true) // Assuming you are searching by user's name
+            }
+            // Update the StateFlow with filtered users
+            _searchedUser.value = NetworkResult.Success(filteredUsers)
+        }
     }
 
 }

@@ -36,7 +36,7 @@
         android:label="fragment_main"
         tools:layout="@layout/fragment_main" >
         <action
-            android:id="@+id/action_mainFragment_to_chatFragment"
+            android:id="@+id/action_mainFragment_to_chatHistoryFragment"
             app:destination="@id/chatHistoryFragment" />
         <action
             android:id="@+id/action_mainFragment_to_createPostFragmnet"
@@ -48,8 +48,8 @@
             android:id="@+id/action_mainFragment_to_postDetailsFragment"
             app:destination="@id/postDetailsFragment" />
         <action
-            android:id="@+id/action_mainFragment_to_chatFragment2"
-            app:destination="@id/chatFragment" />
+            android:id="@+id/action_mainFragment_to_allUserListFragment"
+            app:destination="@id/allUserListFragment" />
     </fragment>
     <fragment
         android:id="@+id/chatHistoryFragment"
@@ -57,10 +57,10 @@
         android:label="fragment_history_chat"
         tools:layout="@layout/fragment_chat_history" >
         <action
-            android:id="@+id/action_chatFragment_to_chatFragment2"
+            android:id="@+id/action_chatHistoryFragment_to_chatFragment"
             app:destination="@id/chatFragment" />
         <action
-            android:id="@+id/action_chatFragment_to_allUserListFragment"
+            android:id="@+id/action_chatHistoryFragment_to_allUserListFragment"
             app:destination="@id/allUserListFragment" />
     </fragment>
     <fragment
@@ -87,5 +87,9 @@
         android:id="@+id/allUserListFragment"
         android:name="com.example.socialmediaapplicaition.ui.chatFragment.SerchUserListFragment"
         android:label="fragment_all_user_list"
-        tools:layout="@layout/fragment_all_user_list" />
+        tools:layout="@layout/fragment_all_user_list" >
+        <action
+            android:id="@+id/action_allUserListFragment_to_chatFragment"
+            app:destination="@id/chatFragment" />
+    </fragment>
 </navigation>

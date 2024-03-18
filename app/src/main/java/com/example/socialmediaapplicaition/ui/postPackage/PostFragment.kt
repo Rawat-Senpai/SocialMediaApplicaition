@@ -159,11 +159,11 @@ class PostFragment : Fragment() {
             }
 
             chatLayout.setOnClickListener(){
-                findNavController().navigate(R.id.action_mainFragment_to_chatFragment)
+                findNavController().navigate(R.id.action_mainFragment_to_chatHistoryFragment)
             }
 
             setting.setOnClickListener{
-                findNavController().navigate(R.id.action_mainFragment_to_chatFragment2)
+                findNavController().navigate(R.id.action_mainFragment_to_allUserListFragment)
             }
 
             userName.text = viewModel.currentUser?.displayName.toString()

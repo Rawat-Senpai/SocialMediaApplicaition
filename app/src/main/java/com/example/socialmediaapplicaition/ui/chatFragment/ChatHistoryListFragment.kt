@@ -13,6 +13,7 @@ import com.example.socialmediaapplicaition.databinding.FragmentChatHistoryBindin
 import com.example.socialmediaapplicaition.models.User
 import com.example.socialmediaapplicaition.ui.auth.AuthViewModel
 import com.example.socialmediaapplicaition.ui.postPackage.PostViewModel
+import com.example.socialmediaapplicaition.utils.Constants
 import com.example.socialmediaapplicaition.utils.NetworkResult
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -43,7 +44,7 @@ class ChatHistoryListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        adapter = UserListAdapter(::onActionClicked)
+        adapter = UserListAdapter(::onActionClicked,Constants.CALLING_ACTIONS)
         binding.recyclerView.layoutManager = LinearLayoutManager(context,
             LinearLayoutManager.VERTICAL,false)
         binding.recyclerView.adapter = adapter
@@ -56,6 +57,8 @@ class ChatHistoryListFragment : Fragment() {
     }
 
     private fun bindView() {
+
+
         binding.apply {
 
             viewLifecycleOwner.lifecycleScope.launch {
