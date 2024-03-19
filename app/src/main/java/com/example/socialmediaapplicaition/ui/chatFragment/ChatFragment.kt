@@ -91,14 +91,9 @@ class ChatFragment : Fragment() {
 
                 viewModel.addChatRoomToDatabase(chatRoomRequestModel)
 
-
-
-
             }
 
         }
-
-
 
     }
 

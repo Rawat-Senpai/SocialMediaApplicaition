@@ -42,8 +42,6 @@ class ChatHistoryListFragment : Fragment() {
 
     }
 
-
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -60,19 +58,10 @@ class ChatHistoryListFragment : Fragment() {
     }
 
     private fun bindView() {
-
-
         binding.apply {
-
             textView.setOnClickListener(){
-
                 findNavController().navigate(R.id.action_chatHistoryFragment_to_chatFragment)
             }
-
-
-
-
-
         }
     }
 
