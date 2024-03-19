@@ -11,15 +11,18 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.load.model.stream.BaseGlideUrlLoader
 import com.example.socialmediaapplicaition.R
 import com.example.socialmediaapplicaition.databinding.FragmentChatBinding
 import com.example.socialmediaapplicaition.models.ChatMessageModel
 import com.example.socialmediaapplicaition.models.ChatRoomModel
 import com.example.socialmediaapplicaition.models.Post
+import com.example.socialmediaapplicaition.models.User
 import com.example.socialmediaapplicaition.ui.postPackage.PostListAdapter
 import com.example.socialmediaapplicaition.ui.postPackage.PostViewModel
 import com.example.socialmediaapplicaition.utils.NetworkResult
 import com.example.socialmediaapplicaition.utils.TokenManager
+import com.example.socialmediaapplicaition.utils.Utils
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -38,7 +41,7 @@ class ChatFragment : Fragment() {
 
 
     private val viewModel by viewModels<PostViewModel> ()
-
+    private var user: User? = null
 
 
     private var _binding :FragmentChatBinding ?= null
@@ -60,6 +63,7 @@ class ChatFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        getInitialState()
 
         adapter = PostListAdapter(::onPostClicked,::onPostLiked,tokenManager.getId().toString())
         binding.recyclerView.layoutManager = LinearLayoutManager(context,
@@ -75,6 +79,26 @@ class ChatFragment : Fragment() {
 
     }
 
+    private fun getInitialState() {
+        val jsonNote = arguments?.getString("user")
+
+        Log.d("chekcingShobhit1",jsonNote.toString())
+
+        if (jsonNote != null) {
+            user = Gson().fromJson<User>(jsonNote, User::class.java)
+            user?.let {
+
+
+                Log.d("chekcingShobhit2",user.toString())
+
+
+            }
+        }
+        else{
+
+        }
+    }
+
     private fun bindViews() {
 
         binding.apply {
@@ -83,11 +107,11 @@ class ChatFragment : Fragment() {
 
                 val chatRoomRequestModel =ChatRoomModel()
 
-                chatRoomRequestModel.chatroomId           = "1_2"
-                chatRoomRequestModel.lastMessage          = "chekcing"
+                chatRoomRequestModel.chatroomId           = Utils.getChatroomId(tokenManager.getId().toString(),"")
+                chatRoomRequestModel.lastMessage          = messageText.text.trim().toString()
                 chatRoomRequestModel.userIds              = listOf("111", "222")
-                chatRoomRequestModel.lastMessageSenderId  = "999"
-                chatRoomRequestModel.lastMessageTimestamp = 213123
+                chatRoomRequestModel.lastMessageSenderId  = tokenManager.getId().toString()
+                chatRoomRequestModel.lastMessageTimestamp =  System.currentTimeMillis()
 
                 viewModel.addChatRoomToDatabase(chatRoomRequestModel)
 

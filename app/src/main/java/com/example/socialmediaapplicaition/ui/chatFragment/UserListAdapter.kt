@@ -21,17 +21,21 @@ class UserListAdapter(
         RecyclerView.ViewHolder(binding.root) {
 
 
-        fun bind(post: User) {
+        fun bind(user: User) {
 
 
 
                 binding.apply {
-                    userName.text = post.name.toString()
+                    userName.text = user.name.toString()
 
                     if(action==Constants.ADD_USER_ACTION){
                         // code to hide a view and show another view
                     }else if (action ==Constants.CALLING_ACTIONS){
                         // code to hide a view and show another view
+                    }
+
+                    root.setOnClickListener{
+                        onActionClicked(user,"")
                     }
                 }
         }

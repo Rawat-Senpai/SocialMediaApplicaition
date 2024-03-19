@@ -18,6 +18,7 @@ import com.example.socialmediaapplicaition.models.User
 import com.example.socialmediaapplicaition.ui.postPackage.PostViewModel
 import com.example.socialmediaapplicaition.utils.Constants
 import com.example.socialmediaapplicaition.utils.NetworkResult
+import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -74,7 +75,8 @@ class SerchUserListFragment : Fragment() {
                 // This method is called when the text in the EditText is changed
 
                 val searchText = s.toString()
-                if(searchText!=""){
+
+                if(s.toString()!=""){
                     userViewModel.searchUsers(searchText)
                 }
 
@@ -105,6 +107,7 @@ class SerchUserListFragment : Fragment() {
                         is NetworkResult.Success -> {
                             Log.d("checkingSearchResponse",it.data.toString())
                             Log.d("checkingSearchResponse",it.data?.size.toString())
+                            adapter.submitList(it.data)
                         }
                         null -> {}
                     }
@@ -116,7 +119,11 @@ class SerchUserListFragment : Fragment() {
     }
 
     private fun onActionClicked(user: User, action:String){
-        findNavController().navigate(R.id.action_chatHistoryFragment_to_chatFragment)
+        val bundle = Bundle()
+        bundle.putString("user", Gson().toJson(user))
+
+
+        findNavController().navigate(R.id.action_searchUserListFragment_to_chatFragment,bundle)
     }
 
 
