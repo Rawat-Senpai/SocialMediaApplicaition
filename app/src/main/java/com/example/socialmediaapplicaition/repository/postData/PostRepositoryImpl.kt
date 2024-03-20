@@ -124,16 +124,16 @@ class PostRepositoryImpl @Inject constructor(private val firebaseFirestore: Fire
         }
     }
 
-    override suspend fun createChatMessage(chat: ChatMessageModel): NetworkResult<Unit> {
+    override suspend fun createChatMessage(chat: ChatMessageModel,chatRoomId:String): NetworkResult<Unit> {
         return try {
 
 
 
             firebaseFirestore.collection("chat_room")
-                .document("1_2")
+                .document(chatRoomId)
                 .collection("chats")
                 .add(chat)
-//                .addDataToFirestore()
+                .addDataToFirestore()
 
             Log.d("responseData", "successfully")
             NetworkResult.Success(Unit)

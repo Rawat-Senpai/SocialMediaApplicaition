@@ -24,7 +24,7 @@ suspend fun <T> Task<T>.await(): T {
 suspend fun <T> Task<T>.addDataToFirestore(): T {
     return suspendCancellableCoroutine { cont ->
         addOnSuccessListener { result ->
-
+            Log.d("checkingShobhit",result.toString())
             Log.d("checkingShobhit","successful")
             cont.resume(result,null)
         }

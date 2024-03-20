@@ -11,7 +11,6 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bumptech.glide.load.model.stream.BaseGlideUrlLoader
 import com.example.socialmediaapplicaition.R
 import com.example.socialmediaapplicaition.databinding.FragmentChatBinding
 import com.example.socialmediaapplicaition.models.ChatMessageModel
@@ -40,22 +39,33 @@ class ChatFragment : Fragment() {
     private lateinit var adapter: PostListAdapter
 
 
-    private val viewModel by viewModels<PostViewModel> ()
+    private val viewModel by viewModels<PostViewModel>()
+
+    private var _binding: FragmentChatBinding? = null
+    val binding get() = _binding!!
+
+    // Receiver Data
     private var user: User? = null
 
+    private var frontPersonId: String = ""
+    private var frontPersonImage: String = ""
+    private var frontPersonName: String = ""
+    private var frontPersonUserModel: User? = null
+    private var myUserModel: User? = null
 
-    private var _binding :FragmentChatBinding ?= null
-    val binding get() = _binding!!
+
+    // chat room id
+    private var chatRoomId:String =""
+
+    private var myUserId:String = ""
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        _binding = FragmentChatBinding.inflate(layoutInflater,container,false)
-
-
-
+        _binding = FragmentChatBinding.inflate(layoutInflater, container, false)
         return binding.root
 
     }
@@ -65,9 +75,13 @@ class ChatFragment : Fragment() {
 
         getInitialState()
 
-        adapter = PostListAdapter(::onPostClicked,::onPostLiked,tokenManager.getId().toString())
-        binding.recyclerView.layoutManager = LinearLayoutManager(context,
-            LinearLayoutManager.VERTICAL,false)
+
+
+        adapter = PostListAdapter(::onPostClicked, ::onPostLiked, tokenManager.getId().toString())
+        binding.recyclerView.layoutManager = LinearLayoutManager(
+            context,
+            LinearLayoutManager.VERTICAL, false
+        )
 
         binding.recyclerView.adapter = adapter
         binding.apply {
@@ -79,39 +93,49 @@ class ChatFragment : Fragment() {
 
     }
 
+    // set initial state
     private fun getInitialState() {
         val jsonNote = arguments?.getString("user")
 
-        Log.d("chekcingShobhit1",jsonNote.toString())
+        Log.d("chekcingShobhit1", jsonNote.toString())
 
         if (jsonNote != null) {
             user = Gson().fromJson<User>(jsonNote, User::class.java)
             user?.let {
-
-
-                Log.d("chekcingShobhit2",user.toString())
-
+                frontPersonId = user!!.id.toString()
+                frontPersonImage = user!!.profile.toString()
+                frontPersonName = user!!.name.toString()
+                frontPersonUserModel = User(frontPersonName, frontPersonId, frontPersonImage)
 
             }
-        }
-        else{
+        } else {
 
         }
+
+        myUserId = tokenManager.getId().toString()
+
+        myUserModel = User(
+            tokenManager.getUserName().toString(),
+            tokenManager.getId().toString(),
+            tokenManager.getProfile().toString()
+        )
+
+        chatRoomId = Utils.getChatroomId(tokenManager.getId().toString(),frontPersonId)
     }
 
     private fun bindViews() {
 
         binding.apply {
 
-            send.setOnClickListener(){
+            send.setOnClickListener() {
 
-                val chatRoomRequestModel =ChatRoomModel()
+                val chatRoomRequestModel = ChatRoomModel()
 
-                chatRoomRequestModel.chatroomId           = Utils.getChatroomId(tokenManager.getId().toString(),"")
-                chatRoomRequestModel.lastMessage          = messageText.text.trim().toString()
-                chatRoomRequestModel.userIds              = listOf("111", "222")
-                chatRoomRequestModel.lastMessageSenderId  = tokenManager.getId().toString()
-                chatRoomRequestModel.lastMessageTimestamp =  System.currentTimeMillis()
+                chatRoomRequestModel.chatroomId = chatRoomId
+                chatRoomRequestModel.lastMessage = messageText.text.trim().toString()
+                chatRoomRequestModel.userIds = listOf(frontPersonUserModel!!, myUserModel!!)
+                chatRoomRequestModel.lastMessageSenderId = myUserId
+                chatRoomRequestModel.lastMessageTimestamp = System.currentTimeMillis()
 
                 viewModel.addChatRoomToDatabase(chatRoomRequestModel)
 
@@ -122,7 +146,7 @@ class ChatFragment : Fragment() {
     }
 
     private fun bindObserver() {
-        
+
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.allPosts.collect {
 
@@ -139,7 +163,7 @@ class ChatFragment : Fragment() {
 
                     is NetworkResult.Success -> {
                         Toast.makeText(requireContext(), "successful", Toast.LENGTH_SHORT).show()
-                        Log.d("checkingPostResponse1",it.data.toString())
+                        Log.d("checkingPostResponse1", it.data.toString())
                         adapter.submitList(it.data)
                     }
 
@@ -165,11 +189,15 @@ class ChatFragment : Fragment() {
                     }
 
                     is NetworkResult.Success -> {
-                      val chatMessageModel =ChatMessageModel()
-                        chatMessageModel.message=""
-                        chatMessageModel.timeStamp=3124123
+                        val chatMessageModel = ChatMessageModel()
+                        chatMessageModel.message = binding.messageText.text.toString()
+                        chatMessageModel.removedByMe="0"
+                        chatMessageModel.removedByThem="0"
+                        chatMessageModel.reply=""
+                        chatMessageModel.senderId = tokenManager.getId().toString()
+                        chatMessageModel.timeStamp = System.currentTimeMillis()
 
-                        viewModel.addChatMessageToDatabase(chatMessageModel)
+                        viewModel.addChatMessageToDatabase(chatMessageModel,chatRoomId)
 
                     }
 
@@ -182,21 +210,19 @@ class ChatFragment : Fragment() {
 
     }
 
-    private fun onPostClicked(postResponse: Post){
+    private fun onPostClicked(postResponse: Post) {
         val bundle = Bundle()
         bundle.putString("post", Gson().toJson(postResponse))
-        findNavController().navigate(R.id.action_mainFragment_to_postDetailsFragment, bundle)
+//        findNavController().navigate(R.id.action_mainFragment_to_postDetailsFragment, bundle)
     }
 
-    private fun onPostLiked(post: Post){
-        viewModel.addLikeToPost(post,tokenManager.getId().toString())
+    private fun onPostLiked(post: Post) {
+        viewModel.addLikeToPost(post, tokenManager.getId().toString())
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        _binding= null
+        _binding = null
     }
-
-
 
 }

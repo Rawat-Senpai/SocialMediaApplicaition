@@ -78,10 +78,10 @@ class PostViewModel @Inject constructor(private val repository:PostRepository): 
         _addChatRoomResultState.value = result
     }
 
-    fun addChatMessageToDatabase(chatMessage:ChatMessageModel) = viewModelScope.launch {
+    fun addChatMessageToDatabase(chatMessage:ChatMessageModel,chatRoomId:String) = viewModelScope.launch {
 
         _addChatMessageResultState.value = NetworkResult.Loading()
-        val result = repository.createChatMessage(chatMessage)
+        val result = repository.createChatMessage(chatMessage,chatRoomId)
         _addChatMessageResultState.value = result
 
     }
