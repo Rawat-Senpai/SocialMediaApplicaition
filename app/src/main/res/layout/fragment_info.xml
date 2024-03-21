@@ -26,31 +26,57 @@
             android:gravity="center"
             android:layout_marginTop="25dp"/>
 
+        <TextView
+            style="@style/textHeading"
+            android:text=""
+            />
 
         <LinearLayout
             style="@style/customLinearLayout">
+
             <ImageView
-                style="@style/customImageView"
-                />
+                style="@style/customImageView" />
+
             <TextView
                 style="@style/customTextView"
-                android:text="Hello hello"/>
-
-
-
-
+                android:text="MVVM: Organizes app logic, separating concerns efficiently." />
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_marginTop="10dp"
+            style="@style/customLinearLayout">
 
-    <LinearLayout
-        style="@style/customLinearLayout">
-        <ImageView
-            style="@style/customImageView"
-            />
-        <TextView
-            style="@style/customTextView"
-            android:text="Hello hello"/>
+            <ImageView
+                style="@style/customImageView" />
 
+            <TextView
+                style="@style/customTextView"
+                android:text="Firebase: Enables real-time data synchronization and user authentication." />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_marginTop="10dp"
+            style="@style/customLinearLayout">
+
+            <ImageView
+                style="@style/customImageView" />
+
+            <TextView
+                style="@style/customTextView"
+                android:text="Hilt: Facilitates dependency injection for cleaner, more modular code." />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_marginTop="10dp"
+            style="@style/customLinearLayout">
+
+            <ImageView
+                style="@style/customImageView" />
+
+            <TextView
+                style="@style/customTextView"
+                android:text="XML: Defines app layout and styling for enhanced user interface design." />
+        </LinearLayout>
 
 
 

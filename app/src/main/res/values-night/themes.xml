@@ -241,6 +241,16 @@
     </style>
 
 
+    <style name="textHeading">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">20dp</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:textColor">#E8A1FA</item>
+        <item name="android:layout_marginStart">10dp</item>
+        <item name="android:fontFamily">@font/inter_semibold</item>
+    </style>
+
 
 
 </resources>
