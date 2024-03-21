@@ -109,6 +109,9 @@ dependencies {
     // To use constraintlayout in compose
 
 
+    // animation
+    implementation ("pl.droidsonroids.gif:android-gif-drawable:1.2.17")
+
 
 }
 
