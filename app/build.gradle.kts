@@ -113,6 +113,9 @@ dependencies {
     implementation ("pl.droidsonroids.gif:android-gif-drawable:1.2.17")
 
 
+    // circular image
+    implementation ("de.hdodenhof:circleimageview:3.1.0")
+
 }
 
 

@@ -34,6 +34,11 @@ class InfoFragment : Fragment() {
 //            .load(R.drawable.animation_gif)
 //            .into(binding.progressBar);
 
+        val x =10;
+        val y =20
+
+
+
     }
 
     override fun onDestroy() {

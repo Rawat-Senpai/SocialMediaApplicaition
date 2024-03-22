@@ -62,7 +62,7 @@ class PostFragment : Fragment() {
         binding.recyclerView.layoutManager = LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false)
         binding.recyclerView.adapter = adapter
 
-        postViewModel.getAllPost()
+
         viewModel.getUserFullDetails(tokenManager.getId().toString())
 
         bindObserver()

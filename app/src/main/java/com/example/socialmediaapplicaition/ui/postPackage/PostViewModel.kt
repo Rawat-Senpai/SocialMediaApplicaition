@@ -46,6 +46,7 @@ class PostViewModel @Inject constructor(private val repository:PostRepository): 
 
     init {
         getAllUser()
+        getAllPost()
     }
 
 

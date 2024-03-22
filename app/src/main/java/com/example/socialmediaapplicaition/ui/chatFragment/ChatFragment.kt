@@ -106,10 +106,8 @@ class ChatFragment : Fragment() {
                 frontPersonImage = user!!.profile.toString()
                 frontPersonName = user!!.name.toString()
                 frontPersonUserModel = User(frontPersonName, frontPersonId, frontPersonImage)
-
             }
         } else {
-
         }
 
         myUserId = tokenManager.getId().toString()

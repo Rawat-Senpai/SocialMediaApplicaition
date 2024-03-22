@@ -7,52 +7,17 @@
     android:layout_marginTop="@dimen/_15sdp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:backgroundTint="#707070">
+    >
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="10dp">
+        android:padding="10dp"
+        android:background="#707070">
 
 
-        <TextView
-            android:id="@+id/textView13"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:text="Wait !!!"
-            android:textColor="@color/white"
-            android:textSize="11sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="@+id/user_image_post_container"
-            app:layout_constraintStart_toStartOf="@+id/user_image_post_container"
-            app:layout_constraintTop_toBottomOf="@+id/progressBar2" />
 
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="3dp"
-            android:gravity="center"
-            android:padding="3dp"
-            android:text="Fetching data from firebase\n may take some time"
-            android:textColor="@color/white"
-            android:textSize="10sp"
-            app:layout_constraintEnd_toEndOf="@+id/user_image_post_container"
-            app:layout_constraintStart_toStartOf="@+id/user_image_post_container"
-            app:layout_constraintTop_toBottomOf="@+id/textView13" />
-
-        <ProgressBar
-            android:id="@+id/progressBar2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            app:layout_constraintBottom_toTopOf="@+id/total_like"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/user_image_post_container"
-            app:layout_constraintTop_toBottomOf="@+id/post_time" />
 
         <ImageView
             android:id="@+id/user_image"
@@ -100,28 +65,37 @@
             android:background="@drawable/rounded_background_post"
             app:layout_constraintEnd_toEndOf="parent"
             app:cardCornerRadius="50dp"
-
+            android:backgroundTint="@color/purple"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/user_image">
 
-            <LinearLayout
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
-                android:minHeight="300dp"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent"
+                app:cardCornerRadius="50dp"
+                android:layout_margin="@dimen/_3sdp">
 
-                <ImageView
-                    android:id="@+id/user_image_post"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_margin="5dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginBottom="15dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:scaleType="fitXY"
-                    />
+                    android:minHeight="300dp"
+                    android:layout_height="wrap_content">
 
-            </LinearLayout>
+                    <ImageView
+                        android:id="@+id/user_image_post"
+                        android:layout_width="match_parent"
+                        android:layout_margin="5dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginBottom="15dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:scaleType="fitXY"
+                        />
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
 
 
 
