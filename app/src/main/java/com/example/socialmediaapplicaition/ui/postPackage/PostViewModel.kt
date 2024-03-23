@@ -38,6 +38,8 @@ class PostViewModel @Inject constructor(private val repository:PostRepository): 
     private  val _addChatMessageResultState = MutableStateFlow<NetworkResult<Unit>?>(null)
     val addChatMessageResultState:StateFlow<NetworkResult<Unit>?> = _addChatMessageResultState
 
+    private val _getAllChatMessages = MutableStateFlow<NetworkResult<ArrayList<ChatMessageModel>>?>(null)
+    val getAllChatChatMessages :StateFlow<NetworkResult<ArrayList<ChatMessageModel>>?> = _getAllChatMessages
 
 
     // for search user in firebase data base
@@ -108,6 +110,12 @@ class PostViewModel @Inject constructor(private val repository:PostRepository): 
         }
     }
 
+    fun getAllMessages(roomId:String)=viewModelScope.launch{
+
+      _getAllChatMessages.value = NetworkResult.Loading()
+      val result = repository.getALlChats(roomId)
+        _getAllChatMessages.value = result
+    }
 
 
 }

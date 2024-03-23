@@ -60,8 +60,6 @@ class SerchUserListFragment : Fragment() {
 
         bindView()
 
-
-
     }
 
     private fun bindView() {
@@ -98,7 +96,6 @@ class SerchUserListFragment : Fragment() {
 
     private fun bindObservers() {
         binding.apply {
-
             viewLifecycleOwner.lifecycleScope.launch {
                 userViewModel.searchedUser.collect{it->
                     when(it){
@@ -113,16 +110,12 @@ class SerchUserListFragment : Fragment() {
                     }
                 }
             }
-
-
         }
     }
 
     private fun onActionClicked(user: User, action:String){
         val bundle = Bundle()
         bundle.putString("user", Gson().toJson(user))
-
-
         findNavController().navigate(R.id.action_searchUserListFragment_to_chatFragment,bundle)
     }
 

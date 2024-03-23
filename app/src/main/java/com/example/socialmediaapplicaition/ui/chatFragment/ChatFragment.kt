@@ -24,6 +24,7 @@ import com.example.socialmediaapplicaition.utils.TokenManager
 import com.example.socialmediaapplicaition.utils.Utils
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -107,7 +108,6 @@ class ChatFragment : Fragment() {
                 frontPersonName = user!!.name.toString()
                 frontPersonUserModel = User(frontPersonName, frontPersonId, frontPersonImage)
             }
-        } else {
         }
 
         myUserId = tokenManager.getId().toString()
@@ -119,6 +119,8 @@ class ChatFragment : Fragment() {
         )
 
         chatRoomId = Utils.getChatroomId(tokenManager.getId().toString(),frontPersonId)
+
+        viewModel.getAllMessages(chatRoomId)
     }
 
     private fun bindViews() {
@@ -128,13 +130,11 @@ class ChatFragment : Fragment() {
             send.setOnClickListener() {
 
                 val chatRoomRequestModel = ChatRoomModel()
-
                 chatRoomRequestModel.chatroomId = chatRoomId
                 chatRoomRequestModel.lastMessage = messageText.text.trim().toString()
                 chatRoomRequestModel.userIds = listOf(frontPersonUserModel!!, myUserModel!!)
                 chatRoomRequestModel.lastMessageSenderId = myUserId
                 chatRoomRequestModel.lastMessageTimestamp = System.currentTimeMillis()
-
                 viewModel.addChatRoomToDatabase(chatRoomRequestModel)
 
             }
@@ -145,32 +145,30 @@ class ChatFragment : Fragment() {
 
     private fun bindObserver() {
 
+
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.allPosts.collect {
+            viewModel.getAllChatChatMessages.collectLatest{
 
-                when (it) {
+                when(it){
                     is NetworkResult.Error -> {
-                        Log.d("TAGSignUp", it.message.toString())
-                        Toast.makeText(requireContext(), "error", Toast.LENGTH_SHORT).show()
+                        Log.d("ChatResponse",it.toString())
                     }
-
-
                     is NetworkResult.Loading -> {
 
                     }
-
                     is NetworkResult.Success -> {
-                        Toast.makeText(requireContext(), "successful", Toast.LENGTH_SHORT).show()
-                        Log.d("checkingPostResponse1", it.data.toString())
-                        adapter.submitList(it.data)
+                        Log.d("ChatResponse",it.data.toString())
+                        Log.d("ChatResponse",it.data?.size.toString())
                     }
-
-                    else -> {
+                    null -> {
 
                     }
                 }
+
+
             }
         }
+
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.addChatRoomResultState.collect {

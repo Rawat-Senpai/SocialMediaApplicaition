@@ -144,5 +144,32 @@ class PostRepositoryImpl @Inject constructor(private val firebaseFirestore: Fire
         }
     }
 
+    override suspend fun getALlChats(roomId: String): NetworkResult<ArrayList<ChatMessageModel>> {
+
+        return try {
+            val snapshot = firebaseFirestore.collection("chat_room").document(roomId).collection("chats").get().getDataOfUserFromDatabase()
+
+            if (snapshot != null && !snapshot.isEmpty) {
+                val postList = ArrayList<ChatMessageModel>()
+                for (document in snapshot.documents) {
+                    val chat  = document.toObject(ChatMessageModel::class.java)
+                    chat?.let {
+                        postList.add(it)
+                    }
+                }
+                postList.sortByDescending { it.timeStamp }
+                Log.d("checkingResponseSize", postList.size.toString())
+                NetworkResult.Success(postList)
+            } else {
+                NetworkResult.Error("No users found")
+            }
+
+        }catch (e:Exception){
+            NetworkResult.Error(e.toString())
+        }
+
+
+    }
+
 
 }
