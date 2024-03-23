@@ -5,7 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layoutDescription="@xml/fragment_chat_scene"
-    tools:context=".ui.chatFragment.ChatFragment">
+    tools:context=".ui.chatFragment.ChatFragment"
+    android:padding="10dp"
+    android:background="@drawable/chat_background">
 
 
     <!-- Fixed layout -->
@@ -15,17 +17,16 @@
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_margin="20dp"
-        android:src="@color/black"
+        android:src="@drawable/ic_back"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/personImage"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_gravity="center_vertical"
-        android:src="@color/green"
         tools:layout_editor_absoluteX="156dp"
         tools:layout_editor_absoluteY="40dp" />
 
@@ -38,7 +39,7 @@
         android:textColor="@color/white"
         android:textSize="@dimen/_14sdp"
         app:layout_constraintEnd_toEndOf="@+id/personImage"
-        app:layout_constraintStart_toStartOf="@+id/personImage"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/personImage" />
 
 
@@ -52,54 +53,133 @@
         app:layout_constraintTop_toBottomOf="@+id/personName">
 
 
-        <ImageView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_marginHorizontal="10dp"
-            android:src="@drawable/ic_video_call" />
 
-        <ImageView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_marginHorizontal="10dp"
-            android:src="@drawable/ic_video_call" />
+        <LinearLayout
+            style="@style/customLinearLayout"
+            android:background="@drawable/background_circular"
+            android:backgroundTint="#E8A1FA">
 
-        <ImageView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_marginHorizontal="10dp"
-            android:src="@drawable/ic_video_call" />
+            <ImageView
+                style="@style/customImageView"
+                android:src="@drawable/ic__calling"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                 />
+
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/customLinearLayout"
+            android:background="@drawable/background_circular"
+            android:backgroundTint="#E8A1FA">
+
+            <ImageView
+                style="@style/customImageView"
+                android:src="@drawable/ic_video"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                />
+
+        </LinearLayout>
+
+
+
+        <LinearLayout
+            style="@style/customLinearLayout"
+            android:background="@drawable/background_circular"
+            android:backgroundTint="#E8A1FA">
+
+            <ImageView
+                style="@style/customImageView"
+                android:src="@drawable/ic_profile"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                />
+
+        </LinearLayout>
 
     </LinearLayout>
 
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
+
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/messageText"
+        app:layout_constraintBottom_toTopOf="@+id/messageTextLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
 
-    <EditText
-        android:id="@+id/messageText"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/messageTextLayout"
         android:layout_width="0dp"
-        android:layout_height="@dimen/_50sdp"
-        android:hint="Checking Distance"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background_curve"
+        android:minHeight="50dp"
         android:paddingStart="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/send"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent">
 
-    <Button
+        <LinearLayout
+            android:id="@+id/linearLayout3"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/background_circular"
+            android:backgroundTint="#E8A1FA"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:layout_width="@dimen/_21sdp"
+                android:layout_height="@dimen/_21sdp"
+                android:layout_gravity="center"
+                android:foregroundGravity="center"
+                android:src="@drawable/ic_pin" />
+
+
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/messageText"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="5dp"
+            android:background="@null"
+            android:fontFamily="@font/poppins_medium"
+            android:hint="Type Message..."
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/linearLayout3"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/send"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:text="send"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/rounded_background_post"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/messageText" />
+        app:layout_constraintEnd_toEndOf="parent" >
+
+
+        <ImageView
+            android:layout_width="@dimen/_23sdp"
+            android:layout_height="@dimen/_23sdp"
+            android:src="@drawable/ic_send_arrow"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.motion.widget.MotionLayout>
