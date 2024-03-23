@@ -1,65 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
 <MotionScene xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:motion="http://schemas.android.com/apk/res-auto"
+    xmlns:app="urn:oasis:names:tc:xliff:document:1.2">
 
-    <ConstraintSet>
-        <Constraint android:id="@+id/top" />
+<!--    <Transition-->
+<!--        motion:constraintSetEnd="@+id/end"-->
+<!--        motion:constraintSetStart="@id/start"-->
+<!--        motion:duration="1000">-->
+<!--       <KeyFrameSet>-->
+<!--       </KeyFrameSet>-->
+<!--    </Transition>-->
+
+    <ConstraintSet android:id="@+id/start">
         <Constraint
-            android:layout_height="0dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_width="0dp"
-            app:layout_constraintTop_toBottomOf="@+id/top"
+            android:layout_height="38dp"
+            motion:layout_constraintStart_toStartOf="@+id/personImage"
+            motion:layout_constraintEnd_toEndOf="@+id/personImage"
+            android:layout_width="105dp"
+            motion:layout_constraintTop_toBottomOf="@+id/personImage"
+            android:id="@+id/personName" />
+        <Constraint
+            android:id="@+id/personImage"
+            motion:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            motion:layout_constraintTop_toBottomOf="@+id/backBtn"
+            motion:layout_constraintStart_toStartOf="parent" />
+        <Constraint
+            android:id="@+id/linearLayout2"
+            motion:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            motion:layout_constraintTop_toBottomOf="@+id/personName"
+            motion:layout_constraintStart_toStartOf="parent" />
+        <Constraint
             android:id="@+id/recyclerView"
-            app:layout_constraintBottom_toTopOf="@+id/messageText" />
-        <Constraint
-            android:id="@+id/fixedLayout"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_200sdp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-        <Constraint />
-        <Constraint
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_width="wrap_content"
+            motion:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/recyclerView" />
-        <Constraint
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/recyclerView" />
-        <Constraint
-            android:id="@+id/send"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            app:layout_constraintTop_toBottomOf="@+id/recyclerView" />
-        <Constraint
-            android:id="@+id/send"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            app:layout_constraintTop_toBottomOf="@+id/recyclerView" />
+            motion:layout_constraintBottom_toTopOf="@+id/messageText"
+            motion:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+            motion:layout_constraintStart_toStartOf="parent" />
     </ConstraintSet>
 
-    <ConstraintSet>
-        <Constraint android:id="@id/top" />
+    <ConstraintSet android:id="@+id/end">
+        <Constraint
+            android:id="@+id/personImage"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            motion:layout_constraintStart_toEndOf="@+id/backBtn"
+            android:layout_marginStart="24dp"
+            motion:layout_constraintTop_toTopOf="@id/backBtn"
+            motion:layout_constraintBottom_toBottomOf="@id/backBtn" />
+        <Constraint
+            android:id="@+id/personName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            motion:layout_constraintBottom_toBottomOf="@id/personImage"
+            motion:transitionEasing="cubic(0.83,0.46,0.8,0.8)" />
+        <Constraint
+            android:id="@+id/linearLayout2"
+            motion:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            motion:layout_constraintTop_toBottomOf="@+id/personName"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constrainedHeight="true" />
+        <Constraint
+            android:id="@+id/recyclerView"
+            motion:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            motion:layout_constraintBottom_toTopOf="@+id/messageText"
+            motion:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+            motion:layout_constraintStart_toStartOf="parent" />
     </ConstraintSet>
+
 
     <Transition
-        app:constraintSetEnd="@id/end"
-        app:constraintSetStart="@+id/start"
-        app:duration="936">
+        motion:constraintSetStart="@+id/start"
+        motion:constraintSetEnd="@+id/end"
+
+        motion:duration="1500">
         <OnSwipe
-            app:dragDirection="dragUp"
-            app:dragScale="1"
-            app:moveWhenScrollAtTop="true"
-            app:onTouchUp="stop"
-            app:touchAnchorId="@id/recyclerView"
-            app:touchAnchorSide="top"/>
-        <OnSwipe />
+            motion:dragDirection="dragUp"
+            motion:dragScale="1"
+            motion:moveWhenScrollAtTop="true"
+            motion:onTouchUp="stop"
+            motion:touchAnchorId="@id/recyclerView"
+            motion:touchAnchorSide="top"/>
+
     </Transition>
 </MotionScene>

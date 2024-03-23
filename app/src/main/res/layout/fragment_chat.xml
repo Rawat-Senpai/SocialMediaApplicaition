@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:layoutDescription="@xml/fragment_chat_scene2"
+    app:layoutDescription="@xml/fragment_chat_scene"
     tools:context=".ui.chatFragment.ChatFragment">
 
 
@@ -25,7 +25,7 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_gravity="center_vertical"
-        android:src="@color/black"
+        android:src="@color/green"
         tools:layout_editor_absoluteX="156dp"
         tools:layout_editor_absoluteY="40dp" />
 
