@@ -6,7 +6,7 @@ import android.util.Log
 import com.example.socialmediaapplicaition.models.User
 import com.example.socialmediaapplicaition.utils.NetworkResult
 import com.example.socialmediaapplicaition.utils.addDataToFirestore
-import com.example.socialmediaapplicaition.utils.await
+import com.example.socialmediaapplicaition.utils.awaitFunction
 import com.example.socialmediaapplicaition.utils.getDataOfUserFromDatabase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -24,7 +24,7 @@ class AuthRepositoryImpl @Inject constructor(private val firebaseAuth:FirebaseAu
 
     override suspend fun login(email: String, password: String): NetworkResult<FirebaseUser> {
         return try {
-            val result = firebaseAuth.signInWithEmailAndPassword(email,password).await()
+            val result = firebaseAuth.signInWithEmailAndPassword(email,password).awaitFunction()
             NetworkResult.Success(result.user)
         }catch (e:Exception){
             Log.d("crash",e.toString())
@@ -39,8 +39,8 @@ class AuthRepositoryImpl @Inject constructor(private val firebaseAuth:FirebaseAu
     ): NetworkResult<FirebaseUser> {
 
         return try {
-            val result = firebaseAuth.createUserWithEmailAndPassword(email,password).await()
-            result?.user?.updateProfile(UserProfileChangeRequest.Builder().setDisplayName(name).build())?.await()
+            val result = firebaseAuth.createUserWithEmailAndPassword(email,password).awaitFunction()
+            result?.user?.updateProfile(UserProfileChangeRequest.Builder().setDisplayName(name).build())?.awaitFunction()
             NetworkResult.Success(result.user!!)
             NetworkResult.Success(result.user)
         }catch (e:Exception){
@@ -95,10 +95,10 @@ class AuthRepositoryImpl @Inject constructor(private val firebaseAuth:FirebaseAu
             val storageRef = storage.reference
             val imageRef = storageRef.child("images/${UUID.randomUUID()}")
             val uploadTask = imageRef.putFile(photoUri)
-            uploadTask.await()
+            uploadTask.awaitFunction()
 
             // Get the download URL of the uploaded photo
-            val downloadUrl = imageRef.downloadUrl.await()
+            val downloadUrl = imageRef.downloadUrl.awaitFunction()
             Log.d("ShobhitResponse",downloadUrl.toString())
             Log.d("CheckingResponse","success")
             NetworkResult.Success(downloadUrl)

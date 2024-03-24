@@ -88,7 +88,7 @@ class ChatFragment : Fragment() {
         binding.apply {
         }
 
-        viewModel.getAllPost()
+
         bindObserver()
         bindViews()
 
@@ -145,7 +145,6 @@ class ChatFragment : Fragment() {
 
     private fun bindObserver() {
 
-
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.getAllChatChatMessages.collectLatest{
 
@@ -168,7 +167,6 @@ class ChatFragment : Fragment() {
 
             }
         }
-
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.addChatRoomResultState.collect {

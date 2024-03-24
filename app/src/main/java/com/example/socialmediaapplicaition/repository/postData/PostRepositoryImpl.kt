@@ -7,9 +7,13 @@ import com.example.socialmediaapplicaition.models.Post
 import com.example.socialmediaapplicaition.models.User
 import com.example.socialmediaapplicaition.utils.NetworkResult
 import com.example.socialmediaapplicaition.utils.addDataToFirestore
+import com.example.socialmediaapplicaition.utils.getDataAsFlow
 
 import com.example.socialmediaapplicaition.utils.getDataOfUserFromDatabase
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
 import java.util.UUID
 import javax.inject.Inject
 
@@ -28,7 +32,7 @@ class PostRepositoryImpl @Inject constructor(private val firebaseFirestore: Fire
                         userList.add(it)
                     }
                 }
-                Log.d("checkingResponseSize", userList.size.toString())
+                Log.d("checkingResponse1Size", userList.size.toString())
                 NetworkResult.Success(userList)
             } else {
                 NetworkResult.Error("No users found")
@@ -38,12 +42,25 @@ class PostRepositoryImpl @Inject constructor(private val firebaseFirestore: Fire
         }
     }
 
-    override suspend fun getAllPost(): NetworkResult<ArrayList<Post>> {
+    /*
 
-        return try {
-            val snapshot = firebaseFirestore.collection("posts").get().getDataOfUserFromDatabase()
 
-            if (snapshot != null && !snapshot.isEmpty) {
+    override fun getAllPost(): Flow<PostResponse> = callbackFlow  {
+
+        val listenerRegistration = firebaseFirestore.collection("posts")
+            .addSnapshotListener { snapshot, exception ->
+                Log.d("checkingResponseSize1", snapshot.toString())
+                if (exception != null) {
+                    // Emit error state if there's an exception
+                    //PostResponse.Error(exception.toString())
+                    trySend(NetworkResult.Error(exception.toString()))
+                    Log.d("checkingResponseSize2", snapshot.toString())
+                    return@addSnapshotListener
+
+                }
+
+
+                if (snapshot != null && !snapshot.isEmpty) {
                 val postList = ArrayList<Post>()
                 for (document in snapshot.documents) {
                     val posts = document.toObject(Post::class.java)
@@ -52,15 +69,47 @@ class PostRepositoryImpl @Inject constructor(private val firebaseFirestore: Fire
                     }
                 }
                 postList.sortByDescending { it.createdAt }
-                Log.d("checkingResponseSize", postList.size.toString())
+                    Log.d("checkingResponseSize3", postList.toString())
+                Log.d("checkingResponseSize3", postList.size.toString())
                 NetworkResult.Success(postList)
             } else {
-                NetworkResult.Error("No users found")
-            }
-        } catch (e: Exception) {
-            NetworkResult.Error("An error occurred: ${e.message}")
-        }
+                    Log.d("checkingResponseSize4", snapshot.toString())
+                NetworkResult.Error("No Post found")
 
+            }
+
+                // Emit success state with the list of posts
+//                trySend(NetworkResult.Success(posts))
+            }
+
+        awaitClose { listenerRegistration.remove() }
+    }
+
+  */
+    override fun getAllPost(): Flow<PostResponse> = callbackFlow {
+        val listenerRegistration = firebaseFirestore.collection("posts")
+            .addSnapshotListener { snapshot, exception ->
+                if (exception != null) {
+                    trySend(NetworkResult.Error(exception.toString()))
+                    return@addSnapshotListener
+                }
+
+                val postList = ArrayList<Post>()
+                if (snapshot != null && !snapshot.isEmpty) {
+                    for (document in snapshot.documents) {
+                        val post = document.toObject(Post::class.java)
+                        post?.let {
+                            postList.add(it)
+                        }
+                    }
+                    postList.sortByDescending { it.createdAt }
+                    trySend(NetworkResult.Success(postList))
+                } else {
+                    trySend(NetworkResult.Error("No posts found"))
+                }
+            }
+
+        awaitClose { listenerRegistration.remove() }
     }
 
     override suspend fun createPost(post: Post): NetworkResult<Unit> {
@@ -104,7 +153,7 @@ class PostRepositoryImpl @Inject constructor(private val firebaseFirestore: Fire
         }
     }
 
-    override suspend fun createChatRoom(chat:ChatRoomModel): NetworkResult<Unit> {
+    override suspend fun createChatRoom(chat: ChatRoomModel): NetworkResult<Unit> {
         return try {
 
             val chatId = chat.chatroomId
@@ -124,9 +173,11 @@ class PostRepositoryImpl @Inject constructor(private val firebaseFirestore: Fire
         }
     }
 
-    override suspend fun createChatMessage(chat: ChatMessageModel,chatRoomId:String): NetworkResult<Unit> {
+    override suspend fun createChatMessage(
+        chat: ChatMessageModel,
+        chatRoomId: String
+    ): NetworkResult<Unit> {
         return try {
-
 
 
             firebaseFirestore.collection("chat_room")
@@ -147,24 +198,26 @@ class PostRepositoryImpl @Inject constructor(private val firebaseFirestore: Fire
     override suspend fun getALlChats(roomId: String): NetworkResult<ArrayList<ChatMessageModel>> {
 
         return try {
-            val snapshot = firebaseFirestore.collection("chat_room").document(roomId).collection("chats").get().getDataOfUserFromDatabase()
+            val snapshot =
+                firebaseFirestore.collection("chat_room").document(roomId).collection("chats").get()
+                    .getDataOfUserFromDatabase()
 
             if (snapshot != null && !snapshot.isEmpty) {
                 val postList = ArrayList<ChatMessageModel>()
                 for (document in snapshot.documents) {
-                    val chat  = document.toObject(ChatMessageModel::class.java)
+                    val chat = document.toObject(ChatMessageModel::class.java)
                     chat?.let {
                         postList.add(it)
                     }
                 }
                 postList.sortByDescending { it.timeStamp }
-                Log.d("checkingResponseSize", postList.size.toString())
+                Log.d("checkingResponseSizechats", postList.size.toString())
                 NetworkResult.Success(postList)
             } else {
                 NetworkResult.Error("No users found")
             }
 
-        }catch (e:Exception){
+        } catch (e: Exception) {
             NetworkResult.Error(e.toString())
         }
 

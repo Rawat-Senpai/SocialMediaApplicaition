@@ -24,6 +24,7 @@ import com.example.socialmediaapplicaition.utils.NetworkResult
 import com.example.socialmediaapplicaition.utils.TokenManager
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -58,10 +59,11 @@ class PostFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
+
         adapter = PostListAdapter(::onPostClicked,::onPostLiked,tokenManager.getId().toString())
         binding.recyclerView.layoutManager = LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false)
         binding.recyclerView.adapter = adapter
-
 
         viewModel.getUserFullDetails(tokenManager.getId().toString())
 
@@ -92,47 +94,46 @@ class PostFragment : Fragment() {
 
     private fun bindObserver() {
 
+
+
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.userData.collect(){it->
-                when(it){
-                    is NetworkResult.Error -> {}
-                    is NetworkResult.Loading -> {}
-                    is NetworkResult.Success -> {
-                        Log.d("checkingDataUser",it.data?.profile.toString())
-                        Log.d("checkingDataUser",it.data?.name.toString())
+            launch {
+                viewModel.userData.collect { it ->
+                    when (it) {
+                        is NetworkResult.Success -> {
+                            Log.d("checkingDataUser", it.data?.profile.toString())
+                            Log.d("checkingDataUser", it.data?.name.toString())
+                        }
+                        is NetworkResult.Error -> {
+                            // Handle error state if necessary
+                        }
+                        is NetworkResult.Loading -> {
+                            // Handle loading state if necessary
+                        }
 
-                    }
-                    null -> {
-
+                        else -> {}
                     }
                 }
-
             }
-        }
 
+            launch {
+                postViewModel.allPosts.collect { it ->
+                    binding.progressBar.isVisible = false
+                    when (it) {
+                        is NetworkResult.Success -> {
+                            Toast.makeText(requireContext(), "successful shobhit", Toast.LENGTH_SHORT).show()
+                            Log.d("checkingPostResponse00", it.data.toString())
+                            adapter.submitList(it.data)
+                        }
+                        is NetworkResult.Error -> {
+                            Log.d("checkingPostResponse01", it.message.toString())
+                            Toast.makeText(requireContext(), "error", Toast.LENGTH_SHORT).show()
+                        }
+                        is NetworkResult.Loading -> {
+                            binding.progressBar.isVisible = true
+                        }
 
-
-        viewLifecycleOwner.lifecycleScope.launch {
-            postViewModel.allPosts.collect {
-                binding.progressBar.isVisible = it is NetworkResult.Loading
-                when (it) {
-                    is NetworkResult.Error -> {
-                        Log.d("TAGSignUp", it.message.toString())
-                        Toast.makeText(requireContext(), "error", Toast.LENGTH_SHORT).show()
-                    }
-
-                    is NetworkResult.Loading -> {
-                        binding.progressBar.isVisible = true
-                    }
-
-                    is NetworkResult.Success -> {
-                        Toast.makeText(requireContext(), "successful", Toast.LENGTH_SHORT).show()
-                        Log.d("checkingPostResponse",it.data.toString())
-                        adapter.submitList(it.data)
-                    }
-
-                    else -> {
-
+                        else -> {}
                     }
                 }
             }

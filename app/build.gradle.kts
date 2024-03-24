@@ -67,7 +67,7 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
 
     // coroutines
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.0")
 
     // view model scope
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.7.0")
@@ -102,6 +102,8 @@ dependencies {
     implementation ("com.github.skydoves:androidribbon:1.0.4")
 
     implementation("androidx.palette:palette:1.0.0")
+
+
 
 
     // motion layout

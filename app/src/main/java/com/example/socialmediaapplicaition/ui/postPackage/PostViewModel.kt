@@ -12,6 +12,7 @@ import com.example.socialmediaapplicaition.utils.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -60,12 +61,41 @@ class PostViewModel @Inject constructor(private val repository:PostRepository): 
         Log.d("checkingResponse",result.toString())
     }
 
-     fun getAllPost() = viewModelScope.launch {
+    /*
+      _allPosts.value = NetworkResult.Loading()
+    val result = repository.getAllPost()
+    _allPosts.value = result
+     Log.d("checkingResponse",result.data?.size.toString())
+     Log.d("checkingResponse",result.toString())
+     */
+//                try {
+//                repository.getAllPost() { result ->
+//                    _allPosts.value = result
+//                    Log.d("checkingResponseSize5",result.toString())
+//                }
+//            } catch (e: Exception) {
+//                    Log.d("checkingResponseSize6", e.toString())
+//                _allPosts.value = NetworkResult.Error("An error occurred: ${e.message}")
+//            }
+//    fun getAllPost() = viewModelScope.launch{
+//     _allPosts.value = NetworkResult.Loading()
+//        val result = repository.getAllPost()
+//        _allPosts.value=result.collect()
+//    }
+
+    fun getAllPost() = viewModelScope.launch {
         _allPosts.value = NetworkResult.Loading()
-        val result = repository.getAllPost()
-        _allPosts.value = result
-         Log.d("checkingResponse",result.data?.size.toString())
-         Log.d("checkingResponse",result.toString())
+        try {
+            repository.getAllPost().collect { result ->
+                _allPosts.value = result
+
+
+            }
+        } catch (e: Exception) {
+            _allPosts.value = NetworkResult.Error("An error occurred: ${e.message}")
+        }
+
+        Log.d("checkingPostResponseV",_allPosts.toString())
     }
 
 

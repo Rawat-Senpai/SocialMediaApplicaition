@@ -5,11 +5,14 @@ import com.example.socialmediaapplicaition.models.ChatRoomModel
 import com.example.socialmediaapplicaition.models.Post
 import com.example.socialmediaapplicaition.models.User
 import com.example.socialmediaapplicaition.utils.NetworkResult
+import kotlinx.coroutines.flow.Flow
 
+typealias Posts = ArrayList<Post>
+typealias PostResponse = NetworkResult<Posts>
 
 interface PostRepository {
     suspend fun getAllUser():NetworkResult<ArrayList<User>>
-    suspend fun getAllPost():NetworkResult<ArrayList<Post>>
+     fun  getAllPost():Flow<PostResponse>
     suspend fun createPost(post:Post):NetworkResult<Unit>
     suspend fun updateLikeStatus(post:Post, userId: String): NetworkResult<Unit>
     suspend fun createChatRoom(chat: ChatRoomModel):NetworkResult<Unit>

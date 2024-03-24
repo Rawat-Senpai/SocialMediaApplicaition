@@ -1,12 +1,19 @@
 package com.example.socialmediaapplicaition.utils
 
 import android.util.Log
-import com.example.socialmediaapplicaition.models.User
 import com.google.android.gms.tasks.Task
+import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.DocumentSnapshot
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resumeWithException
 
-suspend fun <T> Task<T>.await(): T {
+
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.channels.Channel
+suspend fun <T> Task<T>.awaitFunction(): T {
 
     return suspendCancellableCoroutine { cont ->
         addOnCompleteListener {
@@ -51,5 +58,21 @@ suspend fun <T> Task<T>.getDataOfUserFromDatabase(): T {
                 Log.d("checkingShobhit","false")
                 cont.resumeWithException(e)
             }
+    }
+}
+
+
+
+ fun DocumentReference.getDataAsFlow(): Flow<DocumentSnapshot?> = callbackFlow {
+    val listenerRegistration = addSnapshotListener { snapshot, exception ->
+        if (exception != null) {
+            close(exception)
+            return@addSnapshotListener
+        }
+        trySend(snapshot)
+    }
+
+    awaitClose {
+        listenerRegistration.remove()
     }
 }
