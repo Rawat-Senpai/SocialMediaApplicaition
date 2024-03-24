@@ -48,6 +48,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:layout_marginTop="5dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/personName">
@@ -127,13 +128,15 @@
             android:id="@+id/linearLayout3"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="6dp"
+            android:layout_marginStart="3dp"
             android:background="@drawable/background_circular"
             android:backgroundTint="#E8A1FA"
             android:gravity="center"
             android:orientation="horizontal"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            >
 
             <ImageView
                 android:layout_width="@dimen/_21sdp"
@@ -148,7 +151,7 @@
         <EditText
             android:id="@+id/messageText"
             android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_height="match_parent"
             android:layout_marginStart="5dp"
             android:background="@null"
             android:fontFamily="@font/poppins_medium"
@@ -158,7 +161,11 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/linearLayout3"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:maxLines="5"
+            android:textSize="14sp"
+            android:inputType="textMultiLine"
+            android:scrollbars="vertical"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

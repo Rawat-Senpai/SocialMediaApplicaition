@@ -85,9 +85,8 @@ class ChatFragment : Fragment() {
         )
 
         binding.recyclerView.adapter = adapter
-        binding.apply {
-        }
 
+        binding.apply {}
 
         bindObserver()
         bindViews()
@@ -146,6 +145,9 @@ class ChatFragment : Fragment() {
     private fun bindObserver() {
 
         viewLifecycleOwner.lifecycleScope.launch {
+
+
+
             viewModel.getAllChatChatMessages.collectLatest{
 
                 when(it){

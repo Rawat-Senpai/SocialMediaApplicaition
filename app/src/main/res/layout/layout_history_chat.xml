@@ -1,37 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/transparent"
+    android:background="@drawable/background_users_chat"
     android:layout_marginTop="10dp">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/_60sdp"
-        android:background="@color/transparent">
 
-        <androidx.cardview.widget.CardView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/imgCardView"
             android:layout_width="@dimen/_45sdp"
-            android:layout_height="match_parent"
+            android:layout_height="@dimen/_45sdp"
             android:layout_margin="@dimen/_7sdp"
             app:cardCornerRadius="@dimen/_5sdp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <ImageView
-                android:id="@+id/userProfile"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="fitXY"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.cardview.widget.CardView>
+        </de.hdodenhof.circleimageview.CircleImageView>
 
         <TextView
             android:id="@+id/userName"
@@ -44,13 +31,13 @@
             tools:text="Amelia" />
 
         <TextView
-            android:id="@+id/userMessage"
+            android:id="@+id/userStatus"
             style="@style/subHeadingText"
             android:layout_width="0dp"
             android:layout_marginTop="@dimen/_2sdp"
             android:gravity="start"
             android:maxLines="2"
-            android:text="Lorem Ipsum is good bouy "
+
             android:textColor="#E8A1FA"
             android:textSize="@dimen/_10sdp"
             app:layout_constraintEnd_toStartOf="@+id/minAgo"
@@ -80,13 +67,12 @@
             android:textSize="@dimen/_8sdp"
             android:textStyle="bold"
             android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="@+id/userMessage"
+            app:layout_constraintBottom_toBottomOf="@+id/userStatus"
             app:layout_constraintEnd_toEndOf="@+id/minAgo"
             app:layout_constraintStart_toStartOf="@+id/minAgo"
-            app:layout_constraintTop_toTopOf="@+id/userMessage" />
+            app:layout_constraintTop_toTopOf="@+id/userStatus" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-</androidx.cardview.widget.CardView>

@@ -5,6 +5,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.example.socialmediaapplicaition.R
 import com.example.socialmediaapplicaition.databinding.LayoutHistoryChatBinding
 import com.example.socialmediaapplicaition.databinding.LayoutPostBinding
 import com.example.socialmediaapplicaition.models.User
@@ -27,6 +29,9 @@ class UserListAdapter(
 
                 binding.apply {
                     userName.text = user.name.toString()
+                    userStatus.text = user.status.toString()
+
+                    Glide.with(root).load(user.profile).placeholder(R.drawable.ic_default_person).into(imgCardView)
 
                     if(action==Constants.ADD_USER_ACTION){
                         // code to hide a view and show another view

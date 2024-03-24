@@ -7,17 +7,16 @@ import com.example.socialmediaapplicaition.models.ChatMessageModel
 import com.example.socialmediaapplicaition.models.ChatRoomModel
 import com.example.socialmediaapplicaition.models.Post
 import com.example.socialmediaapplicaition.models.User
-import com.example.socialmediaapplicaition.repository.postData.PostRepository
+import com.example.socialmediaapplicaition.repository.firebaseData.FirebaseRepository
 import com.example.socialmediaapplicaition.utils.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class PostViewModel @Inject constructor(private val repository:PostRepository): ViewModel() {
+class PostViewModel @Inject constructor(private val repository:FirebaseRepository): ViewModel() {
 
 
 
@@ -83,7 +82,7 @@ class PostViewModel @Inject constructor(private val repository:PostRepository): 
 //        _allPosts.value=result.collect()
 //    }
 
-    fun getAllPost() = viewModelScope.launch {
+    private fun getAllPost() = viewModelScope.launch {
         _allPosts.value = NetworkResult.Loading()
         try {
             repository.getAllPost().collect { result ->
@@ -119,7 +118,6 @@ class PostViewModel @Inject constructor(private val repository:PostRepository): 
 
     }
 
-
     fun addLikeToPost(post:Post,userId:String) = viewModelScope.launch {
         _addLikeResponse.value = NetworkResult.Loading()
         val result = repository.updateLikeStatus(post,userId)
@@ -141,10 +139,14 @@ class PostViewModel @Inject constructor(private val repository:PostRepository): 
     }
 
     fun getAllMessages(roomId:String)=viewModelScope.launch{
-
       _getAllChatMessages.value = NetworkResult.Loading()
-      val result = repository.getALlChats(roomId)
-        _getAllChatMessages.value = result
+        try {
+            repository.getALlChats(roomId).collect{
+                _getAllChatMessages.value = it
+            }
+        }catch (e:Exception){
+            _getAllChatMessages.value = NetworkResult.Error(e.toString())
+        }
     }
 
 

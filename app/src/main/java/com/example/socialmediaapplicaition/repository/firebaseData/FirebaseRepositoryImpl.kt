@@ -1,4 +1,4 @@
-package com.example.socialmediaapplicaition.repository.postData
+package com.example.socialmediaapplicaition.repository.firebaseData
 
 import android.util.Log
 import com.example.socialmediaapplicaition.models.ChatMessageModel
@@ -7,7 +7,6 @@ import com.example.socialmediaapplicaition.models.Post
 import com.example.socialmediaapplicaition.models.User
 import com.example.socialmediaapplicaition.utils.NetworkResult
 import com.example.socialmediaapplicaition.utils.addDataToFirestore
-import com.example.socialmediaapplicaition.utils.getDataAsFlow
 
 import com.example.socialmediaapplicaition.utils.getDataOfUserFromDatabase
 import com.google.firebase.firestore.FirebaseFirestore
@@ -17,8 +16,8 @@ import kotlinx.coroutines.flow.callbackFlow
 import java.util.UUID
 import javax.inject.Inject
 
-class PostRepositoryImpl @Inject constructor(private val firebaseFirestore: FirebaseFirestore) :
-    PostRepository {
+class FirebaseRepositoryImpl @Inject constructor(private val firebaseFirestore: FirebaseFirestore) :
+    FirebaseRepository {
 
     override suspend fun getAllUser(): NetworkResult<ArrayList<User>> {
         return try {
@@ -42,50 +41,6 @@ class PostRepositoryImpl @Inject constructor(private val firebaseFirestore: Fire
         }
     }
 
-    /*
-
-
-    override fun getAllPost(): Flow<PostResponse> = callbackFlow  {
-
-        val listenerRegistration = firebaseFirestore.collection("posts")
-            .addSnapshotListener { snapshot, exception ->
-                Log.d("checkingResponseSize1", snapshot.toString())
-                if (exception != null) {
-                    // Emit error state if there's an exception
-                    //PostResponse.Error(exception.toString())
-                    trySend(NetworkResult.Error(exception.toString()))
-                    Log.d("checkingResponseSize2", snapshot.toString())
-                    return@addSnapshotListener
-
-                }
-
-
-                if (snapshot != null && !snapshot.isEmpty) {
-                val postList = ArrayList<Post>()
-                for (document in snapshot.documents) {
-                    val posts = document.toObject(Post::class.java)
-                    posts?.let {
-                        postList.add(it)
-                    }
-                }
-                postList.sortByDescending { it.createdAt }
-                    Log.d("checkingResponseSize3", postList.toString())
-                Log.d("checkingResponseSize3", postList.size.toString())
-                NetworkResult.Success(postList)
-            } else {
-                    Log.d("checkingResponseSize4", snapshot.toString())
-                NetworkResult.Error("No Post found")
-
-            }
-
-                // Emit success state with the list of posts
-//                trySend(NetworkResult.Success(posts))
-            }
-
-        awaitClose { listenerRegistration.remove() }
-    }
-
-  */
     override fun getAllPost(): Flow<PostResponse> = callbackFlow {
         val listenerRegistration = firebaseFirestore.collection("posts")
             .addSnapshotListener { snapshot, exception ->
@@ -195,9 +150,10 @@ class PostRepositoryImpl @Inject constructor(private val firebaseFirestore: Fire
         }
     }
 
-    override suspend fun getALlChats(roomId: String): NetworkResult<ArrayList<ChatMessageModel>> {
+    override fun getALlChats(roomId: String) : Flow<ChatsResponse> = callbackFlow {
 
-        return try {
+        /*
+           return try {
             val snapshot =
                 firebaseFirestore.collection("chat_room").document(roomId).collection("chats").get()
                     .getDataOfUserFromDatabase()
@@ -220,6 +176,33 @@ class PostRepositoryImpl @Inject constructor(private val firebaseFirestore: Fire
         } catch (e: Exception) {
             NetworkResult.Error(e.toString())
         }
+         */
+
+
+        val listenerRegistration =
+            firebaseFirestore.collection("chat_room").document(roomId).collection("chats")
+                .addSnapshotListener { snapshot, exception ->
+                    if (exception != null) {
+                        trySend(NetworkResult.Error(exception.toString()))
+                        return@addSnapshotListener
+                    }
+
+                    val chatList = ArrayList<ChatMessageModel>()
+                    if (snapshot != null && !snapshot.isEmpty) {
+                        for (document in snapshot.documents) {
+                            val post = document.toObject(ChatMessageModel::class.java)
+                            post?.let {
+                                chatList.add(it)
+                            }
+                        }
+                        chatList.sortByDescending { it.timeStamp }
+                        trySend(NetworkResult.Success(chatList))
+                    } else {
+                        trySend(NetworkResult.Error("No posts found"))
+                    }
+                }
+
+        awaitClose { listenerRegistration.remove() }
 
 
     }
