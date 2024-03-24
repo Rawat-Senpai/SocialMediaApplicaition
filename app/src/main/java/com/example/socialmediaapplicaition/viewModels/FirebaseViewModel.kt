@@ -1,4 +1,4 @@
-package com.example.socialmediaapplicaition.ui.postPackage
+package com.example.socialmediaapplicaition.viewModels
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
@@ -12,11 +12,12 @@ import com.example.socialmediaapplicaition.utils.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class PostViewModel @Inject constructor(private val repository:FirebaseRepository): ViewModel() {
+class FirebaseViewModel @Inject constructor(private val repository:FirebaseRepository): ViewModel() {
 
 
 
@@ -41,10 +42,13 @@ class PostViewModel @Inject constructor(private val repository:FirebaseRepositor
     private val _getAllChatMessages = MutableStateFlow<NetworkResult<ArrayList<ChatMessageModel>>?>(null)
     val getAllChatChatMessages :StateFlow<NetworkResult<ArrayList<ChatMessageModel>>?> = _getAllChatMessages
 
-
     // for search user in firebase data base
     private val _searchedUser = MutableStateFlow<NetworkResult<List<User>>?>(null)
     val searchedUser :StateFlow<NetworkResult<List<User>>?> = _searchedUser
+
+    private val _getAllChatHistory = MutableStateFlow<NetworkResult<List<ChatRoomModel>>?>(null)
+    val getAllChatHistory:StateFlow <NetworkResult<List<ChatRoomModel>>?> = _getAllChatHistory
+
 
     init {
         getAllUser()
@@ -60,35 +64,11 @@ class PostViewModel @Inject constructor(private val repository:FirebaseRepositor
         Log.d("checkingResponse",result.toString())
     }
 
-    /*
-      _allPosts.value = NetworkResult.Loading()
-    val result = repository.getAllPost()
-    _allPosts.value = result
-     Log.d("checkingResponse",result.data?.size.toString())
-     Log.d("checkingResponse",result.toString())
-     */
-//                try {
-//                repository.getAllPost() { result ->
-//                    _allPosts.value = result
-//                    Log.d("checkingResponseSize5",result.toString())
-//                }
-//            } catch (e: Exception) {
-//                    Log.d("checkingResponseSize6", e.toString())
-//                _allPosts.value = NetworkResult.Error("An error occurred: ${e.message}")
-//            }
-//    fun getAllPost() = viewModelScope.launch{
-//     _allPosts.value = NetworkResult.Loading()
-//        val result = repository.getAllPost()
-//        _allPosts.value=result.collect()
-//    }
-
     private fun getAllPost() = viewModelScope.launch {
         _allPosts.value = NetworkResult.Loading()
         try {
             repository.getAllPost().collect { result ->
                 _allPosts.value = result
-
-
             }
         } catch (e: Exception) {
             _allPosts.value = NetworkResult.Error("An error occurred: ${e.message}")
@@ -96,7 +76,6 @@ class PostViewModel @Inject constructor(private val repository:FirebaseRepositor
 
         Log.d("checkingPostResponseV",_allPosts.toString())
     }
-
 
     fun addPostToDatabase(post:Post) = viewModelScope.launch {
         _addPostResultState.value = NetworkResult.Loading()
@@ -140,12 +119,43 @@ class PostViewModel @Inject constructor(private val repository:FirebaseRepositor
 
     fun getAllMessages(roomId:String)=viewModelScope.launch{
       _getAllChatMessages.value = NetworkResult.Loading()
+
         try {
-            repository.getALlChats(roomId).collect{
+            repository.getAllChats(roomId).collect{
                 _getAllChatMessages.value = it
             }
         }catch (e:Exception){
             _getAllChatMessages.value = NetworkResult.Error(e.toString())
+        }
+    }
+
+    fun getAllPreviousChat(userId:String) = viewModelScope.launch {
+        _getAllChatHistory.value = NetworkResult.Loading()
+        try {
+            repository.getAllPreviousChat().collect{result->
+
+                when (result) {
+                    is NetworkResult.Success -> {
+                        val filteredChats = result.data?.filter { chat -> chat.chatroomId.contains(userId) }
+                        Log.d("checkingChatList",filteredChats.toString())
+                        if (filteredChats != null) {
+                            _getAllChatHistory.value = NetworkResult.Success(filteredChats.toMutableList())
+                        } else {
+                            _getAllChatHistory.value = NetworkResult.Success(ArrayList()) // No matches found
+                        }
+                    }
+                    is NetworkResult.Error -> {
+                        _getAllChatHistory.value = NetworkResult.Error(result.toString()) // Pass along the error result
+                    }
+                    is NetworkResult.Loading -> {
+                        _getAllChatHistory.value= NetworkResult.Loading()
+                        // Loading state is already handled, so no need to do anything here
+                    }
+                }
+
+            }
+        }catch (e:Exception){
+            _getAllChatHistory.value = NetworkResult.Error(e.toString())
         }
     }
 

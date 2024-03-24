@@ -15,6 +15,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.socialmediaapplicaition.R
 import com.example.socialmediaapplicaition.databinding.FragmentLoginBinding
 import com.example.socialmediaapplicaition.utils.NetworkResult
+import com.example.socialmediaapplicaition.viewModels.AuthViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 

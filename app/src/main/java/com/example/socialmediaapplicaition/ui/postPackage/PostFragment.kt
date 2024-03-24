@@ -19,12 +19,12 @@ import com.example.socialmediaapplicaition.R
 import com.example.socialmediaapplicaition.databinding.FragmentMainBinding
 import com.example.socialmediaapplicaition.databinding.LayoutSideMenuBinding
 import com.example.socialmediaapplicaition.models.Post
-import com.example.socialmediaapplicaition.ui.auth.AuthViewModel
+import com.example.socialmediaapplicaition.viewModels.AuthViewModel
 import com.example.socialmediaapplicaition.utils.NetworkResult
 import com.example.socialmediaapplicaition.utils.TokenManager
+import com.example.socialmediaapplicaition.viewModels.FirebaseViewModel
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -41,7 +41,7 @@ class PostFragment : Fragment() {
 
     private val viewModel by viewModels<AuthViewModel>()
 
-    private val postViewModel by viewModels<PostViewModel> ()
+    private val postViewModel by viewModels<FirebaseViewModel> ()
     var imageView :ImageView ?= null
     var userTextView:TextView? = null
 

@@ -9,16 +9,14 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.socialmediaapplicaition.R
 import com.example.socialmediaapplicaition.databinding.FragmentChatBinding
 import com.example.socialmediaapplicaition.models.ChatMessageModel
 import com.example.socialmediaapplicaition.models.ChatRoomModel
 import com.example.socialmediaapplicaition.models.Post
 import com.example.socialmediaapplicaition.models.User
 import com.example.socialmediaapplicaition.ui.postPackage.PostListAdapter
-import com.example.socialmediaapplicaition.ui.postPackage.PostViewModel
+import com.example.socialmediaapplicaition.viewModels.FirebaseViewModel
 import com.example.socialmediaapplicaition.utils.NetworkResult
 import com.example.socialmediaapplicaition.utils.TokenManager
 import com.example.socialmediaapplicaition.utils.Utils
@@ -40,13 +38,14 @@ class ChatFragment : Fragment() {
     private lateinit var adapter: PostListAdapter
 
 
-    private val viewModel by viewModels<PostViewModel>()
+    private val viewModel by viewModels<FirebaseViewModel>()
 
     private var _binding: FragmentChatBinding? = null
     val binding get() = _binding!!
 
     // Receiver Data
     private var user: User? = null
+    private var previousUser:ChatRoomModel?= null
 
     private var frontPersonId: String = ""
     private var frontPersonImage: String = ""
@@ -95,18 +94,33 @@ class ChatFragment : Fragment() {
 
     // set initial state
     private fun getInitialState() {
-        val jsonNote = arguments?.getString("user")
+        val userChat = arguments?.getString("user")
+        Log.d("chekcingShobhit1", userChat.toString())
 
-        Log.d("chekcingShobhit1", jsonNote.toString())
+        val previousChat = arguments?.getString("previousChat")
 
-        if (jsonNote != null) {
-            user = Gson().fromJson<User>(jsonNote, User::class.java)
+        if (userChat != null) {
+            user = Gson().fromJson<User>(userChat, User::class.java)
             user?.let {
                 frontPersonId = user!!.id.toString()
                 frontPersonImage = user!!.profile.toString()
                 frontPersonName = user!!.name.toString()
                 frontPersonUserModel = User(frontPersonName, frontPersonId, frontPersonImage)
             }
+        }else if (previousChat !=null){
+            previousUser = Gson().fromJson<ChatRoomModel>(previousChat,ChatRoomModel::class.java)
+
+            for(data in previousUser!!.userList){
+
+                if(myUserId!= data.id){
+                    frontPersonId = data.id
+                    frontPersonImage= data.profile
+                    frontPersonName = data.name
+                    frontPersonUserModel = User(frontPersonName, frontPersonId, frontPersonImage)
+                }
+
+            }
+
         }
 
         myUserId = tokenManager.getId().toString()
@@ -131,7 +145,7 @@ class ChatFragment : Fragment() {
                 val chatRoomRequestModel = ChatRoomModel()
                 chatRoomRequestModel.chatroomId = chatRoomId
                 chatRoomRequestModel.lastMessage = messageText.text.trim().toString()
-                chatRoomRequestModel.userIds = listOf(frontPersonUserModel!!, myUserModel!!)
+                chatRoomRequestModel.userList = arrayListOf(frontPersonUserModel!!, myUserModel!!)
                 chatRoomRequestModel.lastMessageSenderId = myUserId
                 chatRoomRequestModel.lastMessageTimestamp = System.currentTimeMillis()
                 viewModel.addChatRoomToDatabase(chatRoomRequestModel)

@@ -1,4 +1,4 @@
-package com.example.socialmediaapplicaition.ui.auth
+package com.example.socialmediaapplicaition.viewModels
 
 import android.net.Uri
 import android.util.Log

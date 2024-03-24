@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.socialmediaapplicaition.R
 import com.example.socialmediaapplicaition.databinding.FragmentAllUserListBinding
 import com.example.socialmediaapplicaition.models.User
-import com.example.socialmediaapplicaition.ui.postPackage.PostViewModel
+import com.example.socialmediaapplicaition.viewModels.FirebaseViewModel
 import com.example.socialmediaapplicaition.utils.Constants
 import com.example.socialmediaapplicaition.utils.NetworkResult
 import com.google.gson.Gson
@@ -29,7 +29,7 @@ class SerchUserListFragment : Fragment() {
 
     private var _binding:FragmentAllUserListBinding ? = null
 
-    private val userViewModel by viewModels<PostViewModel>()
+    private val userViewModel by viewModels<FirebaseViewModel>()
     private  val binding get() = _binding!!
 
     private lateinit var adapter: UserListAdapter

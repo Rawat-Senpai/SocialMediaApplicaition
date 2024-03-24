@@ -42,6 +42,9 @@ class FirebaseRepositoryImpl @Inject constructor(private val firebaseFirestore: 
     }
 
     override fun getAllPost(): Flow<PostResponse> = callbackFlow {
+
+
+
         val listenerRegistration = firebaseFirestore.collection("posts")
             .addSnapshotListener { snapshot, exception ->
                 if (exception != null) {
@@ -150,35 +153,7 @@ class FirebaseRepositoryImpl @Inject constructor(private val firebaseFirestore: 
         }
     }
 
-    override fun getALlChats(roomId: String) : Flow<ChatsResponse> = callbackFlow {
-
-        /*
-           return try {
-            val snapshot =
-                firebaseFirestore.collection("chat_room").document(roomId).collection("chats").get()
-                    .getDataOfUserFromDatabase()
-
-            if (snapshot != null && !snapshot.isEmpty) {
-                val postList = ArrayList<ChatMessageModel>()
-                for (document in snapshot.documents) {
-                    val chat = document.toObject(ChatMessageModel::class.java)
-                    chat?.let {
-                        postList.add(it)
-                    }
-                }
-                postList.sortByDescending { it.timeStamp }
-                Log.d("checkingResponseSizechats", postList.size.toString())
-                NetworkResult.Success(postList)
-            } else {
-                NetworkResult.Error("No users found")
-            }
-
-        } catch (e: Exception) {
-            NetworkResult.Error(e.toString())
-        }
-         */
-
-
+    override fun getAllChats(roomId: String) : Flow<ChatsResponse> = callbackFlow {
         val listenerRegistration =
             firebaseFirestore.collection("chat_room").document(roomId).collection("chats")
                 .addSnapshotListener { snapshot, exception ->
@@ -201,9 +176,39 @@ class FirebaseRepositoryImpl @Inject constructor(private val firebaseFirestore: 
                         trySend(NetworkResult.Error("No posts found"))
                     }
                 }
-
         awaitClose { listenerRegistration.remove() }
+    }
 
+    override fun getAllPreviousChat(): Flow<PreviousChatResponse> = callbackFlow{
+        val listenerRegistration =
+            firebaseFirestore.collection("chat_room")
+                .addSnapshotListener { snapshot, exception ->
+                    if (exception != null) {
+                        trySend(NetworkResult.Error(exception.toString()))
+                        return@addSnapshotListener
+                    }
+
+                    val chatList = ArrayList<ChatRoomModel>()
+                    if (snapshot != null && !snapshot.isEmpty) {
+                        for (document in snapshot.documents) {
+
+                            Log.d("document",document.toString())
+
+                            val post = document.toObject(ChatRoomModel::class.java)
+                            post?.let {
+                                chatList.add(it)
+                            }
+                            Log.d("document2",post.toString())
+                        }
+                        chatList.sortByDescending { it.lastMessageTimestamp }
+                        Log.d("checkingChatList__",chatList.size.toString())
+                        Log.d("checkingChatList__",chatList.toString())
+                        trySend(NetworkResult.Success(chatList))
+                    } else {
+                        trySend(NetworkResult.Error("No posts found"))
+                    }
+                }
+        awaitClose { listenerRegistration.remove() }
 
     }
 
