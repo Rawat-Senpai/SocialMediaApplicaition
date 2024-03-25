@@ -18,14 +18,18 @@ import com.example.socialmediaapplicaition.models.User
 import com.example.socialmediaapplicaition.viewModels.FirebaseViewModel
 import com.example.socialmediaapplicaition.utils.Constants
 import com.example.socialmediaapplicaition.utils.NetworkResult
+import com.example.socialmediaapplicaition.utils.TokenManager
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 
 @AndroidEntryPoint
 class SerchUserListFragment : Fragment() {
-  
+
+    @Inject
+    lateinit var tokenManager: TokenManager
 
     private var _binding:FragmentAllUserListBinding ? = null
 
@@ -75,7 +79,7 @@ class SerchUserListFragment : Fragment() {
                 val searchText = s.toString()
 
                 if(s.toString()!=""){
-                    userViewModel.searchUsers(searchText)
+                    userViewModel.searchUsers(searchText,tokenManager.getId().toString())
                 }
 
 

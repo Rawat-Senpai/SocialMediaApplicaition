@@ -42,7 +42,7 @@ class FirebaseViewModel @Inject constructor(private val repository:FirebaseRepos
     private val _getAllChatMessages = MutableStateFlow<NetworkResult<ArrayList<ChatMessageModel>>?>(null)
     val getAllChatChatMessages :StateFlow<NetworkResult<ArrayList<ChatMessageModel>>?> = _getAllChatMessages
 
-    // for search user in firebase data base
+
     private val _searchedUser = MutableStateFlow<NetworkResult<List<User>>?>(null)
     val searchedUser :StateFlow<NetworkResult<List<User>>?> = _searchedUser
 
@@ -104,13 +104,16 @@ class FirebaseViewModel @Inject constructor(private val repository:FirebaseRepos
 
     }
 
-    // Function to search users based on a key point
-    fun searchUsers(keyPoint: String) {
+
+
+    fun searchUsers(keyPoint: String, yourUserId: String) {
         allUsers.value?.data?.let { users ->
             val filteredUsers = users.filter { user ->
-                // Filter users based on the specified key point
-                // Here you can define your condition for filtering, for example, searching by name
-                user.name.contains(keyPoint, ignoreCase = true) // Assuming you are searching by user's name
+                // Exclude the user with your ID
+                user.id != yourUserId &&
+                        // Filter users based on the specified key point
+                        // Here you can define your condition for filtering, for example, searching by name
+                        user.name.contains(keyPoint, ignoreCase = true) // Assuming you are searching by user's name
             }
             // Update the StateFlow with filtered users
             _searchedUser.value = NetworkResult.Success(filteredUsers)

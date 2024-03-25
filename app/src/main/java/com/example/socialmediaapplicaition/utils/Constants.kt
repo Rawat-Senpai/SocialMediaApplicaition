@@ -10,4 +10,7 @@ object Constants {
 
     const val CALLING_ACTIONS="CALLING_ACTIONS"
     const val ADD_USER_ACTION="ADD_USER_ACTION"
+
+    const val MESSAGE_TYPE_TEXT="TEXT"
+    const val  MESSAGE_TYPE_IMAGE="IMAGE"
 }

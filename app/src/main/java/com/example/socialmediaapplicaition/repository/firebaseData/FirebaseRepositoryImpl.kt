@@ -170,7 +170,7 @@ class FirebaseRepositoryImpl @Inject constructor(private val firebaseFirestore: 
                                 chatList.add(it)
                             }
                         }
-                        chatList.sortByDescending { it.timeStamp }
+                        chatList.sortBy { it.timeStamp }
                         trySend(NetworkResult.Success(chatList))
                     } else {
                         trySend(NetworkResult.Error("No posts found"))

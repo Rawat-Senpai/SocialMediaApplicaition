@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="@null">
@@ -19,7 +19,7 @@
         android:gravity="center"
         android:background="@null"
         android:orientation="horizontal"
-        android:visibility="visible">
+        android:visibility="gone">
 
         <View
             android:layout_width="0dp"
@@ -113,7 +113,6 @@
                         android:id="@+id/recieveImage"
                         android:layout_width="@dimen/_120sdp"
                         android:layout_height="@dimen/_120sdp"
-
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
@@ -190,24 +189,12 @@
 
             </androidx.cardview.widget.CardView>
 
-            <ImageView
-                android:id="@+id/recieverImageBottom"
-                android:layout_width="@dimen/_14sdp"
-                android:layout_height="@dimen/_14sdp"
-
-                android:visibility="gone"
-                android:layout_marginTop="-12dp"
-
-                app:layout_constraintBottom_toBottomOf="@+id/recievedMessage"
-                app:layout_constraintStart_toStartOf="@+id/recievedMessage"
-                app:tint="@color/white" />
 
 
             <TextView
                 android:id="@+id/recieveTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
                 android:paddingStart="@dimen/_12sdp"
                 android:paddingEnd="@dimen/_4sdp"
                 android:shadowDx="1"
@@ -216,7 +203,6 @@
                 android:text="10:40 AM"
                 android:textColor="@color/grey"
                 android:textSize="@dimen/_9sdp"
-
                 app:layout_constraintStart_toStartOf="@+id/recievedMessage"
                 app:layout_constraintTop_toBottomOf="@+id/recievedMessage" />
 
@@ -291,7 +277,7 @@
                 <TextView
                     android:id="@+id/sentMessage"
                     android:layout_width="wrap_content"
-                    android:layout_height="41dp"
+                    android:layout_height="wrap_content"
                     android:background="@drawable/chat_sent_layout"
                     android:layout_marginVertical="@dimen/_2sdp"
                     android:layout_marginTop="2dp"
@@ -395,7 +381,6 @@
                 android:id="@+id/sentTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
                 android:paddingStart="@dimen/_4sdp"
                 android:paddingEnd="@dimen/_12sdp"
                 android:shadowDx="1"

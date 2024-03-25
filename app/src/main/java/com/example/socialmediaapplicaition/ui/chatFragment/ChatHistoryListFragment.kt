@@ -20,6 +20,7 @@ import com.example.socialmediaapplicaition.viewModels.FirebaseViewModel
 import com.example.socialmediaapplicaition.utils.Constants
 import com.example.socialmediaapplicaition.utils.NetworkResult
 import com.example.socialmediaapplicaition.utils.TokenManager
+import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -98,8 +99,9 @@ class ChatHistoryListFragment : Fragment() {
     }
 
     private fun onActionClicked(user:ChatRoomModel,action:String){
-
-        findNavController().navigate(R.id.action_chatHistoryFragment_to_chatFragment)
+        val bundle = Bundle()
+        bundle.putString("previousChat", Gson().toJson(user))
+        findNavController().navigate(R.id.action_chatHistoryFragment_to_chatFragment,bundle)
 
     }
 

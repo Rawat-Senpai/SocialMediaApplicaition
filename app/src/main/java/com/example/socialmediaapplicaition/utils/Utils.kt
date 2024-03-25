@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import java.util.TimeZone
 
 
 object Utils{
@@ -59,6 +60,12 @@ object Utils{
             val date = Date(time)
             sdf.format(date)
         }
+    }
+
+    fun convertMillisToTime(timestamp: Long): String {
+        val formatter = SimpleDateFormat("HH:mm", Locale.getDefault()) // Adjust format as needed
+        formatter.timeZone = TimeZone.getDefault()
+        return formatter.format(Date(timestamp))
     }
 
 
