@@ -95,7 +95,7 @@ class CreatePostFragment : Fragment() {
                 binding.addImgBtn.visibility=View.GONE
                 binding.imageView.visibility=View.VISIBLE
                 commonImageUri = uri
-                viewModel.uploadImageToFireStore(commonImageUri!!)
+
                 binding.imageView.setImageURI(commonImageUri!!)
             }
 
@@ -123,13 +123,7 @@ class CreatePostFragment : Fragment() {
 
                 }else {
 
-
-                    val post =Post()
-                    post.createdAt = System.currentTimeMillis()
-                    post.createdBy = User(tokenManager.getUserName().toString(),tokenManager.getId().toString(),tokenManager.getProfile().toString())
-                    post.text = txtDescription.text.toString()
-                    post.imageUrl = imageUrl
-                    postViewModel.addPostToDatabase(post)
+                    viewModel.uploadImageToFireStore(commonImageUri!!)
                 }
 
 
@@ -150,7 +144,12 @@ class CreatePostFragment : Fragment() {
                     is NetworkResult.Loading -> {}
                     is NetworkResult.Success -> {
                         Log.d("response",it.data.toString())
-                        imageUrl= it.data.toString()
+                        val post =Post()
+                        post.createdAt = System.currentTimeMillis()
+                        post.createdBy = User(tokenManager.getUserName().toString(),tokenManager.getId().toString(),tokenManager.getProfile().toString())
+                        post.text = binding.txtDescription.text.toString()
+                        post.imageUrl =  it.data.toString()
+                        postViewModel.addPostToDatabase(post)
                     }
                     null -> {
 

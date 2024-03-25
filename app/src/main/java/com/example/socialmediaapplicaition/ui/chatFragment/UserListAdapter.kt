@@ -54,8 +54,6 @@ class UserListAdapter(
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
         val post = getItem(position)
         holder.bind(post)
-
-
     }
 
     class ComparatorDiffUtil : DiffUtil.ItemCallback<User>() {

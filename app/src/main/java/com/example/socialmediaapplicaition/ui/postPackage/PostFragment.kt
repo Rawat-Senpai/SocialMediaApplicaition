@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.view.GravityCompat
@@ -44,6 +45,14 @@ class PostFragment : Fragment() {
     private val postViewModel by viewModels<FirebaseViewModel> ()
     var imageView :ImageView ?= null
     var userTextView:TextView? = null
+    var videoCall:LinearLayout?= null
+    var contactLayout:LinearLayout?= null
+    var savedLayout:LinearLayout?= null
+    var settingLayout:LinearLayout?= null
+    var shareLayout:LinearLayout?= null
+    var sideMenuBackground:LinearLayout?=null
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -74,6 +83,23 @@ class PostFragment : Fragment() {
         val sideBinding = LayoutSideMenuBinding.bind(binding.sideMenu)
         imageView = sideBinding.profileImage
         userTextView = sideBinding.personName
+
+        videoCall = sideBinding.videoCallLayout
+        contactLayout= sideBinding.contactLayout
+        savedLayout = sideBinding.savedPost
+        settingLayout = sideBinding.settingLayout
+        shareLayout = sideBinding.shareApp
+        sideMenuBackground = sideBinding.sideMenuBackground
+
+
+        // this is done so that it do n
+        sideMenuBackground?.setOnClickListener(){}
+
+        videoCall?.setOnClickListener(){
+            Toast.makeText(requireContext(),"working on this",Toast.LENGTH_SHORT).show()
+        }
+
+
 
         userTextView?.text =tokenManager.getUserName().toString()
 

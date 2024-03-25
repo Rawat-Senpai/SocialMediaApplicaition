@@ -65,12 +65,12 @@
                 android:textColor="@color/light_gray"
                 android:textSize="16sp" />
 
-            <ImageView
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/imageView"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_gravity="center_horizontal"
-                android:src="@color/black"
+                android:src="@drawable/ic_default_person"
                 android:scaleType="fitXY"
                 android:layout_marginTop="10dp"/>
 
@@ -208,13 +208,14 @@
                 android:text="@string/txt_already_have_account"
                 android:textSize="14sp" />
 
-            <ProgressBar
+            <pl.droidsonroids.gif.GifImageView
                 android:id="@+id/progress_bar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:indeterminate="true"
-                android:visibility="gone" />
+                android:visibility="gone"
+                android:src="@drawable/loader"/>
 
 
         </LinearLayout>

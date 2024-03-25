@@ -39,7 +39,7 @@ class FirebaseViewModel @Inject constructor(private val repository:FirebaseRepos
     private  val _addChatMessageResultState = MutableStateFlow<NetworkResult<Unit>?>(null)
     val addChatMessageResultState:StateFlow<NetworkResult<Unit>?> = _addChatMessageResultState
 
-    private val _getAllChatMessages = MutableStateFlow<NetworkResult<ArrayList<ChatMessageModel>>?>(null)
+    private val _getAllChatMessages = MutableStateFlow<NetworkResult<ArrayList<ChatMessageModel>>?>(NetworkResult.Loading())
     val getAllChatChatMessages :StateFlow<NetworkResult<ArrayList<ChatMessageModel>>?> = _getAllChatMessages
 
 
@@ -121,11 +121,25 @@ class FirebaseViewModel @Inject constructor(private val repository:FirebaseRepos
     }
 
     fun getAllMessages(roomId:String)=viewModelScope.launch{
-      _getAllChatMessages.value = NetworkResult.Loading()
 
+      _getAllChatMessages.value = NetworkResult.Loading()
         try {
-            repository.getAllChats(roomId).collect{
-                _getAllChatMessages.value = it
+            repository.getAllChats(roomId).collect{result->
+//                _getAllChatMessages.value = it
+
+                when(result){
+                    is NetworkResult.Error ->{
+                        _getAllChatMessages.value = NetworkResult.Error(result.toString())
+                    }
+
+                    is NetworkResult.Loading -> {
+                        _getAllChatMessages.value = NetworkResult.Loading()
+                    }
+
+                    is NetworkResult.Success -> {
+                        _getAllChatMessages.value = result
+                    }
+                }
             }
         }catch (e:Exception){
             _getAllChatMessages.value = NetworkResult.Error(e.toString())

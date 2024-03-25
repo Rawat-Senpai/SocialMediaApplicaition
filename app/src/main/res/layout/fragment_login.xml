@@ -149,13 +149,15 @@
                 android:text="@string/txt_no_account_signup"
                 android:textSize="14sp" />
 
-            <ProgressBar
+            <ImageView
                 android:id="@+id/progress_bar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:elevation="5dp"
-                android:visibility="gone" />
+                android:src="@drawable/loader"
+                android:visibility="gone"
+                />
 
 
         </LinearLayout>

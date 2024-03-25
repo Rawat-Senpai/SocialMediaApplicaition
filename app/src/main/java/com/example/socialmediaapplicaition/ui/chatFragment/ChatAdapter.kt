@@ -1,12 +1,15 @@
 package com.example.socialmediaapplicaition.ui.chatFragment
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.socialmediaapplicaition.R
 import com.example.socialmediaapplicaition.databinding.RowChatBinding
 import com.example.socialmediaapplicaition.models.ChatMessageModel
 import com.example.socialmediaapplicaition.utils.Constants
@@ -103,11 +106,24 @@ class ChatAdapter (
         return ChatViewHolder(binding)
     }
 
+
+    // Function to set animation
+    private fun setAnimation(view: View, position: Int) {
+        val animation = AnimationUtils.loadAnimation(view.context, R.anim.water_drop_animation)
+        view.startAnimation(animation)
+    }
+
+    // Helper function to clear animation when needed
+    fun clearAnimation(view: View) {
+        view.clearAnimation()
+    }
+
+
     override fun onBindViewHolder(holder: ChatViewHolder, position: Int) {
         val chat = getItem(position)
         holder.bind(chat)
 
-
+        setAnimation(holder.itemView, position)
     }
 
     class ComparatorDiffUtil : DiffUtil.ItemCallback<ChatMessageModel>() {

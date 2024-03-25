@@ -6,7 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import android.view.animation.AnimationUtils
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -183,34 +185,35 @@ class ChatFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
 
             viewModel.getAllChatChatMessages.collect(){
-
+                binding.progressBar.isVisible = it is NetworkResult.Loading
                 when(it){
+
                     is NetworkResult.Error -> {
                         Log.d("ChatResponse",it.toString())
                     }
-                    is NetworkResult.Loading -> {
 
+                    is NetworkResult.Loading -> {
+                            binding.progressBar.isVisible = true
                     }
+
                     is NetworkResult.Success -> {
                         Log.d("ChatResponse",it.data.toString())
                         Log.d("ChatResponseSize",it.data?.size.toString())
                         Log.d("ChatResponseSize_",adapter.itemCount.toString())
                         adapter.submitList(it.data)
-
                         binding.recyclerView.smoothScrollToPosition(adapter.itemCount)
                     }
                     null -> {
 
                     }
                 }
-
-
             }
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.addChatRoomResultState.collect {
 
+                binding.progressBar.isVisible = it is NetworkResult.Loading
                 when (it) {
                     is NetworkResult.Error -> {
                         Log.d("TAGSignUp", it.message.toString())
@@ -219,7 +222,7 @@ class ChatFragment : Fragment() {
 
 
                     is NetworkResult.Loading -> {
-
+                            binding.progressBar.isVisible=true
                     }
 
                     is NetworkResult.Success -> {
@@ -233,6 +236,8 @@ class ChatFragment : Fragment() {
 
                         viewModel.addChatMessageToDatabase(chatMessageModel,chatRoomId)
                         binding.messageText.setText("")
+
+
                     }
 
                     else -> {
