@@ -6,12 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
 import com.example.socialmediaapplicaition.R
 import com.example.socialmediaapplicaition.databinding.FragmentPostDetailsBinding
+import com.example.socialmediaapplicaition.models.PersonComments
 import com.example.socialmediaapplicaition.models.Post
 import com.example.socialmediaapplicaition.utils.TokenManager
 import com.example.socialmediaapplicaition.utils.Utils
+import com.example.socialmediaapplicaition.viewModels.FirebaseViewModel
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -23,6 +26,8 @@ class PostDetailsFragment : Fragment() {
 
     private var _binding:FragmentPostDetailsBinding?= null
     val  binding  get() = _binding!!
+
+    private val postViewModel by viewModels<FirebaseViewModel> ()
 
     @Inject
     lateinit var tokenManager: TokenManager
@@ -41,7 +46,29 @@ class PostDetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        onBindViews()
         setInitialData()
+    }
+
+    private fun onBindViews() {
+        binding.apply {
+
+
+            Glide.with(myImage).load(tokenManager.getProfile()).placeholder(R.drawable.ic_default_person).into(myImage)
+
+            addComment.setOnClickListener(){
+                val comment = commentText.text.toString()
+                val personComment = PersonComments(tokenManager.getUserName().toString(),tokenManager.getProfile().toString(),comment)
+                postViewModel.addCommentToPost(post!!,personComment)
+
+
+
+            }
+
+
+
+        }
     }
 
     private fun setInitialData() {
@@ -58,6 +85,8 @@ class PostDetailsFragment : Fragment() {
                     Glide.with(root.context).load(post?.imageUrl).into(userImagePost)
 
                     postTime.text = Utils.getTimeAgo(post?.createdAt!!)
+
+                    Glide.with(userImage).load(post?.createdBy?.profile).placeholder(R.drawable.ic_default_person).into(userImage)
 
                     if(isLiked!!){
                         likeButton.setImageDrawable(ContextCompat.getDrawable(likeButton.context,R.drawable.liked))

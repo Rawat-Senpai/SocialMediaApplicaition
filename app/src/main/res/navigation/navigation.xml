@@ -65,7 +65,7 @@
     </fragment>
     <fragment
         android:id="@+id/createPostFragmnet"
-        android:name="com.example.socialmediaapplicaition.ui.createPost.CreatePostFragment"
+        android:name="com.example.socialmediaapplicaition.ui.postPackage.CreatePostFragment"
         android:label="fragment_create_post_fragmnet"
         tools:layout="@layout/fragment_create_post_fragmnet" />
     <fragment

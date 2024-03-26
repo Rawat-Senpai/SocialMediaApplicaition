@@ -7,5 +7,12 @@ data class Post(
     var createdBy:User=User(),
     var createdAt:Long=0L,
     val likedBy:ArrayList<String> = ArrayList(),
-    val savedBy:ArrayList<String> = ArrayList()
+    val savedBy:ArrayList<String> = ArrayList(),
+    val comments:ArrayList<PersonComments> = ArrayList()
+)
+
+data class PersonComments(
+    var personName:String ="",
+    var personProfile:String="",
+    var comment:String="",
 )

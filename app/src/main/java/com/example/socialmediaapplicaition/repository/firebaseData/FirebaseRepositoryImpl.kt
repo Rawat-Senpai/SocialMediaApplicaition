@@ -3,6 +3,7 @@ package com.example.socialmediaapplicaition.repository.firebaseData
 import android.util.Log
 import com.example.socialmediaapplicaition.models.ChatMessageModel
 import com.example.socialmediaapplicaition.models.ChatRoomModel
+import com.example.socialmediaapplicaition.models.PersonComments
 import com.example.socialmediaapplicaition.models.Post
 import com.example.socialmediaapplicaition.models.User
 import com.example.socialmediaapplicaition.utils.NetworkResult
@@ -110,6 +111,29 @@ class FirebaseRepositoryImpl @Inject constructor(private val firebaseFirestore: 
             NetworkResult.Error(e.toString())
         }
     }
+
+
+
+    override suspend fun addCommentToPost(post: Post, commentPerson: PersonComments): NetworkResult<Unit> {
+    return try {
+
+        post.comments.add(commentPerson)
+
+        firebaseFirestore.collection("posts")
+            .document(post.id)
+            .set(post)
+            .addDataToFirestore()
+
+        Log.d("checkingComment","successfull")
+
+        NetworkResult.Success(Unit)
+
+    }catch (e:Exception){
+        NetworkResult.Error(e.toString())
+    }
+
+    }
+
 
     override suspend fun createChatRoom(chat: ChatRoomModel): NetworkResult<Unit> {
         return try {

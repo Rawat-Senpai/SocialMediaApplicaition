@@ -32,12 +32,11 @@ suspend fun <T> Task<T>.addDataToFirestore(): T {
     return suspendCancellableCoroutine { cont ->
         addOnSuccessListener { result ->
             Log.d("checkingShobhit",result.toString())
-            Log.d("checkingShobhit","successful")
             cont.resume(result,null)
         }
             .addOnFailureListener { e ->
 
-                Log.d("checkingShobhit","false")
+                Log.d("checkingShobhit",e.toString())
                 cont.resumeWithException(e)
             }
     }

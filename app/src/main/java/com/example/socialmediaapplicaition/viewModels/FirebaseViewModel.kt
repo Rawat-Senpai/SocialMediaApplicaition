@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.socialmediaapplicaition.models.ChatMessageModel
 import com.example.socialmediaapplicaition.models.ChatRoomModel
+import com.example.socialmediaapplicaition.models.PersonComments
 import com.example.socialmediaapplicaition.models.Post
 import com.example.socialmediaapplicaition.models.User
 import com.example.socialmediaapplicaition.repository.firebaseData.FirebaseRepository
@@ -48,6 +49,9 @@ class FirebaseViewModel @Inject constructor(private val repository:FirebaseRepos
 
     private val _getAllChatHistory = MutableStateFlow<NetworkResult<List<ChatRoomModel>>?>(null)
     val getAllChatHistory:StateFlow <NetworkResult<List<ChatRoomModel>>?> = _getAllChatHistory
+
+    private  val _addCommentInPost = MutableStateFlow<NetworkResult<Unit>?>(null)
+    val addCommentPost get():StateFlow<NetworkResult<Unit>?> = _addCommentInPost
 
 
     init {
@@ -102,6 +106,12 @@ class FirebaseViewModel @Inject constructor(private val repository:FirebaseRepos
         val result = repository.updateLikeStatus(post,userId)
         _addLikeResponse.value = result
 
+    }
+
+    fun addCommentToPost(post:Post,commentPerson:PersonComments) = viewModelScope.launch {
+        _addCommentInPost.value = NetworkResult.Loading()
+        val result = repository.addCommentToPost(post,commentPerson)
+        _addCommentInPost.value = result
     }
 
 

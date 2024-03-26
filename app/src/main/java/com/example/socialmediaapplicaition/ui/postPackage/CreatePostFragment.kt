@@ -1,4 +1,4 @@
-package com.example.socialmediaapplicaition.ui.createPost
+package com.example.socialmediaapplicaition.ui.postPackage
 
 import android.Manifest
 import android.content.ContentValues

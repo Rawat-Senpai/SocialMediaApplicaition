@@ -2,6 +2,7 @@ package com.example.socialmediaapplicaition.repository.firebaseData
 
 import com.example.socialmediaapplicaition.models.ChatMessageModel
 import com.example.socialmediaapplicaition.models.ChatRoomModel
+import com.example.socialmediaapplicaition.models.PersonComments
 import com.example.socialmediaapplicaition.models.Post
 import com.example.socialmediaapplicaition.models.User
 import com.example.socialmediaapplicaition.utils.NetworkResult
@@ -26,4 +27,5 @@ interface FirebaseRepository {
     fun getAllChats(roomId:String): Flow<ChatsResponse>
 
     fun getAllPreviousChat():Flow<PreviousChatResponse>
+    suspend fun  addCommentToPost(post: Post, commentPerson: PersonComments): NetworkResult<Unit>
 }
