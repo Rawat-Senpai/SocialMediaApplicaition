@@ -9,11 +9,8 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.socialmediaapplicaition.R
-
 import com.example.socialmediaapplicaition.databinding.LayoutCommentsBinding
-
 import com.example.socialmediaapplicaition.models.PersonComments
-import com.example.socialmediaapplicaition.models.Post
 
 
 class CommentAdapter () : ListAdapter<PersonComments, CommentAdapter.CommentViewHolder>(ComparatorDiffUtil()) {

@@ -31,6 +31,8 @@ class PostDetailsFragment : Fragment() {
     private val postViewModel by viewModels<FirebaseViewModel> ()
     private lateinit var adapter:CommentAdapter
 
+
+    var commentList:ArrayList<PersonComments> = ArrayList()
     @Inject
     lateinit var tokenManager: TokenManager
     override fun onCreateView(
@@ -67,8 +69,15 @@ class PostDetailsFragment : Fragment() {
 
             addComment.setOnClickListener(){
                 val comment = commentText.text.toString()
-                val personComment = PersonComments(tokenManager.getUserName().toString(),tokenManager.getProfile().toString(),comment)
+                val personComment = PersonComments(tokenManager.getUserName().toString(),tokenManager.getProfile().toString(),comment,System.currentTimeMillis())
                 postViewModel.addCommentToPost(post!!,personComment)
+
+                commentList.add(personComment)
+                adapter.submitList(commentList)
+                commentText.setText("")
+
+
+
 
 
 
@@ -106,6 +115,10 @@ class PostDetailsFragment : Fragment() {
                 }
 
 
+            }
+
+            if(post?.comments?.size!! >=0){
+                commentList.addAll(post!!.comments)
             }
 
             adapter.submitList(post?.comments)
