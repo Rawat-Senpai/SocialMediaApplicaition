@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.socialmediaapplicaition.R
 import com.example.socialmediaapplicaition.databinding.FragmentPostDetailsBinding
@@ -28,6 +29,7 @@ class PostDetailsFragment : Fragment() {
     val  binding  get() = _binding!!
 
     private val postViewModel by viewModels<FirebaseViewModel> ()
+    private lateinit var adapter:CommentAdapter
 
     @Inject
     lateinit var tokenManager: TokenManager
@@ -46,6 +48,12 @@ class PostDetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+
+        adapter = CommentAdapter()
+        binding.commentRecyclerView.layoutManager = LinearLayoutManager(context,
+            LinearLayoutManager.VERTICAL,false)
+        binding.commentRecyclerView.adapter = adapter
 
         onBindViews()
         setInitialData()
@@ -85,7 +93,7 @@ class PostDetailsFragment : Fragment() {
                     Glide.with(root.context).load(post?.imageUrl).into(userImagePost)
 
                     postTime.text = Utils.getTimeAgo(post?.createdAt!!)
-
+                    userText.text = post?.text.toString()
                     Glide.with(userImage).load(post?.createdBy?.profile).placeholder(R.drawable.ic_default_person).into(userImage)
 
                     if(isLiked!!){
@@ -99,6 +107,9 @@ class PostDetailsFragment : Fragment() {
 
 
             }
+
+            adapter.submitList(post?.comments)
+
         }
     }
 

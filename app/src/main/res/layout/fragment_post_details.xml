@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.postPackage.PostDetailsFragment"
     android:background="@drawable/chat_background"
     android:fillViewport="true"
-    android:paddingHorizontal="15dp">
+    android:paddingHorizontal="15dp"
+    tools:context=".ui.postPackage.PostDetailsFragment">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -15,187 +15,181 @@
         android:layout_height="match_parent">
 
 
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/user_image"
+            android:layout_width="53dp"
+            android:layout_height="53dp"
+            android:layout_alignParentTop="true"
+            android:layout_margin="10dp"
+            android:src="@drawable/ic_default_person"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/user_image"
-                    android:layout_width="53dp"
-                    android:layout_height="53dp"
-                    android:layout_alignParentTop="true"
-                    android:layout_margin="10dp"
-                    android:src="@drawable/ic_default_person"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="20dp"
+            android:layout_toEndOf="@+id/user_image"
+            android:layout_toRightOf="@+id/user_image"
+            android:fontFamily="@font/poppins_medium"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/user_image"
+            app:layout_constraintTop_toTopOf="@+id/user_image"
+            tools:text="Person Name" />
 
-                <TextView
-                    android:id="@+id/user_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:layout_marginLeft="20dp"
-                    android:layout_toEndOf="@+id/user_image"
-                    android:layout_toRightOf="@+id/user_image"
-                    tools:text="Person Name"
-                    android:textColor="@color/white"
-                    android:fontFamily="@font/poppins_medium"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toEndOf="@+id/user_image"
-                    app:layout_constraintTop_toTopOf="@+id/user_image" />
-
-                <TextView
-                    android:id="@+id/post_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/user_name"
-                    android:layout_toEndOf="@+id/user_image"
-                    android:layout_toRightOf="@+id/user_image"
-                    android:fontFamily="@font/poppins_medium"
-                    tools:text="10 minuts ago"
-                    android:textColor="@color/white"
-                    android:textSize="12sp"
-                    app:layout_constraintStart_toStartOf="@+id/user_name"
-                    app:layout_constraintTop_toBottomOf="@+id/user_name" />
-
+        <TextView
+            android:id="@+id/post_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/user_name"
+            android:layout_toEndOf="@+id/user_image"
+            android:layout_toRightOf="@+id/user_image"
+            android:fontFamily="@font/poppins_medium"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="@+id/user_name"
+            app:layout_constraintTop_toBottomOf="@+id/user_name"
+            tools:text="10 minuts ago" />
 
 
         <androidx.cardview.widget.CardView
             android:id="@+id/user_image_post_container"
-            android:minHeight="300dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="10dp"
-            android:layout_width="match_parent"
             android:background="@drawable/rounded_background_post"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:cardCornerRadius="50dp"
             android:backgroundTint="@color/purple"
+            android:minHeight="300dp"
+            app:cardCornerRadius="50dp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/user_image">
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:cardCornerRadius="50dp"
-                android:layout_margin="@dimen/_3sdp">
+                android:layout_margin="@dimen/_3sdp"
+                app:cardCornerRadius="50dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:minHeight="300dp"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:minHeight="300dp">
 
                     <ImageView
                         android:id="@+id/user_image_post"
                         android:layout_width="match_parent"
-                        android:layout_margin="5dp"
                         android:layout_height="match_parent"
-                        android:layout_marginTop="15dp"
-                        android:layout_marginBottom="15dp"
+                        android:layout_margin="5dp"
                         android:layout_marginLeft="5dp"
+                        android:layout_marginTop="15dp"
                         android:layout_marginRight="5dp"
-                        android:scaleType="fitXY"
-                        />
+                        android:layout_marginBottom="15dp"
+                        android:scaleType="fitXY" />
 
                 </LinearLayout>
 
             </androidx.cardview.widget.CardView>
 
 
-
-
         </androidx.cardview.widget.CardView>
 
 
-
-                <ImageView
-                    android:id="@+id/likeButton"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_marginTop="15dp"
-                    app:layout_constraintStart_toStartOf="@+id/user_image_post_container"
-                    app:layout_constraintTop_toBottomOf="@+id/user_image_post_container"
-                    android:src="@drawable/fav_unlike"/>
-
-
-                <TextView
-                    android:id="@+id/total_like"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:padding="5dp"
-                    tools:text="10 people like this"
-                    android:textColor="@color/white"
-                    android:textSize="12sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/likeButton"
-                    app:layout_constraintStart_toEndOf="@+id/likeButton"
-                    app:layout_constraintTop_toTopOf="@+id/likeButton" />
+        <ImageView
+            android:id="@+id/likeButton"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginTop="15dp"
+            android:src="@drawable/fav_unlike"
+            app:layout_constraintStart_toStartOf="@+id/user_image_post_container"
+            app:layout_constraintTop_toBottomOf="@+id/user_image_post_container" />
 
 
-                <LinearLayout
-                    android:id="@+id/linearLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    app:layout_constraintTop_toBottomOf="@+id/total_like"
-                    tools:layout_editor_absoluteX="2dp">
-
-                        <TextView
-                            android:id="@+id/captionName"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="5dp"
-                            android:letterSpacing="0.02"
-                            android:padding="2dp"
-                            tools:text="Person Name"
-                            android:textColor="@color/white"
-                            android:textSize="14sp"
-                            android:textStyle="bold"
-                            app:layout_constraintStart_toStartOf="@+id/user_image_post_container"
-                            app:layout_constraintTop_toBottomOf="@+id/likeButton" />
-
-                        <TextView
-                            android:id="@+id/user_text"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@id/user_image"
-                            android:padding="5dp"
-                            tools:text="heelo bhai kese ho "
-                            android:textColor="@color/white"
-                            android:textSize="14sp"
-                            app:layout_constraintBottom_toBottomOf="@+id/captionName"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toEndOf="@+id/captionName"
-                            app:layout_constraintTop_toTopOf="@+id/captionName" />
+        <TextView
+            android:id="@+id/total_like"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:padding="5dp"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@+id/likeButton"
+            app:layout_constraintStart_toEndOf="@+id/likeButton"
+            app:layout_constraintTop_toTopOf="@+id/likeButton"
+            tools:text="10 people like this" />
 
 
-                </LinearLayout>
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@+id/total_like"
+            tools:layout_editor_absoluteX="2dp">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/commentRecyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+            <TextView
+                android:id="@+id/captionName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:letterSpacing="0.02"
+                android:padding="2dp"
+                android:text="Person Name"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@+id/user_image_post_container"
+                app:layout_constraintTop_toBottomOf="@+id/likeButton" />
+
+            <TextView
+                android:id="@+id/user_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/user_image"
+                android:padding="5dp"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="@+id/captionName"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/captionName"
+                app:layout_constraintTop_toTopOf="@+id/captionName"
+                tools:text="heelo bhai kese ho " />
 
 
-                <ImageView
-                    android:id="@+id/myImage"
-                    android:layout_width="23dp"
-                    android:layout_height="23dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/commentRecyclerView"
-                    android:src="@drawable/ic_default_person"/>
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/commentRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/myImage"
+            android:layout_width="23dp"
+            android:layout_height="23dp"
+            android:src="@drawable/ic_default_person"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/commentRecyclerView" />
 
         <EditText
             android:id="@+id/commentText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="2dp"
-            android:inputType="textMultiLine"
-            android:scrollbars="vertical"
-            android:maxLines="5"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
             android:background="@null"
             android:hint="enter a comment "
+            android:inputType="textMultiLine"
+            android:maxLines="5"
             android:padding="5dp"
+            android:scrollbars="vertical"
             android:textColor="#CDC9C9"
             android:textColorHint="@color/grey"
             android:textSize="14sp"
@@ -216,4 +210,4 @@
             app:tint="@color/white" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.core.widget.NestedScrollView>
+</androidx.core.widget.NestedScrollView>

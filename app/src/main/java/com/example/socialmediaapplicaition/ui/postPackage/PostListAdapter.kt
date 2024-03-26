@@ -32,7 +32,7 @@ class PostListAdapter(
                 isLiked = post.likedBy.contains(userId)
                 // Bind your data to the views here
                 userName.text = post.createdBy.name
-                Glide.with(root.context).load(post.createdBy.profile).into(userImage)
+                Glide.with(root.context).load(post.createdBy.profile).placeholder(R.drawable.ic_default_person).into(userImage)
                 Glide.with(root.context).load(post.imageUrl).into(userImagePost)
 
                 totalLike.text = "${likeCount} liked this post"
