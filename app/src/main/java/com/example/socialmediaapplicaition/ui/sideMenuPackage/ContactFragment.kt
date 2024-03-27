@@ -10,9 +10,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.socialmediaapplicaition.R
 import com.example.socialmediaapplicaition.databinding.FragmentContactBinding
 import com.example.socialmediaapplicaition.models.ChatRoomModel
+import com.example.socialmediaapplicaition.models.User
 import com.example.socialmediaapplicaition.ui.chatFragment.UserChatHistoryAdapter
 import com.example.socialmediaapplicaition.utils.NetworkResult
 import com.example.socialmediaapplicaition.utils.TokenManager
@@ -28,11 +30,11 @@ class ContactFragment : Fragment() {
     @Inject
     lateinit var tokenManager: TokenManager
     private val viewModel by viewModels<FirebaseViewModel>()
-
     private  var _binding :FragmentContactBinding ?= null
 
-    private lateinit var adapter: UserChatHistoryAdapter
+    private lateinit var adapter: SideMenuAdapter
     val binding get() = _binding!!
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -46,6 +48,12 @@ class ContactFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        adapter = SideMenuAdapter(::onActionClicked,tokenManager.getId().toString())
+        binding.recyclerView.layoutManager = LinearLayoutManager(context,
+            LinearLayoutManager.VERTICAL,false)
+        binding.recyclerView.adapter = adapter
+        viewModel.getAllPreviousChat(tokenManager.getId().toString())
+
         bindObserver()
     }
 
@@ -74,7 +82,7 @@ class ContactFragment : Fragment() {
             }
         }
     }
-    private fun onActionClicked(user: ChatRoomModel, action:String){
+    private fun onActionClicked(user: User, action:String){
         val bundle = Bundle()
         bundle.putString("previousChat", Gson().toJson(user))
         findNavController().navigate(R.id.action_chatHistoryFragment_to_chatFragment,bundle)
