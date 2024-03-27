@@ -76,14 +76,7 @@ class PostDetailsFragment : Fragment() {
                 adapter.submitList(commentList)
                 commentText.setText("")
 
-
-
-
-
-
             }
-
-
 
         }
     }
@@ -107,14 +100,13 @@ class PostDetailsFragment : Fragment() {
 
                     if(isLiked!!){
                         likeButton.setImageDrawable(ContextCompat.getDrawable(likeButton.context,R.drawable.liked))
-                    }
-                    else{
+                    }else{
                         likeButton.setImageDrawable(ContextCompat.getDrawable(likeButton.context,R.drawable.fav_unlike))
                     }
 
+                    totalLike.text = post?.likedBy?.size.toString() + " Liked this post"
+
                 }
-
-
             }
 
             if(post?.comments?.size!! >=0){

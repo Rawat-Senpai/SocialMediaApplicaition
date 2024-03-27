@@ -25,6 +25,7 @@
             android:layout_height="53dp"
             android:layout_alignParentTop="true"
             android:layout_margin="10dp"
+            android:src="@drawable/ic_default_person"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -37,7 +38,7 @@
             android:layout_toEndOf="@+id/user_image"
             android:layout_toRightOf="@+id/user_image"
             tools:text="Person Name"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/user_image"
@@ -51,7 +52,7 @@
             android:layout_toEndOf="@+id/user_image"
             android:layout_toRightOf="@+id/user_image"
             tools:text="10 minuts ago"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textSize="12sp"
             app:layout_constraintStart_toStartOf="@+id/user_name"
             app:layout_constraintTop_toBottomOf="@+id/user_name" />
@@ -120,12 +121,66 @@
             android:layout_marginLeft="5dp"
             android:padding="5dp"
             tools:text="10 people like this"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="@+id/likeButton"
             app:layout_constraintStart_toEndOf="@+id/likeButton"
             app:layout_constraintTop_toTopOf="@+id/likeButton" />
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/commentBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="5dp"
+            app:layout_constraintEnd_toEndOf="@+id/linearLayout"
+            app:layout_constraintStart_toStartOf="@+id/linearLayout"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+            android:visibility="gone">
+
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/commentPersonImage"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_default_person"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/personName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter_semibold"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                android:layout_marginStart="5dp"
+                app:layout_constraintStart_toEndOf="@+id/commentPersonImage"
+                app:layout_constraintTop_toTopOf="@+id/commentPersonImage"
+                tools:text="Ketan Singh" />
+
+
+            <TextView
+                android:id="@+id/commentText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/personName"
+                app:layout_constraintTop_toBottomOf="@+id/personName"
+                tools:text="Add a comment here..." />
+
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_marginEnd="12dp"
+                android:src="@drawable/liked"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <LinearLayout
             android:id="@+id/linearLayout"
@@ -142,12 +197,12 @@
                 android:layout_marginLeft="5dp"
                 android:letterSpacing="0.02"
                 android:padding="2dp"
-                tools:text="Person Name"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 android:textSize="14sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="@+id/user_image_post_container"
-                app:layout_constraintTop_toBottomOf="@+id/likeButton" />
+                app:layout_constraintTop_toBottomOf="@+id/likeButton"
+                tools:text="Person Name" />
 
             <TextView
                 android:id="@+id/user_text"
@@ -155,44 +210,16 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/user_image"
                 android:padding="5dp"
-                tools:text="heelo bhai kese ho "
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="@+id/captionName"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/captionName"
-                app:layout_constraintTop_toTopOf="@+id/captionName" />
+                app:layout_constraintTop_toTopOf="@+id/captionName"
+                tools:text="heelo bhai kese ho " />
 
 
         </LinearLayout>
-
-
-        <ImageView
-
-            android:id="@+id/myImage"
-            android:layout_width="23dp"
-            android:layout_height="23dp"
-            android:visibility="gone"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout"
-            tools:srcCompat="@tools:sample/avatars" />
-
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="5dp"
-            tools:text="Add a comment here ..."
-            android:textColor="#CDC9C9"
-            android:textSize="12sp"
-            android:visibility="gone"
-            android:background="@null"
-            android:layout_marginBottom="5dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginLeft="2dp"
-            app:layout_constraintBottom_toBottomOf="@+id/myImage"
-            app:layout_constraintStart_toEndOf="@+id/myImage"
-            app:layout_constraintTop_toTopOf="@+id/myImage" />
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

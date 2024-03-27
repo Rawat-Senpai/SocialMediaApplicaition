@@ -16,6 +16,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.example.socialmediaapplicaition.R
 import com.example.socialmediaapplicaition.databinding.FragmentMainBinding
 import com.example.socialmediaapplicaition.databinding.LayoutSideMenuBinding
@@ -43,7 +44,7 @@ class PostFragment : Fragment() {
     private val viewModel by viewModels<AuthViewModel>()
 
     private val postViewModel by viewModels<FirebaseViewModel> ()
-    var imageView :ImageView ?= null
+    var SideMenuImage :ImageView ?= null
     var userTextView:TextView? = null
     var videoCall:LinearLayout?= null
     var contactLayout:LinearLayout?= null
@@ -68,8 +69,6 @@ class PostFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
-
         adapter = PostListAdapter(::onPostClicked,::onPostLiked,tokenManager.getId().toString())
         binding.recyclerView.layoutManager = LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false)
         binding.recyclerView.adapter = adapter
@@ -81,15 +80,15 @@ class PostFragment : Fragment() {
 
 
         val sideBinding = LayoutSideMenuBinding.bind(binding.sideMenu)
-        imageView = sideBinding.profileImage
+        SideMenuImage = sideBinding.profileImage
         userTextView = sideBinding.personName
-
         videoCall = sideBinding.videoCallLayout
         contactLayout= sideBinding.contactLayout
         savedLayout = sideBinding.savedPost
         settingLayout = sideBinding.settingLayout
         shareLayout = sideBinding.shareApp
         sideMenuBackground = sideBinding.sideMenuBackground
+
 
 
         // this is done so that it do n
@@ -99,11 +98,12 @@ class PostFragment : Fragment() {
             Toast.makeText(requireContext(),"working on this",Toast.LENGTH_SHORT).show()
         }
 
-
+        contactLayout?.setOnClickListener(){
+            findNavController().navigate(R.id.action_mainFragment_to_contactFragment)
+        }
 
         userTextView?.text =tokenManager.getUserName().toString()
-
-
+        Glide.with(requireContext()).load(tokenManager.getProfile()).placeholder(R.drawable.ic_default_person).into(SideMenuImage!!)
 
 
     }
@@ -147,14 +147,15 @@ class PostFragment : Fragment() {
                     binding.progressBar.isVisible = false
                     when (it) {
                         is NetworkResult.Success -> {
-                            Toast.makeText(requireContext(), "successful shobhit", Toast.LENGTH_SHORT).show()
                             Log.d("checkingPostResponse00", it.data.toString())
                             adapter.submitList(it.data)
                         }
+
                         is NetworkResult.Error -> {
                             Log.d("checkingPostResponse01", it.message.toString())
-                            Toast.makeText(requireContext(), "error", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(requireContext(),it.message.toString(),Toast.LENGTH_SHORT).show()
                         }
+
                         is NetworkResult.Loading -> {
                             binding.progressBar.isVisible = true
                         }

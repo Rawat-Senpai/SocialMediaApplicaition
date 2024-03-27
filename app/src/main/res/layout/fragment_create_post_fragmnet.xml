@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.postPackage.CreatePostFragment"
-    android:background="#243B55">
+    android:background="@drawable/chat_background">
     
     <LinearLayout
         android:layout_width="match_parent"

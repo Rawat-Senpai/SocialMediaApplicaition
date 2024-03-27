@@ -22,6 +22,7 @@ class CommentAdapter () : ListAdapter<PersonComments, CommentAdapter.CommentView
                 binding.apply {
                     Glide.with(root).load(comment.personProfile).placeholder(R.drawable.ic_default_person).into(myImage)
                     commentText.text = comment.comment
+                    personName.text = comment.personName
                 }
             }
 

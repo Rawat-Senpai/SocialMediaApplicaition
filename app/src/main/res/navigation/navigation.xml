@@ -50,6 +50,9 @@
         <action
             android:id="@+id/action_mainFragment_to_allUserListFragment"
             app:destination="@id/searchUserListFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_contactFragment"
+            app:destination="@id/contactFragment" />
     </fragment>
     <fragment
         android:id="@+id/chatHistoryFragment"
@@ -92,4 +95,10 @@
             android:id="@+id/action_searchUserListFragment_to_chatFragment"
             app:destination="@id/chatFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/contactFragment"
+        android:name="com.example.socialmediaapplicaition.ui.sideMenuPackage.ContactFragment"
+        android:label="fragment_contact"
+        tools:layout="@layout/fragment_contact" />
+
 </navigation>

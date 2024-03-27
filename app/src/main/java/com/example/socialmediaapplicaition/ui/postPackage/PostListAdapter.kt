@@ -4,6 +4,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -28,7 +29,6 @@ class PostListAdapter(
         fun bind(post: Post) {
             likeCount = post.likedBy.size
             binding.apply {
-
                 isLiked = post.likedBy.contains(userId)
                 // Bind your data to the views here
                 userName.text = post.createdBy.name
@@ -38,7 +38,6 @@ class PostListAdapter(
                 totalLike.text = "${likeCount} liked this post"
                 captionName.text = post.createdBy.name
                 userText.text = post.text
-
 
                 postTime.text = Utils.getTimeAgo(post.createdAt)
 
@@ -69,6 +68,15 @@ class PostListAdapter(
                         )
                     )
                     onPostLiked(post)
+                }
+
+                if(post.comments.size>0){
+
+                    commentBox.isVisible=true
+                    Glide.with(root).load(post.comments[0].personProfile).into(commentPersonImage)
+                    personName.text = post.comments[0].personName
+                    commentText.text = post.comments[0].comment
+
                 }
             }
         }
