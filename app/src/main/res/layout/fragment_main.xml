@@ -95,13 +95,38 @@
              android:layout_weight="1"
              android:src="@drawable/add_post" />
 
-         <ImageView
+         <androidx.constraintlayout.widget.ConstraintLayout
              android:id="@+id/setting"
              android:layout_width="0dp"
              android:layout_height="35dp"
              android:layout_gravity="center"
              android:layout_weight="1"
-             android:src="@drawable/ic_video_call" />
+              >
+
+             <ImageView
+                 android:id="@+id/imageView6"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:src="@drawable/ic_background"
+                 app:layout_constraintBottom_toBottomOf="parent"
+                 app:layout_constraintEnd_toEndOf="parent"
+                 app:layout_constraintStart_toStartOf="parent"
+                 app:layout_constraintTop_toTopOf="parent" />
+
+
+             <ImageView
+                 android:layout_width="15dp"
+                 android:layout_height="15dp"
+                 android:src="@drawable/ic_add_friend"
+                 app:layout_constraintBottom_toBottomOf="parent"
+                 app:layout_constraintEnd_toEndOf="@+id/imageView6"
+                 app:layout_constraintStart_toStartOf="parent"
+                 app:layout_constraintTop_toTopOf="parent"
+                 app:tint="@color/white" />
+
+
+
+         </androidx.constraintlayout.widget.ConstraintLayout>
 
      </LinearLayout>
 

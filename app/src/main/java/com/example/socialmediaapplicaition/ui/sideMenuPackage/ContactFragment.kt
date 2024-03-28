@@ -136,7 +136,7 @@ class ContactFragment : Fragment() {
                         is NetworkResult.Success -> {
                             Log.d("checkContactSearch",it.data.toString())
 //                            adapter.submitList(it.data)
-
+                            adapter.submitList(it.data)
                         }
                         null ->{
 
