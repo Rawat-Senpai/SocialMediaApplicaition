@@ -1,6 +1,8 @@
 package com.example.socialmediaapplicaition.ui.sideMenuPackage
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -55,31 +57,95 @@ class ContactFragment : Fragment() {
         viewModel.getAllPreviousChat(tokenManager.getId().toString())
 
         bindObserver()
+        bindViews()
+    }
+
+    private fun bindViews() {
+        binding.apply {
+
+            val textWatcher = object : TextWatcher {
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                    // This method is called before the text in the EditText is changed
+                }
+
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                    // This method is called when the text in the EditText is changed
+
+                    val searchText = s.toString()
+
+                    if(s.toString()!=""){
+                        viewModel.searchContacts(searchText,tokenManager.getId().toString())
+                    }
+
+
+                }
+
+                override fun afterTextChanged(s: Editable?) {
+                    // This method is called after the text in the EditText has been changed
+                }
+            }
+
+            binding.apply {
+                searchEdt.addTextChangedListener(textWatcher)
+            }
+
+
+
+        }
     }
 
     private fun bindObserver() {
 
 
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.getAllChatHistory.collect{it->
-                binding.progressBar.isVisible=false
-                when(it){
-                    is NetworkResult.Error -> {
-                        Log.d("checkingHistory",it.toString())
-                    }
-                    is NetworkResult.Loading -> {
-                        binding.progressBar.isVisible=true
-                        Log.d("checkingHistory",it.toString())
-                    }
-                    is NetworkResult.Success -> {
-                        Log.d("checkingHistory",it.data.toString())
-                        adapter.submitList(it.data)
-                    }
-                    null ->{
 
+            launch {
+                viewModel.getAllChatHistory.collect{it->
+                    binding.progressBar.isVisible=false
+                    when(it){
+                        is NetworkResult.Error -> {
+                            Log.d("checkingHistory",it.toString())
+                        }
+                        is NetworkResult.Loading -> {
+                            binding.progressBar.isVisible=true
+                            Log.d("checkingHistory",it.toString())
+                        }
+                        is NetworkResult.Success -> {
+                            Log.d("checkingHistory",it.data.toString())
+                            adapter.submitList(it.data)
+                        }
+                        null ->{
+
+                        }
                     }
                 }
             }
+
+            launch {
+
+                viewModel.searchContact.collect{it->
+                    binding.progressBar.isVisible=false
+                    when(it){
+                        is NetworkResult.Error -> {
+                            Log.d("checkingHistory",it.toString())
+                        }
+                        is NetworkResult.Loading -> {
+                            binding.progressBar.isVisible=true
+                            Log.d("checkingHistory",it.toString())
+                        }
+                        is NetworkResult.Success -> {
+                            Log.d("checkContactSearch",it.data.toString())
+//                            adapter.submitList(it.data)
+
+                        }
+                        null ->{
+
+                        }
+                    }
+                }
+
+            }
+
         }
     }
     private fun onActionClicked(user: User, action:String){

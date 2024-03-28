@@ -2,6 +2,7 @@ package com.example.socialmediaapplicaition.viewModels
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.socialmediaapplicaition.models.ChatMessageModel
 import com.example.socialmediaapplicaition.models.ChatRoomModel
@@ -47,11 +48,16 @@ class FirebaseViewModel @Inject constructor(private val repository:FirebaseRepos
     private val _searchedUser = MutableStateFlow<NetworkResult<List<User>>?>(null)
     val searchedUser :StateFlow<NetworkResult<List<User>>?> = _searchedUser
 
+    private val _searchContacts = MutableStateFlow<NetworkResult<List<ChatRoomModel>>?>(null)
+    val searchContact : StateFlow<NetworkResult<List<ChatRoomModel>>?> = _searchContacts
+
     private val _getAllChatHistory = MutableStateFlow<NetworkResult<List<ChatRoomModel>>?>(null)
     val getAllChatHistory:StateFlow <NetworkResult<List<ChatRoomModel>>?> = _getAllChatHistory
 
     private  val _addCommentInPost = MutableStateFlow<NetworkResult<Unit>?>(null)
     val addCommentPost get():StateFlow<NetworkResult<Unit>?> = _addCommentInPost
+
+
 
 
     init {
@@ -129,6 +135,29 @@ class FirebaseViewModel @Inject constructor(private val repository:FirebaseRepos
             _searchedUser.value = NetworkResult.Success(filteredUsers)
         }
     }
+
+    fun searchContacts(keyPoint: String,yourUserId: String){
+//        Log.d("checkingSearchContact",getAllChatHistory.value?.data?.size.toString())
+        getAllChatHistory?.value?.data.let { users->
+
+//                for (data in users!!){
+//                    Log.d("checkingSearchContact",data.userList.toString())
+//                }
+
+            val filteredUsers = users?.filter { user ->
+
+                val otherUser = if (user.userList[0].id != yourUserId) user.userList[0] else user.userList.getOrNull(1)
+                otherUser != null && otherUser.name.contains(keyPoint, ignoreCase = true)
+            }
+            Log.d("checkingSearchContact",filteredUsers.toString())
+            _searchContacts.value=NetworkResult.Success(filteredUsers)
+        }
+
+    }
+
+
+
+
 
     fun getAllMessages(roomId:String)=viewModelScope.launch{
 
