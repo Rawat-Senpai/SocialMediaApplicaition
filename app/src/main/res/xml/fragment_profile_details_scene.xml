@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MotionScene 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:motion="http://schemas.android.com/apk/res-auto">
+
+    <Transition
+        motion:constraintSetEnd="@+id/end"
+        motion:constraintSetStart="@id/start"
+        motion:duration="1000">
+       <KeyFrameSet>
+       </KeyFrameSet>
+        <OnSwipe motion:maxAcceleration="49.08" />
+    </Transition>
+
+    <ConstraintSet android:id="@+id/start">
+        <Constraint
+            android:id="@+id/personImageSquare"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            motion:layout_constraintTop_toTopOf="parent"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:transitionEasing="cubic(0.13,0.57,0.8,0.8)" />
+        <Constraint
+            android:id="@+id/personImageCircle"
+            motion:layout_constraintStart_toEndOf="@+id/backBtn"
+            android:layout_width="1dp"
+            android:layout_height="1dp"
+            motion:layout_constraintBottom_toBottomOf="@+id/personImageSquare"
+            android:layout_marginStart="20dp"
+            motion:layout_constraintTop_toTopOf="@+id/backBtn" />
+
+    </ConstraintSet>
+
+    <ConstraintSet android:id="@+id/end">
+        <Constraint
+            android:id="@+id/personImageSquare"
+            motion:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            motion:layout_constraintTop_toTopOf="parent"
+            motion:layout_constraintStart_toStartOf="parent" />
+        <Constraint
+            android:id="@+id/personImageCircle"
+            motion:layout_constraintStart_toEndOf="@+id/backBtn"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="@dimen/_50sdp"
+            motion:layout_constraintBottom_toBottomOf="@+id/backBtn"
+            android:layout_marginStart="20dp"
+            motion:layout_constraintTop_toTopOf="@+id/backBtn" />
+        <Constraint
+            android:id="@+id/personName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            motion:layout_constraintBottom_toBottomOf="@id/personImageCircle"
+            motion:layout_constraintTop_toTopOf="@id/personImageCircle"
+            motion:layout_constraintStart_toEndOf="@id/personImageCircle"
+            android:layout_marginStart="10dp" />
+        <Constraint
+            android:id="@+id/onlineStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            motion:layout_constraintTop_toBottomOf="@+id/personName"
+            motion:layout_constraintStart_toStartOf="@+id/personName" />
+        <Constraint
+            android:id="@+id/linearLayout4"
+            motion:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            motion:layout_constraintTop_toBottomOf="@id/personImageCircle"
+            motion:layout_constraintStart_toStartOf="parent" />
+        <Constraint
+            android:id="@+id/postRecyclerView"
+            motion:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            motion:layout_constraintTop_toBottomOf="@+id/linearLayout4"
+            motion:layout_constraintStart_toStartOf="parent" />
+    </ConstraintSet>
+</MotionScene>
