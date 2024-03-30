@@ -1,4 +1,4 @@
-package com.example.socialmediaapplicaition.viewModels
+package com.example.socialmediaapplicaition.ui.sideMenuPackage
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -18,20 +18,19 @@ class UsersPostAdapter (
     inner class PostViewHolder(private val binding: LayoutUserPostBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(post: Post) {
+
             binding.apply {
                 Glide.with(root.context).load(post.createdBy.profile).placeholder(R.drawable.ic_default_person).into(imageView)
                 imageView.setOnClickListener() { onPostClicked(post) }
             }
+
         }
-        
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
         val binding = LayoutUserPostBinding.inflate(LayoutInflater.from(parent.context), parent, false)
 
-        val layoutParams = binding.root.layoutParams
-        layoutParams.width = (parent.width / 3) // Set the width to 1/3 of the parent's width
-        binding.root.layoutParams = layoutParams
 
         return PostViewHolder(binding)
     }
@@ -43,7 +42,7 @@ class UsersPostAdapter (
 
     class ComparatorDiffUtil : DiffUtil.ItemCallback<Post>() {
         override fun areItemsTheSame(oldItem: Post, newItem: Post): Boolean {
-            return oldItem.createdAt == newItem.createdAt
+            return oldItem.id == newItem.id
         }
         override fun areContentsTheSame(oldItem: Post, newItem: Post): Boolean {
             return oldItem == newItem

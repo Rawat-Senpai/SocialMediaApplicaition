@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.constraintlayout.motion.widget.MotionLayout
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -16,11 +17,9 @@ import com.example.socialmediaapplicaition.R
 
 import com.example.socialmediaapplicaition.databinding.FragmentProfileDetailsBinding
 import com.example.socialmediaapplicaition.models.Post
-import com.example.socialmediaapplicaition.ui.postPackage.PostListAdapter
 import com.example.socialmediaapplicaition.utils.NetworkResult
 import com.example.socialmediaapplicaition.utils.TokenManager
 import com.example.socialmediaapplicaition.viewModels.FirebaseViewModel
-import com.example.socialmediaapplicaition.viewModels.UsersPostAdapter
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -29,37 +28,31 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class ProfileDetailsFragment : Fragment() {
 
-
-
     @Inject
     lateinit var tokenManager: TokenManager
     private val viewModel by viewModels<FirebaseViewModel>()
     private  var _binding: FragmentProfileDetailsBinding ?= null
     private val binding get() = _binding!!
-
     private lateinit var adapter: UsersPostAdapter
 
-    private var userId: String ?= null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
 
         _binding = FragmentProfileDetailsBinding.inflate(layoutInflater,container,false)
         return binding.root
 
-//        return inflater.inflate(R.layout.fragment_profile_details, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         adapter = UsersPostAdapter(::onPostClicked)
-        binding.postRecyclerView.layoutManager =
-            StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+        binding.postRecyclerView.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         binding.postRecyclerView.adapter = adapter
+
         setInitialState()
         bindingView()
         bindObserver()
@@ -69,27 +62,23 @@ class ProfileDetailsFragment : Fragment() {
 
         val myProfileId = arguments?.getString("myProfileId")
         val otherUserId = arguments?.getString("otherProfileId")
+
         if(myProfileId != null){
             binding.apply {
                 Log.d("checkingUserId",myProfileId)
                 personName.text = tokenManager.getUserName()
                 userStatus.text = tokenManager.getStatus()
+                Glide.with(personImageSquare).load(tokenManager.getProfile()).placeholder(R.drawable.ic_default_person).into(personImageSquare)
                 onlineStatus.text = "Online"
-
                 viewModel.filterPostUsingId(myProfileId)
-
             }
 
 
         }else if (otherUserId != null){
             binding.apply {
                 Log.d("checkingUserId",otherUserId)
-
                 viewModel.getUserProfileData(otherUserId)
                 viewModel.filterPostUsingId(otherUserId)
-
-
-
             }
         }
     }
@@ -108,10 +97,15 @@ class ProfileDetailsFragment : Fragment() {
 
             launch {
                 viewModel.userProfileData.collect{it->
-                   when(it){
-                       is NetworkResult.Error -> {}
+                    binding.progressBar.isVisible = it is NetworkResult.Loading
+                    when(it){
+                       is NetworkResult.Error -> {
 
-                       is NetworkResult.Loading -> {}
+                       }
+
+                       is NetworkResult.Loading -> {
+                           binding.progressBar.isVisible = true
+                       }
 
                        is NetworkResult.Success -> {
                            binding.apply {
@@ -132,32 +126,33 @@ class ProfileDetailsFragment : Fragment() {
             }
 
 
-
             launch {
                 viewModel.userSpecificPost.collect{ it->
+
+                    Log.d("checkingShobhitprofile",it?.data.toString())
+
                     when(it){
                         is NetworkResult.Error -> {
                             Log.d("error",it.message.toString())
                         }
 
                         is NetworkResult.Loading -> {
-
+                            binding.progressBar.isVisible= true
                         }
 
                         is NetworkResult.Success -> {
+                            Log.d("checkingDataPost",it.data.toString())
                             adapter.submitList(it.data)
                         }
 
-                        null -> {}
+                        null -> {
+
+                        }
+
                     }
-
-
                 }
+
             }
-
-
-
-
 
         }
 
@@ -181,7 +176,6 @@ class ProfileDetailsFragment : Fragment() {
                         Glide.with(personImageSquare).load(tokenManager.getProfile()).placeholder(R.drawable.ic_default_person).circleCrop().into(personImageSquare)
                     }
 
-
                 }
 
                 override fun onTransitionTrigger(layout: MotionLayout?, triggerId: Int, positive: Boolean, progress: Float) {}
@@ -189,9 +183,6 @@ class ProfileDetailsFragment : Fragment() {
 
 
         }
-
-//        Glide.with(binding.personImageSquare).load(tokenManager.getProfile().toString()).into(binding.personImageSquare)
-
 
     }
 

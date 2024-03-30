@@ -125,13 +125,10 @@ class FirebaseViewModel @Inject constructor(private val repository:FirebaseRepos
     fun searchUsers(keyPoint: String, yourUserId: String) {
         allUsers.value?.data?.let { users ->
             val filteredUsers = users.filter { user ->
-                // Exclude the user with your ID
                 user.id != yourUserId &&
-                        // Filter users based on the specified key point
-                        // Here you can define your condition for filtering, for example, searching by name
-                        user.name.contains(keyPoint, ignoreCase = true) // Assuming you are searching by user's name
+                user.name.contains(keyPoint, ignoreCase = true)
             }
-            // Update the StateFlow with filtered users
+
             _searchedUser.value = NetworkResult.Success(filteredUsers)
         }
     }
@@ -213,18 +210,12 @@ class FirebaseViewModel @Inject constructor(private val repository:FirebaseRepos
     }
 
     fun filterPostUsingId(userId: String) = viewModelScope.launch {
-
         _userSpecificPost.value = NetworkResult.Loading()
-
-        allPosts.value?.data?.let { posts ->
-            val userPosts = posts.filter { post ->
-                // Filter posts based on the specified user ID
-                post.createdBy.id == userId
-            }
-            // Update the StateFlow with filtered posts
-            _userSpecificPost.value = NetworkResult.Success(userPosts)
-        }
+        Log.d("chekcingDataPostShobhit",allPosts.toString())
+        Log.d("chekcingDataPostShobhit",allPosts.value?.data?.size.toString())
+        Log.d("chekcingDataPostShobhit",_allPosts.value?.data?.size.toString())
     }
+
 
 
 }
