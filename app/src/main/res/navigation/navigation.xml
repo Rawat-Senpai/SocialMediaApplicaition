@@ -111,6 +111,10 @@
         android:id="@+id/profileDetailsFragment"
         android:name="com.example.socialmediaapplicaition.ui.sideMenuPackage.ProfileDetailsFragment"
         android:label="fragment_profile_details"
-        tools:layout="@layout/fragment_profile_details" />
+        tools:layout="@layout/fragment_profile_details" >
+        <action
+            android:id="@+id/action_profileDetailsFragment_to_postDetailsFragment"
+            app:destination="@id/postDetailsFragment" />
+    </fragment>
 
 </navigation>

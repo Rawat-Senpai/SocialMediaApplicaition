@@ -24,7 +24,7 @@ class FirebaseViewModel @Inject constructor(private val repository:FirebaseRepos
 
 
     private val _allUsers = MutableStateFlow<NetworkResult<ArrayList<User>>?>(null)
-    val allUsers :StateFlow<NetworkResult<ArrayList<User>>?> = _allUsers
+    private val allUsers :StateFlow<NetworkResult<ArrayList<User>>?> = _allUsers
 
     private val _addPostResultState = MutableStateFlow<NetworkResult<Unit>?>(null)
     val addPostResultState: StateFlow<NetworkResult<Unit>?> = _addPostResultState
@@ -58,14 +58,16 @@ class FirebaseViewModel @Inject constructor(private val repository:FirebaseRepos
     val addCommentPost get():StateFlow<NetworkResult<Unit>?> = _addCommentInPost
 
 
+    private val _userProfileData  = MutableStateFlow<NetworkResult<User>?>(null)
+    val userProfileData:StateFlow<NetworkResult<User>?> = _userProfileData
 
+    private val _userSpecificPost = MutableStateFlow<NetworkResult<List<Post>>?>(NetworkResult.Loading())
+    val userSpecificPost:StateFlow<NetworkResult<List<Post>>?> = _userSpecificPost
 
     init {
         getAllUser()
         getAllPost()
     }
-
-
 
     private fun getAllUser() = viewModelScope.launch {
         _allUsers.value = NetworkResult.Loading()
@@ -120,8 +122,6 @@ class FirebaseViewModel @Inject constructor(private val repository:FirebaseRepos
         _addCommentInPost.value = result
     }
 
-
-
     fun searchUsers(keyPoint: String, yourUserId: String) {
         allUsers.value?.data?.let { users ->
             val filteredUsers = users.filter { user ->
@@ -137,12 +137,8 @@ class FirebaseViewModel @Inject constructor(private val repository:FirebaseRepos
     }
 
     fun searchContacts(keyPoint: String,yourUserId: String){
-//        Log.d("checkingSearchContact",getAllChatHistory.value?.data?.size.toString())
-        getAllChatHistory?.value?.data.let { users->
 
-//                for (data in users!!){
-//                    Log.d("checkingSearchContact",data.userList.toString())
-//                }
+        getAllChatHistory.value?.data.let { users->
 
             val filteredUsers = users?.filter { user ->
 
@@ -155,16 +151,11 @@ class FirebaseViewModel @Inject constructor(private val repository:FirebaseRepos
 
     }
 
-
-
-
-
     fun getAllMessages(roomId:String)=viewModelScope.launch{
 
       _getAllChatMessages.value = NetworkResult.Loading()
         try {
             repository.getAllChats(roomId).collect{result->
-//                _getAllChatMessages.value = it
 
                 when(result){
                     is NetworkResult.Error ->{
@@ -212,6 +203,26 @@ class FirebaseViewModel @Inject constructor(private val repository:FirebaseRepos
             }
         }catch (e:Exception){
             _getAllChatHistory.value = NetworkResult.Error(e.toString())
+        }
+    }
+
+    fun getUserProfileData(userId:String) = viewModelScope.launch {
+        _userProfileData.value = NetworkResult.Loading()
+        val result = repository.getUserData(userId)
+        _userProfileData.value = result
+    }
+
+    fun filterPostUsingId(userId: String) = viewModelScope.launch {
+
+        _userSpecificPost.value = NetworkResult.Loading()
+
+        allPosts.value?.data?.let { posts ->
+            val userPosts = posts.filter { post ->
+                // Filter posts based on the specified user ID
+                post.createdBy.id == userId
+            }
+            // Update the StateFlow with filtered posts
+            _userSpecificPost.value = NetworkResult.Success(userPosts)
         }
     }
 

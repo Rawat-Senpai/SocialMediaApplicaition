@@ -13,8 +13,8 @@
 
     <ImageView
         android:id="@+id/backBtn"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
         android:layout_margin="30dp"
         android:src="@drawable/ic_back"
         app:layout_constraintStart_toStartOf="parent"
@@ -28,16 +28,16 @@
         android:layout_width="match_parent"
         android:layout_height="300dp"
         android:layout_gravity="center_vertical"
-        android:src="@color/black"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        android:src="@drawable/ic_default_person"
         android:scaleType="centerCrop"/>
 
     <TextView
         android:id="@+id/personName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
+        android:layout_margin="30dp"
         android:fontFamily="@font/poppins_medium"
         android:textColor="@color/white"
         android:textSize="@dimen/_14sdp"
@@ -76,6 +76,7 @@
             android:textSize="@dimen/_12sdp" />
 
         <TextView
+            android:id="@+id/userStatus"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
@@ -97,6 +98,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout4" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/personImageSquare" />
+
+
 
 
 </androidx.constraintlayout.motion.widget.MotionLayout>

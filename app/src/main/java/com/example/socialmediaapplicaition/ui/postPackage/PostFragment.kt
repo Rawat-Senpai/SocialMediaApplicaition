@@ -38,11 +38,8 @@ class PostFragment : Fragment() {
     lateinit var tokenManager: TokenManager
     private var _binding: FragmentMainBinding? = null
     private val binding get() = _binding!!
-
     private lateinit var adapter:PostListAdapter
-
     private val viewModel by viewModels<AuthViewModel>()
-
     private val postViewModel by viewModels<FirebaseViewModel> ()
     private var SideMenuImage :ImageView ?= null
     private var userTextView:TextView? = null
@@ -55,13 +52,11 @@ class PostFragment : Fragment() {
     private var profileLayout:LinearLayout ?= null
 
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        // return inflater.inflate(R.layout.fragment_main, container, false)
+
         _binding = FragmentMainBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
@@ -105,7 +100,9 @@ class PostFragment : Fragment() {
         }
 
         profileLayout?.setOnClickListener(){
-            findNavController().navigate(R.id.action_mainFragment_to_profileDetailsFragment)
+            val bundle = Bundle()
+            bundle.putString("myProfileId", Gson().toJson(tokenManager.getId()))
+            findNavController().navigate(R.id.action_mainFragment_to_profileDetailsFragment,bundle)
         }
 
         userTextView?.text =tokenManager.getUserName().toString()
@@ -129,6 +126,7 @@ class PostFragment : Fragment() {
 
 
         viewLifecycleOwner.lifecycleScope.launch {
+
             launch {
                 viewModel.userData.collect { it ->
                     when (it) {
@@ -141,6 +139,9 @@ class PostFragment : Fragment() {
                         }
                         is NetworkResult.Loading -> {
                             // Handle loading state if necessary
+
+
+
                         }
 
                         else -> {}
@@ -170,6 +171,7 @@ class PostFragment : Fragment() {
                     }
                 }
             }
+
         }
 
 

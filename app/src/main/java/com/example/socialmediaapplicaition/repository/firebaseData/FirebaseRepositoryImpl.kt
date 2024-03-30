@@ -134,6 +134,28 @@ class FirebaseRepositoryImpl @Inject constructor(private val firebaseFirestore: 
 
     }
 
+    override suspend fun getUserData(uid: String): NetworkResult<User> {
+        return try {
+            val snapshot = firebaseFirestore.collection("users").document(uid).get().getDataOfUserFromDatabase()
+            Log.d("checkingRes1",snapshot.toString())
+            if (snapshot != null && snapshot.exists()) {
+                val user = snapshot.toObject(User::class.java)
+                Log.d("checkingRes2",user.toString())
+                if (user != null) {
+                    NetworkResult.Success(user)
+                } else {
+                    NetworkResult.Error("Failed to parse user data")
+                }
+            } else {
+                Log.d("checkingRes2","user not found ")
+                NetworkResult.Error("User not found")
+            }
+        } catch (e: Exception) {
+            Log.e("checkingRes3", "Error fetching user data: ${e.message}", e)
+            NetworkResult.Error(e.message ?: "An error occurred")
+        }
+    }
+
 
     override suspend fun createChatRoom(chat: ChatRoomModel): NetworkResult<Unit> {
         return try {
