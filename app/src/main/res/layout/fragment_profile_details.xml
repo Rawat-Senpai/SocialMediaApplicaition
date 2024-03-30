@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.motion.widget.MotionLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/motionLayout"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -20,16 +21,6 @@
         app:layout_constraintTop_toTopOf="parent" />
 
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/personImageCircle"
-        android:layout_width="@dimen/_50sdp"
-        android:layout_height="@dimen/_50sdp"
-        android:layout_gravity="center_vertical"
-        android:layout_marginStart="20dp"
-        android:src="@drawable/ic_default_person"
-        app:layout_constraintBottom_toBottomOf="@+id/personImageSquare"
-        app:layout_constraintStart_toEndOf="@+id/backBtn"
-        app:layout_constraintTop_toTopOf="@+id/backBtn" />
 
 
     <ImageView
@@ -39,7 +30,8 @@
         android:layout_gravity="center_vertical"
         android:src="@color/black"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:scaleType="centerCrop"/>
 
     <TextView
         android:id="@+id/personName"
@@ -100,6 +92,7 @@
         android:id="@+id/postRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:background="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

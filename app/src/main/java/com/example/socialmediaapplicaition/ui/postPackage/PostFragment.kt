@@ -44,14 +44,15 @@ class PostFragment : Fragment() {
     private val viewModel by viewModels<AuthViewModel>()
 
     private val postViewModel by viewModels<FirebaseViewModel> ()
-    var SideMenuImage :ImageView ?= null
-    var userTextView:TextView? = null
-    var videoCall:LinearLayout?= null
-    var contactLayout:LinearLayout?= null
-    var savedLayout:LinearLayout?= null
-    var settingLayout:LinearLayout?= null
-    var shareLayout:LinearLayout?= null
-    var sideMenuBackground:LinearLayout?=null
+    private var SideMenuImage :ImageView ?= null
+    private var userTextView:TextView? = null
+    private var videoCall:LinearLayout?= null
+    private var contactLayout:LinearLayout?= null
+    private var savedLayout:LinearLayout?= null
+    private var settingLayout:LinearLayout?= null
+    private var shareLayout:LinearLayout?= null
+    private var sideMenuBackground:LinearLayout?=null
+    private var profileLayout:LinearLayout ?= null
 
 
 
@@ -88,6 +89,7 @@ class PostFragment : Fragment() {
         settingLayout = sideBinding.settingLayout
         shareLayout = sideBinding.shareApp
         sideMenuBackground = sideBinding.sideMenuBackground
+        profileLayout = sideBinding.profileLayout
 
 
 
@@ -100,6 +102,10 @@ class PostFragment : Fragment() {
 
         contactLayout?.setOnClickListener(){
             findNavController().navigate(R.id.action_mainFragment_to_contactFragment)
+        }
+
+        profileLayout?.setOnClickListener(){
+            findNavController().navigate(R.id.action_mainFragment_to_profileDetailsFragment)
         }
 
         userTextView?.text =tokenManager.getUserName().toString()

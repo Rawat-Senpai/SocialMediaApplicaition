@@ -60,11 +60,31 @@
 
 
         <LinearLayout
-            android:id="@+id/videoCallLayout"
+            android:id="@+id/profileLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="50dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                style="@style/sideMenuImage"
+                android:src="@color/black"
+                />
+
+            <TextView
+                style="@style/sideMenuText"
+                android:text="Profile"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/videoCallLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
             android:orientation="horizontal">
 
             <ImageView
