@@ -19,16 +19,13 @@ import com.example.socialmediaapplicaition.R
 import com.example.socialmediaapplicaition.databinding.FragmentChatBinding
 import com.example.socialmediaapplicaition.models.ChatMessageModel
 import com.example.socialmediaapplicaition.models.ChatRoomModel
-import com.example.socialmediaapplicaition.models.Post
 import com.example.socialmediaapplicaition.models.User
-import com.example.socialmediaapplicaition.ui.postPackage.PostListAdapter
 import com.example.socialmediaapplicaition.viewModels.FirebaseViewModel
 import com.example.socialmediaapplicaition.utils.NetworkResult
 import com.example.socialmediaapplicaition.utils.TokenManager
 import com.example.socialmediaapplicaition.utils.Utils
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

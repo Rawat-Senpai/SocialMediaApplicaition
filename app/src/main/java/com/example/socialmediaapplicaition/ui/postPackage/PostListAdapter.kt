@@ -19,6 +19,7 @@ import com.example.socialmediaapplicaition.utils.Utils
 class PostListAdapter(
     private val onPostClicked: (Post) -> Unit,
     private val onPostLiked: (Post) -> Unit,
+    private val onPostOwner: (Post) ->Unit,
     private val userId: String
 ) : ListAdapter<Post, PostListAdapter.PostViewHolder>(ComparatorDiffUtil()) {
 
@@ -27,8 +28,10 @@ class PostListAdapter(
         private var isLiked = false
         private var likeCount = 0
         fun bind(post: Post) {
+
             likeCount = post.likedBy.size
             binding.apply {
+
                 isLiked = post.likedBy.contains(userId)
                 // Bind your data to the views here
                 userName.text = post.createdBy.name
@@ -78,6 +81,16 @@ class PostListAdapter(
                     commentText.text = post.comments[0].comment
 
                 }
+
+                userImage.setOnClickListener(){
+                    onPostOwner(post)
+                }
+
+                userName.setOnClickListener(){
+                    onPostOwner(post)
+                }
+
+
             }
         }
     }

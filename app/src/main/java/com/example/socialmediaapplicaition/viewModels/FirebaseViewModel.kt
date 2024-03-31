@@ -148,18 +148,6 @@ class FirebaseViewModel @Inject constructor(private val repository:FirebaseRepos
             }
         }
 
-//        val result = repository.getAllFilteredPost()
-//        result.data?.let { posts->
-//            for(data in posts){
-//                Log.d("CheckingData123",userId+"  ---  " + data.createdBy.id)
-//                if(userId.trim().toString() == data.createdBy.id.trim().toString()){
-//                    Log.d("CheckingData123","same")
-//                }else{
-//                    Log.d("CheckingData123","false")
-//                }
-//            }
-//        }
-
         Log.d("CheckingData1234",_userSpecificPost.value?.data?.size.toString())
 
     }
@@ -235,8 +223,9 @@ class FirebaseViewModel @Inject constructor(private val repository:FirebaseRepos
     }
 
     fun getUserProfileData(userId:String) = viewModelScope.launch {
+        val cleanUserId = userId.removeSurrounding("\"")
         _userProfileData.value = NetworkResult.Loading()
-        val result = repository.getUserData(userId)
+        val result = repository.getUserData(cleanUserId)
         _userProfileData.value = result
     }
 

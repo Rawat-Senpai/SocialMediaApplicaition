@@ -34,6 +34,8 @@ class ProfileDetailsFragment : Fragment() {
     private  var _binding: FragmentProfileDetailsBinding ?= null
     private val binding get() = _binding!!
     private lateinit var adapter: UsersPostAdapter
+    var userProfilePic:String=""
+    var userName:String=""
 
 
     override fun onCreateView(
@@ -63,14 +65,23 @@ class ProfileDetailsFragment : Fragment() {
         val myProfileId = arguments?.getString("myProfileId")
         val otherUserId = arguments?.getString("otherProfileId")
 
+
+
         if(myProfileId != null){
             binding.apply {
+
                 Log.d("checkingUserId",myProfileId)
+
+                userProfilePic = tokenManager.getProfile().toString()
+                userName= tokenManager.getUserName().toString()
+
                 personName.text = tokenManager.getUserName()
                 userStatus.text = tokenManager.getStatus()
-                Glide.with(personImageSquare).load(tokenManager.getProfile()).placeholder(R.drawable.ic_default_person).into(personImageSquare)
+                Glide.with(personImageSquare).load(userProfilePic).placeholder(R.drawable.ic_default_person).into(personImageSquare)
                 onlineStatus.text = "Online"
                 viewModel.filterPostUsingId(myProfileId)
+                viewModel.getUserProfileData(myProfileId)
+
             }
 
 
@@ -86,7 +97,7 @@ class ProfileDetailsFragment : Fragment() {
     private fun onPostClicked(postResponse: Post){
         val bundle = Bundle()
         bundle.putString("post", Gson().toJson(postResponse))
-        findNavController().navigate(R.id.action_mainFragment_to_postDetailsFragment, bundle)
+        findNavController().navigate(R.id.action_profileDetailsFragment_to_postDetailsFragment, bundle)
     }
 
 
@@ -100,20 +111,23 @@ class ProfileDetailsFragment : Fragment() {
                     binding.progressBar.isVisible = it is NetworkResult.Loading
                     when(it){
                        is NetworkResult.Error -> {
-
+                           Log.d("checkingData",it.message.toString())
                        }
 
                        is NetworkResult.Loading -> {
+
                            binding.progressBar.isVisible = true
                        }
 
                        is NetworkResult.Success -> {
                            binding.apply {
-
+                                Log.d("checkingData",it.data.toString())
                                personName.text = it.data?.name
                                userStatus.text = it.data?.status
-                               onlineStatus.text = it.data?.status
-                               Glide.with(personImageSquare).load(it.data?.profile).placeholder(R.drawable.ic_default_person).into(personImageSquare)
+                               onlineStatus.text = it.data?.onlineStatus
+                               userProfilePic = it.data?.profile.toString()
+                               userName = it.data?.name.toString()
+                               Glide.with(personImageSquare).load(userProfilePic).placeholder(R.drawable.ic_default_person).into(personImageSquare)
 
                            }
 
@@ -154,25 +168,31 @@ class ProfileDetailsFragment : Fragment() {
     private fun bindingView() {
 
         binding.apply {
+
             motionLayout.setTransitionListener(object : MotionLayout.TransitionListener {
                 override fun onTransitionStarted(layout: MotionLayout?, startId: Int, endId: Int) {}
 
                 override fun onTransitionChange(layout: MotionLayout?, startId: Int, endId: Int, progress: Float) {
-                    Glide.with(personImageSquare).load(tokenManager.getProfile()).placeholder(R.drawable.ic_default_person).circleCrop().into(personImageSquare)
+                    Glide.with(personImageSquare).load(userProfilePic).placeholder(R.drawable.ic_default_person).circleCrop().into(personImageSquare)
                 }
 
                 override fun onTransitionCompleted(layout: MotionLayout?, currentId: Int) {
 
                     if(currentId == R.id.start){
-                        Glide.with(personImageSquare).load(tokenManager.getProfile()).placeholder(R.drawable.ic_default_person).into(personImageSquare)
+                        Glide.with(personImageSquare).load(userProfilePic).placeholder(R.drawable.ic_default_person).into(personImageSquare)
                     }else if (currentId == R.id.end){
-                        Glide.with(personImageSquare).load(tokenManager.getProfile()).placeholder(R.drawable.ic_default_person).circleCrop().into(personImageSquare)
+                        Glide.with(personImageSquare).load(userProfilePic).placeholder(R.drawable.ic_default_person).circleCrop().into(personImageSquare)
                     }
 
                 }
 
                 override fun onTransitionTrigger(layout: MotionLayout?, triggerId: Int, positive: Boolean, progress: Float) {}
             })
+
+            backBtn.setOnClickListener(){
+                findNavController().popBackStack()
+            }
+
 
 
         }

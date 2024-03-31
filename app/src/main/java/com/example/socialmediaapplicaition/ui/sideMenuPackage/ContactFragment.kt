@@ -15,9 +15,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.socialmediaapplicaition.R
 import com.example.socialmediaapplicaition.databinding.FragmentContactBinding
-import com.example.socialmediaapplicaition.models.ChatRoomModel
 import com.example.socialmediaapplicaition.models.User
-import com.example.socialmediaapplicaition.ui.chatFragment.UserChatHistoryAdapter
 import com.example.socialmediaapplicaition.utils.NetworkResult
 import com.example.socialmediaapplicaition.utils.TokenManager
 import com.example.socialmediaapplicaition.viewModels.FirebaseViewModel
@@ -34,7 +32,7 @@ class ContactFragment : Fragment() {
     private val viewModel by viewModels<FirebaseViewModel>()
     private  var _binding :FragmentContactBinding ?= null
 
-    private lateinit var adapter: SideMenuAdapter
+    private lateinit var adapter: SideMenuContactAdapter
     val binding get() = _binding!!
 
     override fun onCreateView(
@@ -50,7 +48,7 @@ class ContactFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        adapter = SideMenuAdapter(::onActionClicked,tokenManager.getId().toString())
+        adapter = SideMenuContactAdapter(::onActionClicked,tokenManager.getId().toString())
         binding.recyclerView.layoutManager = LinearLayoutManager(context,
             LinearLayoutManager.VERTICAL,false)
         binding.recyclerView.adapter = adapter
@@ -96,9 +94,7 @@ class ContactFragment : Fragment() {
 
     private fun bindObserver() {
 
-
         viewLifecycleOwner.lifecycleScope.launch {
-
             launch {
                 viewModel.getAllChatHistory.collect{it->
                     binding.progressBar.isVisible=false
@@ -150,8 +146,8 @@ class ContactFragment : Fragment() {
     }
     private fun onActionClicked(user: User, action:String){
         val bundle = Bundle()
-        bundle.putString("previousChat", Gson().toJson(user))
-        findNavController().navigate(R.id.action_chatHistoryFragment_to_chatFragment,bundle)
+        bundle.putString("otherProfileId", Gson().toJson(user.id))
+        findNavController().navigate(R.id.action_contactFragment_to_profileDetailsFragment,bundle)
 
     }
 

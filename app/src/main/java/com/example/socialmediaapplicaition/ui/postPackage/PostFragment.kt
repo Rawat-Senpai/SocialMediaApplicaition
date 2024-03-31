@@ -26,6 +26,7 @@ import com.example.socialmediaapplicaition.utils.NetworkResult
 import com.example.socialmediaapplicaition.utils.TokenManager
 import com.example.socialmediaapplicaition.viewModels.FirebaseViewModel
 import com.google.gson.Gson
+import com.skydoves.bundler.bundle
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -65,7 +66,7 @@ class PostFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        adapter = PostListAdapter(::onPostClicked,::onPostLiked,tokenManager.getId().toString())
+        adapter = PostListAdapter(::onPostClicked,::onPostLiked,::onPostUserClicked,tokenManager.getId().toString())
         binding.recyclerView.layoutManager = LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false)
         binding.recyclerView.adapter = adapter
 
@@ -121,9 +122,13 @@ class PostFragment : Fragment() {
         postViewModel.addLikeToPost(post,tokenManager.getId().toString())
     }
 
+    private fun onPostUserClicked(post:Post){
+        val bundle = Bundle()
+        bundle.putString("otherProfileId",Gson().toJson(post.createdBy.id))
+        findNavController().navigate(R.id.action_mainFragment_to_profileDetailsFragment,bundle)
+    }
+
     private fun bindObserver() {
-
-
 
         viewLifecycleOwner.lifecycleScope.launch {
 
