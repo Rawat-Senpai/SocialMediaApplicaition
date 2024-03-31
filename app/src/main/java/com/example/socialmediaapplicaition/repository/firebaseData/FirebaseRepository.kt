@@ -19,16 +19,17 @@ typealias PreviousChatResponse = NetworkResult<PreviousChat>
 
 interface FirebaseRepository {
     suspend fun getAllUser():NetworkResult<ArrayList<User>>
-    fun  getAllPost():Flow<PostResponse>
+    fun getAllPost():Flow<PostResponse>
     suspend fun createPost(post:Post):NetworkResult<Unit>
     suspend fun updateLikeStatus(post:Post, userId: String): NetworkResult<Unit>
     suspend fun createChatRoom(chat: ChatRoomModel):NetworkResult<Unit>
     suspend fun createChatMessage(chat: ChatMessageModel,chatRoomId:String):NetworkResult<Unit>
     fun getAllChats(roomId:String): Flow<ChatsResponse>
-
     fun getAllPreviousChat():Flow<PreviousChatResponse>
     suspend fun  addCommentToPost(post: Post, commentPerson: PersonComments): NetworkResult<Unit>
     suspend fun getUserData(uid:String):NetworkResult<User>
+
+    suspend fun createSavePost(post: Post,userId:String):NetworkResult<Unit>
 
 
 }

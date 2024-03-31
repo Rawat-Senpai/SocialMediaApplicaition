@@ -141,12 +141,10 @@ class PostFragment : Fragment() {
                         }
                         is NetworkResult.Error -> {
                             // Handle error state if necessary
-
                         }
 
                         is NetworkResult.Loading -> {
                             // Handle loading state if necessary
-
                         }
 
                         else -> {

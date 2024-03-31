@@ -45,7 +45,6 @@ class FirebaseRepositoryImpl @Inject constructor(private val firebaseFirestore: 
     override fun getAllPost(): Flow<PostResponse> = callbackFlow {
 
 
-
         val listenerRegistration = firebaseFirestore.collection("posts")
             .addSnapshotListener { snapshot, exception ->
                 if (exception != null) {
@@ -113,41 +112,44 @@ class FirebaseRepositoryImpl @Inject constructor(private val firebaseFirestore: 
     }
 
 
+    override suspend fun addCommentToPost(
+        post: Post,
+        commentPerson: PersonComments
+    ): NetworkResult<Unit> {
+        return try {
 
-    override suspend fun addCommentToPost(post: Post, commentPerson: PersonComments): NetworkResult<Unit> {
-    return try {
+            post.comments.add(commentPerson)
 
-        post.comments.add(commentPerson)
+            firebaseFirestore.collection("posts")
+                .document(post.id)
+                .set(post)
+                .addDataToFirestore()
 
-        firebaseFirestore.collection("posts")
-            .document(post.id)
-            .set(post)
-            .addDataToFirestore()
+            Log.d("checkingComment", "successfull")
 
-        Log.d("checkingComment","successfull")
+            NetworkResult.Success(Unit)
 
-        NetworkResult.Success(Unit)
-
-    }catch (e:Exception){
-        NetworkResult.Error(e.toString())
-    }
+        } catch (e: Exception) {
+            NetworkResult.Error(e.toString())
+        }
 
     }
 
     override suspend fun getUserData(uid: String): NetworkResult<User> {
         return try {
-            val snapshot = firebaseFirestore.collection("users").document(uid).get().getDataOfUserFromDatabase()
-            Log.d("checkingRes1",snapshot.toString())
+            val snapshot = firebaseFirestore.collection("users").document(uid).get()
+                .getDataOfUserFromDatabase()
+            Log.d("checkingRes1", snapshot.toString())
             if (snapshot != null && snapshot.exists()) {
                 val user = snapshot.toObject(User::class.java)
-                Log.d("checkingRes2",user.toString())
+                Log.d("checkingRes2", user.toString())
                 if (user != null) {
                     NetworkResult.Success(user)
                 } else {
                     NetworkResult.Error("Failed to parse user data")
                 }
             } else {
-                Log.d("checkingRes2","user not found ")
+                Log.d("checkingRes2", "user not found ")
                 NetworkResult.Error("User not found")
             }
         } catch (e: Exception) {
@@ -198,7 +200,7 @@ class FirebaseRepositoryImpl @Inject constructor(private val firebaseFirestore: 
         }
     }
 
-    override fun getAllChats(roomId: String) : Flow<ChatsResponse> = callbackFlow {
+    override fun getAllChats(roomId: String): Flow<ChatsResponse> = callbackFlow {
         val listenerRegistration =
             firebaseFirestore.collection("chat_room").document(roomId).collection("chats")
                 .addSnapshotListener { snapshot, exception ->
@@ -224,7 +226,7 @@ class FirebaseRepositoryImpl @Inject constructor(private val firebaseFirestore: 
         awaitClose { listenerRegistration.remove() }
     }
 
-    override fun getAllPreviousChat(): Flow<PreviousChatResponse> = callbackFlow{
+    override fun getAllPreviousChat(): Flow<PreviousChatResponse> = callbackFlow {
         val listenerRegistration =
             firebaseFirestore.collection("chat_room")
                 .addSnapshotListener { snapshot, exception ->
@@ -237,17 +239,17 @@ class FirebaseRepositoryImpl @Inject constructor(private val firebaseFirestore: 
                     if (snapshot != null && !snapshot.isEmpty) {
                         for (document in snapshot.documents) {
 
-                            Log.d("document",document.toString())
+                            Log.d("document", document.toString())
 
                             val post = document.toObject(ChatRoomModel::class.java)
                             post?.let {
                                 chatList.add(it)
                             }
-                            Log.d("document2",post.toString())
+                            Log.d("document2", post.toString())
                         }
                         chatList.sortByDescending { it.lastMessageTimestamp }
-                        Log.d("checkingChatList__",chatList.size.toString())
-                        Log.d("checkingChatList__",chatList.toString())
+                        Log.d("checkingChatList__", chatList.size.toString())
+                        Log.d("checkingChatList__", chatList.toString())
                         trySend(NetworkResult.Success(chatList))
                     } else {
                         trySend(NetworkResult.Error("No posts found"))
@@ -255,6 +257,29 @@ class FirebaseRepositoryImpl @Inject constructor(private val firebaseFirestore: 
                 }
         awaitClose { listenerRegistration.remove() }
 
+    }
+
+
+    override suspend fun createSavePost(
+        savedPost: Post,
+        userId: String
+    ): NetworkResult<Unit> {
+        return try {
+
+
+            firebaseFirestore.collection("users")
+                .document(userId)
+                .collection("savedPost")
+                .add(savedPost)
+                .addDataToFirestore()
+
+            Log.d("responseData", "successfully")
+            NetworkResult.Success(Unit)
+
+        } catch (e: Exception) {
+            Log.d("crash123", e.toString())
+            NetworkResult.Error(e.toString())
+        }
     }
 
 
