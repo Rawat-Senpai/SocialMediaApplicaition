@@ -105,11 +105,9 @@ class FirebaseViewModel @Inject constructor(private val repository:FirebaseRepos
     }
 
     fun addChatMessageToDatabase(chatMessage:ChatMessageModel,chatRoomId:String) = viewModelScope.launch {
-
         _addChatMessageResultState.value = NetworkResult.Loading()
         val result = repository.createChatMessage(chatMessage,chatRoomId)
         _addChatMessageResultState.value = result
-
     }
 
     fun addLikeToPost(post:Post,userId:String) = viewModelScope.launch {
@@ -131,7 +129,6 @@ class FirebaseViewModel @Inject constructor(private val repository:FirebaseRepos
                 user.id != yourUserId &&
                 user.name.contains(keyPoint, ignoreCase = true)
             }
-
             _searchedUser.value = NetworkResult.Success(filteredUsers)
         }
     }
@@ -139,42 +136,33 @@ class FirebaseViewModel @Inject constructor(private val repository:FirebaseRepos
 
     fun filterPostUsingId(userId: String) = viewModelScope.launch {
 
-        val result = repository.getAllFilteredPost()
+        allPosts.collect{allPostsResult ->
+            allPostsResult?.data?.let { allPosts ->
 
+                val cleanUserId = userId.removeSurrounding("\"")
 
-        result.data?.let { posts->
-
-//            val filterPost = posts.filter { post->
-//                userId.trim().toString() == post.createdBy.id.trim().toString()
-//            }
-//
-            for(data in posts){
-
-                Log.d("CheckingData123",userId+"  ---  " + data.createdBy.id)
-
-                if(userId.trim().toString() == data.createdBy.id.trim().toString()){
-                    Log.d("CheckingData123","same")
-                }else{
-                    Log.d("CheckingData123","false")
+                val userPosts = allPosts.filter { post ->
+                    post.createdBy.id == cleanUserId
                 }
+                _userSpecificPost.value = NetworkResult.Success(userPosts)
             }
-
-//            Log.d("CheckingData123",filterPost.size.toString())
-//            Log.d("CheckingData1234",filterPost.size.toString())
-//            _userSpecificPost.value = NetworkResult.Success(filterPost)
-
         }
+
+//        val result = repository.getAllFilteredPost()
+//        result.data?.let { posts->
+//            for(data in posts){
+//                Log.d("CheckingData123",userId+"  ---  " + data.createdBy.id)
+//                if(userId.trim().toString() == data.createdBy.id.trim().toString()){
+//                    Log.d("CheckingData123","same")
+//                }else{
+//                    Log.d("CheckingData123","false")
+//                }
+//            }
+//        }
 
         Log.d("CheckingData1234",_userSpecificPost.value?.data?.size.toString())
 
-
-
-
-
     }
-
-
-
 
     fun searchContacts(keyPoint: String,yourUserId: String){
 
@@ -251,27 +239,5 @@ class FirebaseViewModel @Inject constructor(private val repository:FirebaseRepos
         val result = repository.getUserData(userId)
         _userProfileData.value = result
     }
-//    fun filterPostUsingId(userId: String) = viewModelScope.launch {
-//        // Observe changes in _allPosts
-//            Log.d("FirebaseViewModel0",userId.toString())
-//            allPosts.collect { allPostsResult ->
-//                Log.d("FirebaseViewModel1", "All posts result: $allPostsResult")
-//                // Check if allPostsResult is not null
-//                allPostsResult?.data?.let { allPosts ->
-//                    Log.d("FirebaseViewModel2", "All posts data: $allPosts")
-//                    // Filter posts based on user ID
-//                    val userPosts = allPosts.filter { post ->
-//                        Log.d("FirebaseViewModel22", post.createdBy.id.toString()+"--"+ userId )
-//                        post.createdBy.id.trim().toString() == userId.trim().toString()
-//                    }
-//                    Log.d("FirebaseViewModel3", "User-specific posts: $userPosts")
-//                    // Update _userSpecificPost with filtered posts
-//                    _userSpecificPost.value = NetworkResult.Success(userPosts)
-//                }
-//            }
-//
-//    }
-
-
 
 }

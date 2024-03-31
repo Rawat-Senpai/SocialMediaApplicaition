@@ -33,9 +33,9 @@
             motion:layout_constraintStart_toEndOf="@+id/backBtn"
             android:layout_width="@dimen/_50sdp"
             android:layout_height="@dimen/_50sdp"
-            motion:layout_constraintBottom_toBottomOf="@+id/backBtn"
-            android:layout_marginStart="20dp"
-            motion:layout_constraintTop_toTopOf="@+id/backBtn" >
+            android:layout_marginStart="8dp"
+            motion:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="20dp">
 
 
         </Constraint>
@@ -43,7 +43,6 @@
             android:id="@+id/personName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            motion:layout_constraintBottom_toBottomOf="@id/personImageSquare"
             motion:layout_constraintTop_toTopOf="@id/personImageSquare"
             motion:layout_constraintStart_toEndOf="@id/personImageSquare"
             android:layout_marginStart="10dp" />
@@ -59,7 +58,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             motion:layout_constraintTop_toBottomOf="@id/personImageSquare"
-            motion:layout_constraintStart_toStartOf="parent" />
+            motion:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="10dp" />
         <Constraint
             android:id="@+id/postRecyclerView"
             motion:layout_constraintEnd_toEndOf="parent"

@@ -20,7 +20,7 @@ class UsersPostAdapter (
         fun bind(post: Post) {
 
             binding.apply {
-                Glide.with(root.context).load(post.createdBy.profile).placeholder(R.drawable.ic_default_person).into(imageView)
+                Glide.with(root.context).load(post.imageUrl).placeholder(R.color.grey).into(imageView)
                 imageView.setOnClickListener() { onPostClicked(post) }
             }
 

@@ -69,7 +69,7 @@
 
             <ImageView
                 style="@style/sideMenuImage"
-                android:src="@color/black"
+                android:src="@drawable/ic_person_pic"
                 />
 
             <TextView
