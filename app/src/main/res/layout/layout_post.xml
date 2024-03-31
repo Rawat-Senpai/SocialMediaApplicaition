@@ -132,10 +132,11 @@
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_marginTop="15dp"
-            android:src="@drawable/fav_unlike"
+            android:src="@drawable/not_bookmarked"
             android:layout_marginEnd="10dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/user_image_post_container" />
+            app:layout_constraintTop_toBottomOf="@+id/user_image_post_container"
+            />
 
 
         <androidx.constraintlayout.widget.ConstraintLayout

@@ -2,7 +2,6 @@ package com.example.socialmediaapplicaition.viewModels
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.socialmediaapplicaition.models.ChatMessageModel
 import com.example.socialmediaapplicaition.models.ChatRoomModel
@@ -14,7 +13,6 @@ import com.example.socialmediaapplicaition.utils.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -34,6 +32,13 @@ class FirebaseViewModel @Inject constructor(private val repository:FirebaseRepos
 
     private val _addLikeResponse = MutableStateFlow<NetworkResult<Unit>?> (null)
     val addLikeResponse:StateFlow<NetworkResult<Unit>?> = _addLikeResponse
+
+
+    private val _savePostResponse = MutableStateFlow<NetworkResult<Unit>?> (null)
+    val savePostResponse:StateFlow<NetworkResult<Unit>?> = _savePostResponse
+
+    private val _createSavePostResponse = MutableStateFlow<NetworkResult<Unit>?> (null)
+    val createSavePostResponse:StateFlow<NetworkResult<Unit>?> = _createSavePostResponse
 
     private val _addChatRoomResultState = MutableStateFlow<NetworkResult<Unit>?>(null)
     val addChatRoomResultState :StateFlow<NetworkResult<Unit>?> = _addChatRoomResultState
@@ -114,8 +119,20 @@ class FirebaseViewModel @Inject constructor(private val repository:FirebaseRepos
         _addLikeResponse.value = NetworkResult.Loading()
         val result = repository.updateLikeStatus(post,userId)
         _addLikeResponse.value = result
+    }
+
+    fun savePost(post:Post, userId:String) = viewModelScope.launch {
+        _savePostResponse.value = NetworkResult.Loading()
+        val result = repository.savePost(post,userId)
+        _savePostResponse.value = result
 
     }
+    fun crateSavePost(post:Post,userId:String,action:String) = viewModelScope.launch {
+        _createSavePostResponse.value = NetworkResult.Loading()
+        val result = repository.createSavePost(post,userId,action)
+        _createSavePostResponse.value=result
+    }
+
 
     fun addCommentToPost(post:Post,commentPerson:PersonComments) = viewModelScope.launch {
         _addCommentInPost.value = NetworkResult.Loading()

@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide
 import com.example.socialmediaapplicaition.R
 import com.example.socialmediaapplicaition.databinding.LayoutPostBinding
 import com.example.socialmediaapplicaition.models.Post
+import com.example.socialmediaapplicaition.utils.Constants
 import com.example.socialmediaapplicaition.utils.Utils
 
 
@@ -20,12 +21,14 @@ class PostListAdapter(
     private val onPostClicked: (Post) -> Unit,
     private val onPostLiked: (Post) -> Unit,
     private val onPostOwner: (Post) ->Unit,
+    private val onPostSaved:(Post,String) ->Unit,
     private val userId: String
 ) : ListAdapter<Post, PostListAdapter.PostViewHolder>(ComparatorDiffUtil()) {
 
     inner class PostViewHolder(private val binding: LayoutPostBinding) :
         RecyclerView.ViewHolder(binding.root) {
         private var isLiked = false
+        private var isSaved = false
         private var likeCount = 0
         fun bind(post: Post) {
 
@@ -33,6 +36,7 @@ class PostListAdapter(
             binding.apply {
 
                 isLiked = post.likedBy.contains(userId)
+                isSaved = post.savedBy.contains(userId)
                 // Bind your data to the views here
                 userName.text = post.createdBy.name
                 Glide.with(root.context).load(post.createdBy.profile).placeholder(R.drawable.ic_default_person).into(userImage)
@@ -50,6 +54,13 @@ class PostListAdapter(
                     ContextCompat.getDrawable(
                         root.context,
                         if (isLiked) R.drawable.liked else R.drawable.fav_unlike
+                    )
+                )
+
+                bookmarkedButton.setImageDrawable(
+                    ContextCompat.getDrawable(
+                        root.context,
+                        if(isSaved) R.drawable.bookmarked else R.drawable.not_bookmarked
                     )
                 )
 
@@ -73,6 +84,23 @@ class PostListAdapter(
                     onPostLiked(post)
                 }
 
+                bookmarkedButton.setOnClickListener(){
+                   isSaved = !isSaved
+                    bookmarkedButton.setImageDrawable(
+                        ContextCompat.getDrawable(
+                            root.context, if (isSaved) {
+                                onPostSaved(post,Constants.SAVE)
+                                R.drawable.bookmarked
+
+                            } else {
+                                onPostSaved(post,Constants.REMOVE)
+                                R.drawable.not_bookmarked
+                            }
+                        )
+                    )
+
+                }
+
                 if(post.comments.size>0){
 
                     commentBox.isVisible=true
@@ -89,6 +117,10 @@ class PostListAdapter(
                 userName.setOnClickListener(){
                     onPostOwner(post)
                 }
+
+
+
+
 
 
             }

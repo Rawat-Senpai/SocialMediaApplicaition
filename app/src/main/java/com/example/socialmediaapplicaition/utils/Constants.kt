@@ -17,6 +17,9 @@ object Constants {
 
     const val ONLINE ="Online"
 
+    const val SAVE="SAVE"
+    const val REMOVE="REMOVE"
+
 
 
 

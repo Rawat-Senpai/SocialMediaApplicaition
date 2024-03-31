@@ -21,12 +21,12 @@ import com.example.socialmediaapplicaition.R
 import com.example.socialmediaapplicaition.databinding.FragmentMainBinding
 import com.example.socialmediaapplicaition.databinding.LayoutSideMenuBinding
 import com.example.socialmediaapplicaition.models.Post
+import com.example.socialmediaapplicaition.utils.Constants
 import com.example.socialmediaapplicaition.viewModels.AuthViewModel
 import com.example.socialmediaapplicaition.utils.NetworkResult
 import com.example.socialmediaapplicaition.utils.TokenManager
 import com.example.socialmediaapplicaition.viewModels.FirebaseViewModel
 import com.google.gson.Gson
-import com.skydoves.bundler.bundle
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -66,7 +66,7 @@ class PostFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        adapter = PostListAdapter(::onPostClicked,::onPostLiked,::onPostUserClicked,tokenManager.getId().toString())
+        adapter = PostListAdapter(::onPostClicked,::onPostLiked,::onPostUserClicked,::onPostSaved,tokenManager.getId().toString())
         binding.recyclerView.layoutManager = LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false)
         binding.recyclerView.adapter = adapter
 
@@ -128,6 +128,17 @@ class PostFragment : Fragment() {
         findNavController().navigate(R.id.action_mainFragment_to_profileDetailsFragment,bundle)
     }
 
+    private fun onPostSaved(post:Post,action:String){
+        postViewModel.crateSavePost(post,tokenManager.getId().toString(),action)
+
+        postViewModel.savePost(post,tokenManager.getId().toString())
+
+
+
+    }
+
+
+
     private fun bindObserver() {
 
         viewLifecycleOwner.lifecycleScope.launch {
@@ -177,6 +188,8 @@ class PostFragment : Fragment() {
                     }
                 }
             }
+
+
 
         }
 

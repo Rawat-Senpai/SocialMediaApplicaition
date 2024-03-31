@@ -6,6 +6,7 @@ import com.example.socialmediaapplicaition.models.ChatRoomModel
 import com.example.socialmediaapplicaition.models.PersonComments
 import com.example.socialmediaapplicaition.models.Post
 import com.example.socialmediaapplicaition.models.User
+import com.example.socialmediaapplicaition.utils.Constants
 import com.example.socialmediaapplicaition.utils.NetworkResult
 import com.example.socialmediaapplicaition.utils.addDataToFirestore
 
@@ -106,6 +107,30 @@ class FirebaseRepositoryImpl @Inject constructor(private val firebaseFirestore: 
             Log.d("responseData", "successfully")
             NetworkResult.Success(Unit)
         } catch (e: Exception) {
+            Log.d("crash123", e.toString())
+            NetworkResult.Error(e.toString())
+        }
+    }
+
+    override suspend fun savePost(post: Post, userId: String): NetworkResult<Unit> {
+        return try {
+
+            val isLiked = post.savedBy.contains(userId)
+
+            if (isLiked) {
+                post.savedBy.remove(userId)
+            } else {
+                post.savedBy.add(userId)
+            }
+
+            firebaseFirestore.collection("posts")
+                .document(post.id)
+                .set(post)
+                .addDataToFirestore()
+            Log.d("responseData", "successfully")
+            NetworkResult.Success(Unit)
+        }
+        catch (e: Exception) {
             Log.d("crash123", e.toString())
             NetworkResult.Error(e.toString())
         }
@@ -261,17 +286,27 @@ class FirebaseRepositoryImpl @Inject constructor(private val firebaseFirestore: 
 
 
     override suspend fun createSavePost(
-        savedPost: Post,
-        userId: String
+        post: Post,
+        userId: String,
+        action:String
     ): NetworkResult<Unit> {
         return try {
 
 
-            firebaseFirestore.collection("users")
-                .document(userId)
-                .collection("savedPost")
-                .add(savedPost)
-                .addDataToFirestore()
+            if(action==Constants.SAVE){
+                firebaseFirestore.collection("users")
+                    .document(userId)
+                    .collection("savedPost")
+                    .document(post.id)
+                    .set(post)
+
+            }else{
+                firebaseFirestore.collection("users")
+                    .document(userId)
+                    .collection("savedPost")
+                    .document(post.id)
+                    .delete()
+            }
 
             Log.d("responseData", "successfully")
             NetworkResult.Success(Unit)
