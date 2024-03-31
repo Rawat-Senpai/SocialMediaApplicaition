@@ -61,8 +61,11 @@ class FirebaseViewModel @Inject constructor(private val repository:FirebaseRepos
     private val _userProfileData  = MutableStateFlow<NetworkResult<User>?>(null)
     val userProfileData:StateFlow<NetworkResult<User>?> = _userProfileData
 
-    private val _userSpecificPost = MutableStateFlow<NetworkResult<List<Post>>?>(NetworkResult.Loading())
-    val userSpecificPost:StateFlow<NetworkResult<List<Post>>?> = _userSpecificPost
+
+
+    private val _userSpecificPost = MutableStateFlow<NetworkResult<List<Post>>?>(null)
+    val userSpecificPost: StateFlow<NetworkResult<List<Post>>?> = _userSpecificPost
+
 
     init {
         getAllUser()
@@ -132,6 +135,46 @@ class FirebaseViewModel @Inject constructor(private val repository:FirebaseRepos
             _searchedUser.value = NetworkResult.Success(filteredUsers)
         }
     }
+
+
+    fun filterPostUsingId(userId: String) = viewModelScope.launch {
+
+        val result = repository.getAllFilteredPost()
+
+
+        result.data?.let { posts->
+
+//            val filterPost = posts.filter { post->
+//                userId.trim().toString() == post.createdBy.id.trim().toString()
+//            }
+//
+            for(data in posts){
+
+                Log.d("CheckingData123",userId+"  ---  " + data.createdBy.id)
+
+                if(userId.trim().toString() == data.createdBy.id.trim().toString()){
+                    Log.d("CheckingData123","same")
+                }else{
+                    Log.d("CheckingData123","false")
+                }
+            }
+
+//            Log.d("CheckingData123",filterPost.size.toString())
+//            Log.d("CheckingData1234",filterPost.size.toString())
+//            _userSpecificPost.value = NetworkResult.Success(filterPost)
+
+        }
+
+        Log.d("CheckingData1234",_userSpecificPost.value?.data?.size.toString())
+
+
+
+
+
+    }
+
+
+
 
     fun searchContacts(keyPoint: String,yourUserId: String){
 
@@ -208,13 +251,26 @@ class FirebaseViewModel @Inject constructor(private val repository:FirebaseRepos
         val result = repository.getUserData(userId)
         _userProfileData.value = result
     }
-
-    fun filterPostUsingId(userId: String) = viewModelScope.launch {
-        _userSpecificPost.value = NetworkResult.Loading()
-        Log.d("chekcingDataPostShobhit",allPosts.toString())
-        Log.d("chekcingDataPostShobhit",allPosts.value?.data?.size.toString())
-        Log.d("chekcingDataPostShobhit",_allPosts.value?.data?.size.toString())
-    }
+//    fun filterPostUsingId(userId: String) = viewModelScope.launch {
+//        // Observe changes in _allPosts
+//            Log.d("FirebaseViewModel0",userId.toString())
+//            allPosts.collect { allPostsResult ->
+//                Log.d("FirebaseViewModel1", "All posts result: $allPostsResult")
+//                // Check if allPostsResult is not null
+//                allPostsResult?.data?.let { allPosts ->
+//                    Log.d("FirebaseViewModel2", "All posts data: $allPosts")
+//                    // Filter posts based on user ID
+//                    val userPosts = allPosts.filter { post ->
+//                        Log.d("FirebaseViewModel22", post.createdBy.id.toString()+"--"+ userId )
+//                        post.createdBy.id.trim().toString() == userId.trim().toString()
+//                    }
+//                    Log.d("FirebaseViewModel3", "User-specific posts: $userPosts")
+//                    // Update _userSpecificPost with filtered posts
+//                    _userSpecificPost.value = NetworkResult.Success(userPosts)
+//                }
+//            }
+//
+//    }
 
 
 

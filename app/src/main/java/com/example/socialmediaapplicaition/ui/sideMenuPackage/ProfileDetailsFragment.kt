@@ -50,7 +50,7 @@ class ProfileDetailsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         adapter = UsersPostAdapter(::onPostClicked)
-        binding.postRecyclerView.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+        binding.postRecyclerView.layoutManager = StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL)
         binding.postRecyclerView.adapter = adapter
 
         setInitialState()
@@ -127,32 +127,25 @@ class ProfileDetailsFragment : Fragment() {
 
 
             launch {
-                viewModel.userSpecificPost.collect{ it->
-
-                    Log.d("checkingShobhitprofile",it?.data.toString())
-
-                    when(it){
-                        is NetworkResult.Error -> {
-                            Log.d("error",it.message.toString())
-                        }
-
+                viewModel.userSpecificPost.collect { it ->
+                    Log.d("checkingShobhitprofile", it?.data.toString())
+                    when (it) {
                         is NetworkResult.Loading -> {
-                            binding.progressBar.isVisible= true
+                            binding.progressBar.isVisible = true
                         }
-
                         is NetworkResult.Success -> {
-                            Log.d("checkingDataPost",it.data.toString())
+                            Log.d("checkingDataPost", it.data.toString())
                             adapter.submitList(it.data)
                         }
-
-                        null -> {
-
+                        is NetworkResult.Error -> {
+                            Log.d("error", it.message.toString())
+                            Log.d("checkingShobhitprofile", it?.message.toString())
                         }
-
+                        else -> {}
                     }
                 }
-
             }
+
 
         }
 

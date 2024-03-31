@@ -30,7 +30,6 @@ interface FirebaseRepository {
     suspend fun  addCommentToPost(post: Post, commentPerson: PersonComments): NetworkResult<Unit>
     suspend fun getUserData(uid:String):NetworkResult<User>
 
-
-
+    suspend fun getAllFilteredPost():NetworkResult<Posts>
 
 }
