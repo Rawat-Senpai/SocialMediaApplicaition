@@ -317,5 +317,9 @@ class FirebaseRepositoryImpl @Inject constructor(private val firebaseFirestore: 
         }
     }
 
+    override suspend fun getUserSavedPost(userId: String): NetworkResult<ArrayList<Post>> {
+TODO()
+    }
+
 
 }

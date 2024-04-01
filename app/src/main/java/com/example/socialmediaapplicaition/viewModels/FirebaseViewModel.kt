@@ -62,15 +62,14 @@ class FirebaseViewModel @Inject constructor(private val repository:FirebaseRepos
     private  val _addCommentInPost = MutableStateFlow<NetworkResult<Unit>?>(null)
     val addCommentPost get():StateFlow<NetworkResult<Unit>?> = _addCommentInPost
 
-
     private val _userProfileData  = MutableStateFlow<NetworkResult<User>?>(null)
     val userProfileData:StateFlow<NetworkResult<User>?> = _userProfileData
-
-
 
     private val _userSpecificPost = MutableStateFlow<NetworkResult<List<Post>>?>(null)
     val userSpecificPost: StateFlow<NetworkResult<List<Post>>?> = _userSpecificPost
 
+    private val _userSavedPost = MutableStateFlow<NetworkResult<ArrayList<Post>>?>(NetworkResult.Loading())
+    val userSavedPost : MutableStateFlow<NetworkResult<ArrayList<Post>>?> = _userSavedPost
 
     init {
         getAllUser()
@@ -244,6 +243,16 @@ class FirebaseViewModel @Inject constructor(private val repository:FirebaseRepos
         _userProfileData.value = NetworkResult.Loading()
         val result = repository.getUserData(cleanUserId)
         _userProfileData.value = result
+    }
+
+
+    fun getUserSavedPost(userId:String) = viewModelScope.launch {
+
+        val clearUserId= userId.removeSurrounding("\"")
+        _userSavedPost.value = NetworkResult.Loading()
+//        val result = repository.getUserSavedPost(clearUserId)
+//        _userSavedPost.value=
+
     }
 
 }

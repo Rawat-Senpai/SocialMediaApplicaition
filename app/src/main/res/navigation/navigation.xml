@@ -56,6 +56,9 @@
         <action
             android:id="@+id/action_mainFragment_to_profileDetailsFragment"
             app:destination="@id/profileDetailsFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_savedPostFragment"
+            app:destination="@id/savedPostFragment" />
     </fragment>
     <fragment
         android:id="@+id/chatHistoryFragment"
@@ -116,5 +119,10 @@
             android:id="@+id/action_profileDetailsFragment_to_postDetailsFragment"
             app:destination="@id/postDetailsFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/savedPostFragment"
+        android:name="com.example.socialmediaapplicaition.ui.sideMenuPackage.SavedPostFragment"
+        android:label="fragment_saved_post"
+        tools:layout="@layout/fragment_saved_post" />
 
 </navigation>

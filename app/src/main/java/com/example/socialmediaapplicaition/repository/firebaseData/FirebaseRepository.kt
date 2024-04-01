@@ -32,5 +32,6 @@ interface FirebaseRepository {
     suspend fun getUserData(uid:String):NetworkResult<User>
     suspend fun createSavePost(post: Post,userId:String,action:String):NetworkResult<Unit>
 
+    suspend fun getUserSavedPost(userId:String):NetworkResult<ArrayList<Post>>
 
 }

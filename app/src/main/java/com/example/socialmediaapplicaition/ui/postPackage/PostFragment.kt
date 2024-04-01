@@ -100,6 +100,12 @@ class PostFragment : Fragment() {
             findNavController().navigate(R.id.action_mainFragment_to_contactFragment)
         }
 
+        savedLayout?.setOnClickListener(){
+            val bundle = Bundle()
+            bundle.putString("myUserId", Gson().toJson(tokenManager.getId()))
+            findNavController().navigate(R.id.action_mainFragment_to_savedPostFragment,bundle)
+        }
+
         profileLayout?.setOnClickListener(){
             val bundle = Bundle()
             bundle.putString("myProfileId", Gson().toJson(tokenManager.getId()))
