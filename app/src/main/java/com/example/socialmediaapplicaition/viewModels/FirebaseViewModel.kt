@@ -250,8 +250,10 @@ class FirebaseViewModel @Inject constructor(private val repository:FirebaseRepos
 
         val clearUserId= userId.removeSurrounding("\"")
         _userSavedPost.value = NetworkResult.Loading()
-//        val result = repository.getUserSavedPost(clearUserId)
-//        _userSavedPost.value=
+        val result = repository.getUserSavedPost(clearUserId)
+        Log.d("savedPost_ViewModel",result.data.toString())
+        Log.d("savedPost_ViewModel",result.data?.size.toString())
+        _userSavedPost.value=result
 
     }
 

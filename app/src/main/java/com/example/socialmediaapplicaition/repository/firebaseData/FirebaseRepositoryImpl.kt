@@ -318,7 +318,29 @@ class FirebaseRepositoryImpl @Inject constructor(private val firebaseFirestore: 
     }
 
     override suspend fun getUserSavedPost(userId: String): NetworkResult<ArrayList<Post>> {
-TODO()
+
+        return try {
+
+            //     firebaseFirestore.collection("chat_room").document(roomId).collection("chats")
+            val snapshot = firebaseFirestore.collection("users").document(userId).collection("savedPost").get().getDataOfUserFromDatabase()
+            Log.d("savedPost",snapshot.toString())
+            if (snapshot != null && !snapshot.isEmpty) {
+                val userList = ArrayList<Post>()
+                for (document in snapshot.documents) {
+                    val post = document.toObject(Post::class.java)
+                    post?.let {
+                        userList.add(it)
+                    }
+                }
+
+                Log.d("savedPost",userList.toString())
+                NetworkResult.Success(userList)
+            } else {
+                NetworkResult.Error("No post saved found")
+            }
+        } catch (e: Exception) {
+            NetworkResult.Error("An error occurred: ${e.message}")
+        }
     }
 
 
