@@ -93,20 +93,18 @@ class SavedPostFragment : Fragment() {
                             adapter.submitList(it.data)
                         }
 
-                        null -> {}
+                        null -> {
+
+                        }
                     }
 
                 }
             }
 
-
-
-
         }
-
-
-
     }
+
+
     private fun onPostClicked(postResponse: Post){
         val bundle = Bundle()
         bundle.putString("post", Gson().toJson(postResponse))

@@ -37,15 +37,13 @@ class CreatePostFragment : Fragment() {
 
     @Inject
     lateinit var tokenManager: TokenManager
-
-
     private var _binding: FragmentCreatePostFragmnetBinding ?= null
     private val binding get() = _binding!!
     private lateinit var cameraLauncher: ActivityResultLauncher<Uri>
     private lateinit var galleryLauncher: ActivityResultLauncher<String>
 
     private var commonImageUri: Uri? = null
-    private  var imageUrl :String = "";
+
 
     private val viewModel by viewModels<AuthViewModel> ()
 
@@ -78,7 +76,7 @@ class CreatePostFragment : Fragment() {
                 binding.imageView.visibility=View.VISIBLE
 
                 commonImageUri?.let { uri ->
-                    viewModel.uploadImageToFireStore(uri)
+
                     binding.imageView.setImageURI(uri)
                 }
             } else {

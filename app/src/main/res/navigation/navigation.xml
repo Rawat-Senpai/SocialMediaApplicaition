@@ -118,6 +118,9 @@
         <action
             android:id="@+id/action_profileDetailsFragment_to_postDetailsFragment"
             app:destination="@id/postDetailsFragment" />
+        <action
+            android:id="@+id/action_profileDetailsFragment_to_editMyProfile"
+            app:destination="@id/editMyProfile" />
     </fragment>
     <fragment
         android:id="@+id/savedPostFragment"
@@ -128,5 +131,10 @@
             android:id="@+id/action_savedPostFragment_to_postDetailsFragment"
             app:destination="@id/postDetailsFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/editMyProfile"
+        android:name="com.example.socialmediaapplicaition.EditMyProfile"
+        android:label="fragment_edit_my_profile"
+        tools:layout="@layout/fragment_edit_my_profile" />
 
 </navigation>

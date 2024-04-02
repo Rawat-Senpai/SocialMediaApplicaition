@@ -1,10 +1,20 @@
 package com.example.socialmediaapplicaition.ui.sideMenuPackage
 
+import android.Manifest
+import android.content.ContentValues
+import android.content.Context
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -14,11 +24,12 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.bumptech.glide.Glide
 import com.example.socialmediaapplicaition.R
-
 import com.example.socialmediaapplicaition.databinding.FragmentProfileDetailsBinding
 import com.example.socialmediaapplicaition.models.Post
 import com.example.socialmediaapplicaition.utils.NetworkResult
 import com.example.socialmediaapplicaition.utils.TokenManager
+import com.example.socialmediaapplicaition.utils.Utils
+import com.example.socialmediaapplicaition.viewModels.AuthViewModel
 import com.example.socialmediaapplicaition.viewModels.FirebaseViewModel
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
@@ -30,13 +41,19 @@ class ProfileDetailsFragment : Fragment() {
 
     @Inject
     lateinit var tokenManager: TokenManager
-    private val viewModel by viewModels<FirebaseViewModel>()
+    private val postViewModel by viewModels<FirebaseViewModel>()
+    private val viewModel by viewModels<AuthViewModel> ()
     private  var _binding: FragmentProfileDetailsBinding ?= null
     private val binding get() = _binding!!
     private lateinit var adapter: UsersPostAdapter
     var userProfilePic:String=""
     var userName:String=""
 
+
+    private lateinit var cameraLauncher: ActivityResultLauncher<Uri>
+    private lateinit var galleryLauncher: ActivityResultLauncher<String>
+
+    private var commonImageUri: Uri? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -58,6 +75,31 @@ class ProfileDetailsFragment : Fragment() {
         setInitialState()
         bindingView()
         bindObserver()
+
+
+
+
+        cameraLauncher = registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
+            if (success) {
+
+                commonImageUri?.let { uri ->
+
+                    viewModel.uploadImageToFireStore(commonImageUri!!)
+
+                }
+            } else {
+                Toast.makeText(requireContext(),"photo capture failed", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        galleryLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+            Log.d("Checking", "selectedPic")
+
+            if(uri!= null){
+                commonImageUri = uri
+                viewModel.uploadImageToFireStore(commonImageUri!!)
+            }
+        }
     }
 
     private fun setInitialState() {
@@ -74,13 +116,12 @@ class ProfileDetailsFragment : Fragment() {
 
                 userProfilePic = tokenManager.getProfile().toString()
                 userName= tokenManager.getUserName().toString()
-
                 personName.text = tokenManager.getUserName()
                 userStatus.text = tokenManager.getStatus()
                 Glide.with(personImageSquare).load(userProfilePic).placeholder(R.drawable.ic_default_person).into(personImageSquare)
                 onlineStatus.text = "Online"
-                viewModel.filterPostUsingId(myProfileId)
-                viewModel.getUserProfileData(myProfileId)
+                postViewModel.filterPostUsingId(myProfileId)
+                postViewModel.getUserProfileData(myProfileId)
 
             }
 
@@ -88,8 +129,8 @@ class ProfileDetailsFragment : Fragment() {
         }else if (otherUserId != null){
             binding.apply {
                 Log.d("checkingUserId",otherUserId)
-                viewModel.getUserProfileData(otherUserId)
-                viewModel.filterPostUsingId(otherUserId)
+                postViewModel.getUserProfileData(otherUserId)
+                postViewModel.filterPostUsingId(otherUserId)
             }
         }
     }
@@ -104,10 +145,11 @@ class ProfileDetailsFragment : Fragment() {
     private fun bindObserver() {
 
 
+
         viewLifecycleOwner.lifecycleScope.launch {
 
             launch {
-                viewModel.userProfileData.collect{it->
+                postViewModel.userProfileData.collect{it->
                     binding.progressBar.isVisible = it is NetworkResult.Loading
                     when(it){
                        is NetworkResult.Error -> {
@@ -141,7 +183,7 @@ class ProfileDetailsFragment : Fragment() {
 
 
             launch {
-                viewModel.userSpecificPost.collect { it ->
+                postViewModel.userSpecificPost.collect { it ->
                     Log.d("checkingShobhitprofile", it?.data.toString())
                     when (it) {
                         is NetworkResult.Loading -> {
@@ -160,8 +202,25 @@ class ProfileDetailsFragment : Fragment() {
                 }
             }
 
+            launch {
+                viewModel.uploadPhotoResult.collect{
+                    when(it){
+                        is NetworkResult.Error -> {}
+                        is NetworkResult.Loading -> {}
+                        is NetworkResult.Success -> {
+                            userProfilePic = it.data.toString()
+                            updateUserData()
+                        }
+                        null -> {}
+                    }
+                }
+            }
 
         }
+
+    }
+
+    private fun updateUserData() {
 
     }
 
@@ -194,10 +253,66 @@ class ProfileDetailsFragment : Fragment() {
             }
 
 
+            personImageSquare.setOnClickListener(){
+                chooseImage(requireActivity())
+            }
+
+
 
         }
 
     }
+    private fun chooseImage(context: Context) {
+        val optionsMenu = arrayOf<CharSequence>(
+            "Take Photo",
+            "Choose from Gallery",
+            "Exit"
+        )
+        val builder = AlertDialog.Builder(context)
+
+        builder.setItems(
+            optionsMenu
+        ) { dialogInterface, i ->
+            if (optionsMenu[i] == "Take Photo") {
+
+                if (Utils.checkPermission(requireActivity(), Manifest.permission.CAMERA)) {
+                    takeImageFromCameraUri()
+                } else {
+                    Utils.requestPermission(requireActivity(), Manifest.permission.CAMERA, Utils.CAMERA_PERMISSION_CODE)
+                }
+
+            } else if (optionsMenu[i] == "Choose from Gallery") {
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                    imageChooser()
+                } else {
+                    if (Utils.checkPermission(requireActivity(), Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                        imageChooser()
+                    } else {
+                        Utils.requestPermission(requireActivity(), Manifest.permission.READ_EXTERNAL_STORAGE, Utils.STORAGE_PERMISSION_CODE)
+                    }
+                }
+
+            } else if (optionsMenu[i] == "Exit") {
+                dialogInterface.dismiss()
+            }
+        }
+        builder.show()
+    }
+
+    private fun takeImageFromCameraUri() {
+        val values = ContentValues()
+        values.put(MediaStore.Images.Media.TITLE, "MyPicture")
+        values.put(MediaStore.Images.Media.DESCRIPTION, "Photo taken on " + System.currentTimeMillis())
+        commonImageUri = requireActivity().contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
+        cameraLauncher.launch(commonImageUri)
+
+    }
+
+    private fun imageChooser() {
+        galleryLauncher.launch("image/*")
+    }
+
 
     override fun onDestroy() {
         super.onDestroy()
