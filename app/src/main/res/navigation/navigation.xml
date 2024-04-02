@@ -133,7 +133,7 @@
     </fragment>
     <fragment
         android:id="@+id/editMyProfile"
-        android:name="com.example.socialmediaapplicaition.EditMyProfile"
+        android:name="com.example.socialmediaapplicaition.ui.sideMenuPackage.EditMyProfile"
         android:label="fragment_edit_my_profile"
         tools:layout="@layout/fragment_edit_my_profile" />
 

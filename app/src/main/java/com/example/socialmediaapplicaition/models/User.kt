@@ -5,5 +5,6 @@ data class User(
     val id: String="",
     val profile: String="",
     val status:String="Hey there, lets connect ",
-    val onlineStatus:String ="Offline"
+    val onlineStatus:String ="Offline",
+    val userEmail:String ="",
 )

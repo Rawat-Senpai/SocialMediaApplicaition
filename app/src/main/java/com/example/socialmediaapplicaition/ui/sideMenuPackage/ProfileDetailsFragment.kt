@@ -26,6 +26,7 @@ import com.bumptech.glide.Glide
 import com.example.socialmediaapplicaition.R
 import com.example.socialmediaapplicaition.databinding.FragmentProfileDetailsBinding
 import com.example.socialmediaapplicaition.models.Post
+import com.example.socialmediaapplicaition.models.User
 import com.example.socialmediaapplicaition.utils.NetworkResult
 import com.example.socialmediaapplicaition.utils.TokenManager
 import com.example.socialmediaapplicaition.utils.Utils
@@ -48,7 +49,7 @@ class ProfileDetailsFragment : Fragment() {
     private lateinit var adapter: UsersPostAdapter
     var userProfilePic:String=""
     var userName:String=""
-
+    var userAbout:String=""
 
     private lateinit var cameraLauncher: ActivityResultLauncher<Uri>
     private lateinit var galleryLauncher: ActivityResultLauncher<String>
@@ -137,7 +138,7 @@ class ProfileDetailsFragment : Fragment() {
 
     private fun onPostClicked(postResponse: Post){
         val bundle = Bundle()
-        bundle.putString("post", Gson().toJson(postResponse))
+        bundle.putString("userProfile", Gson().toJson(postResponse))
         findNavController().navigate(R.id.action_profileDetailsFragment_to_postDetailsFragment, bundle)
     }
 
@@ -167,6 +168,7 @@ class ProfileDetailsFragment : Fragment() {
                                personName.text = it.data?.name
                                userStatus.text = it.data?.status
                                onlineStatus.text = it.data?.onlineStatus
+                               userAbout = it.data?.status.toString()
                                userProfilePic = it.data?.profile.toString()
                                userName = it.data?.name.toString()
                                Glide.with(personImageSquare).load(userProfilePic).placeholder(R.drawable.ic_default_person).into(personImageSquare)
@@ -247,6 +249,17 @@ class ProfileDetailsFragment : Fragment() {
 
                 override fun onTransitionTrigger(layout: MotionLayout?, triggerId: Int, positive: Boolean, progress: Float) {}
             })
+
+            binding.editProfile.setOnClickListener(){
+
+                val user =User(userName,userProfilePic,userAbout,"")
+                val bundle = Bundle()
+                bundle.putString("profile", Gson().toJson(user))
+                findNavController().navigate(R.id.action_profileDetailsFragment_to_editMyProfile)
+
+            }
+
+
 
             backBtn.setOnClickListener(){
                 findNavController().popBackStack()

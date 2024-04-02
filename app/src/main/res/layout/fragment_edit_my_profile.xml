@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".EditMyProfile"
+    tools:context=".ui.sideMenuPackage.EditMyProfile"
     android:background="@drawable/chat_background">
 
     <ImageView
@@ -24,6 +24,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Edit Profile"
+        android:textColor="@color/white"
         android:layout_marginStart="10dp"
         android:textSize="15sp"
         android:fontFamily="@font/inter_semibold"
@@ -43,19 +44,18 @@
         tools:src="@drawable/ic_default_person"/>
 
     <androidx.cardview.widget.CardView
-        android:layout_width="50dp"
-        android:layout_height="60dp"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
         android:layout_marginTop="-40dp"
         app:layout_constraintEnd_toEndOf="@+id/userImage"
         app:layout_constraintTop_toBottomOf="@+id/userImage"
-        app:cardCornerRadius="40dp">
+        app:cardCornerRadius="100dp">
 
         <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_gravity="center"
             android:id="@+id/uploadPhoto"
             android:layout_width="60dp"
             android:layout_height="60dp"
-
-            android:background="@color/white"
             android:padding="18dp"
             android:scaleType="fitXY"
             android:src="@drawable/ic_camera"
@@ -84,7 +84,8 @@
             android:layout_marginTop="10dp"
             android:src="@drawable/ic_person_pic"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/white" />
 
         <TextView
             android:id="@+id/personName"
@@ -93,17 +94,20 @@
             android:layout_marginStart="10dp"
             android:text="User Name"
             android:textSize="12sp"
+            android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="@+id/personImage"
             app:layout_constraintStart_toEndOf="@+id/personImage"
             app:layout_constraintTop_toTopOf="@+id/personImage" />
 
         <EditText
+            android:id="@+id/UserName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="30dp"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
             android:background="@null"
+            android:textColorHint="@color/grey"
             android:hint="Enter you name"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -129,7 +133,7 @@
             android:layout_height="20dp"
             android:layout_marginStart="20dp"
             android:layout_marginTop="10dp"
-            android:src="@drawable/ic_person_pic"
+            android:src="@drawable/ic_status"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -138,6 +142,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
+            android:textColor="@color/white"
             android:text="Status"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="@+id/statusImage"
@@ -145,12 +150,14 @@
             app:layout_constraintTop_toTopOf="@+id/statusImage" />
 
         <EditText
+            android:id="@+id/status"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="30dp"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
             android:background="@null"
+            android:textColorHint="@color/grey"
             android:hint="Hey There , Let's Connect "
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -175,7 +182,7 @@
             android:layout_height="20dp"
             android:layout_marginStart="20dp"
             android:layout_marginTop="10dp"
-            android:src="@drawable/ic_person_pic"
+            android:src="@drawable/ic_mail"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -184,13 +191,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:text="User Name"
+            android:text="Email"
+            android:textColor="@color/white"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="@+id/gmailImage"
             app:layout_constraintStart_toEndOf="@+id/gmailImage"
             app:layout_constraintTop_toTopOf="@+id/gmailImage" />
 
-        <EditText
+        <TextView
             android:id="@+id/gmailText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -198,7 +206,9 @@
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
             android:background="@null"
+            android:textColor="@color/white"
             android:hint="Enter you name"
+            android:textColorHint="@color/grey"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
