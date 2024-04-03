@@ -188,7 +188,7 @@ class FirebaseViewModel @Inject constructor(private val repository:FirebaseRepos
 
     fun getAllMessages(roomId:String)=viewModelScope.launch{
 
-      _getAllChatMessages.value = NetworkResult.Loading()
+
         try {
             repository.getAllChats(roomId).collect{result->
 
@@ -264,7 +264,7 @@ class FirebaseViewModel @Inject constructor(private val repository:FirebaseRepos
     fun updateUserOnlineStatus(userId:String,onlineStatus:String) = viewModelScope.launch {
         val clearUserId = userId.removeSurrounding("\"")
         _updateUserOnlineStatus.value = NetworkResult.Loading()
-        val result = repository.setUserStatus(userId,onlineStatus)
+        val result = repository.setUserStatus(clearUserId,onlineStatus)
         _updateUserOnlineStatus.value= result
 
 

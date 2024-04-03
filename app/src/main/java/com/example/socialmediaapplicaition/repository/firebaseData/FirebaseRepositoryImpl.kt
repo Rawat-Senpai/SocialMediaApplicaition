@@ -344,7 +344,22 @@ class FirebaseRepositoryImpl @Inject constructor(private val firebaseFirestore: 
     }
 
     override suspend fun setUserStatus(userId: String, onlineString: String): NetworkResult<Unit> {
-    TODO()
+        return try {
+            // Update specific field in Firestore document
+            firebaseFirestore.collection("users")
+                .document(userId)
+                .update("onlineStatus", onlineString)
+                .addOnSuccessListener {
+                    Log.d("responseData", "Field successfully updated")
+                }
+                .addOnFailureListener { e ->
+                    Log.d("crash123", e.toString())
+                }
+            NetworkResult.Success(Unit)
+        } catch (e: Exception) {
+            Log.d("crash123", e.toString())
+            NetworkResult.Error(e.toString())
+        }
     }
 
 

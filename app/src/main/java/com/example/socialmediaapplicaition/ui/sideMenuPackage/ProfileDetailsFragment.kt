@@ -87,9 +87,8 @@ class ProfileDetailsFragment : Fragment() {
 
         if(myProfileId != null){
             binding.apply {
-
+                editProfile.isVisible=true
                 Log.d("checkingUserId",myProfileId)
-                editProfile.isVisible = true
                 userProfilePic = tokenManager.getProfile().toString()
                 userName= tokenManager.getUserName().toString()
                 personName.text = tokenManager.getUserName()
@@ -104,7 +103,7 @@ class ProfileDetailsFragment : Fragment() {
 
         }else if (otherUserId != null){
             binding.apply {
-                editProfile.isVisible=false
+
                 Log.d("checkingUserId",otherUserId)
                 postViewModel.getUserProfileData(otherUserId)
                 postViewModel.filterPostUsingId(otherUserId)

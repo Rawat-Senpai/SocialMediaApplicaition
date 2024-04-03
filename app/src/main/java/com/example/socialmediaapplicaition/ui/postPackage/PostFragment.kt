@@ -72,10 +72,21 @@ class PostFragment : Fragment() {
 
         viewModel.getUserFullDetails(tokenManager.getId().toString())
 
+
+
         bindObserver()
         bindViews()
+        bindSideMenu()
 
 
+        // update onlineStatus
+        postViewModel.updateUserOnlineStatus(tokenManager.getId().toString(),Constants.ONLINE)
+
+
+
+    }
+
+    private fun bindSideMenu() {
         val sideBinding = LayoutSideMenuBinding.bind(binding.sideMenu)
         SideMenuImage = sideBinding.profileImage
         userTextView = sideBinding.personName
@@ -86,8 +97,6 @@ class PostFragment : Fragment() {
         shareLayout = sideBinding.shareApp
         sideMenuBackground = sideBinding.sideMenuBackground
         profileLayout = sideBinding.profileLayout
-
-
 
         // this is done so that it do n
         sideMenuBackground?.setOnClickListener(){}
@@ -114,7 +123,6 @@ class PostFragment : Fragment() {
 
         userTextView?.text =tokenManager.getUserName().toString()
         Glide.with(requireContext()).load(tokenManager.getProfile()).placeholder(R.drawable.ic_default_person).into(SideMenuImage!!)
-
 
     }
 
@@ -238,6 +246,8 @@ class PostFragment : Fragment() {
     }
 
     override fun onDestroy() {
+        postViewModel.updateUserOnlineStatus(tokenManager.getId().toString(),System.currentTimeMillis().toString())
+
         super.onDestroy()
         _binding = null
     }
