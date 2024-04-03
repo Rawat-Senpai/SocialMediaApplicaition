@@ -12,6 +12,8 @@ interface AuthRepository {
     suspend fun signup(name:String,email:String,password: String):NetworkResult<FirebaseUser>
     suspend fun addUserToDatabase(user:User):NetworkResult<Unit>
     suspend fun uploadPhotoToFireStore(photoUri:Uri):NetworkResult<Uri>
+
+    suspend fun uploadVideosToFireStore(videoUri:Uri):NetworkResult<Uri>
     suspend fun getUserData(uid:String):NetworkResult<User>
     fun logout()
 

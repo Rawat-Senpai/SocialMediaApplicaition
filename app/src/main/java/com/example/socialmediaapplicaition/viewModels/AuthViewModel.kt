@@ -76,8 +76,13 @@ class AuthViewModel @Inject constructor(private val repository: AuthRepository) 
         val result = repository.uploadPhotoToFireStore(photoUri)
         _uploadPhotoResult.value= result
         Log.d("checking",result.toString())
+    }
 
-
+    fun uploadVideoToFireStore(videoUri:Uri) = viewModelScope.launch {
+        _uploadPhotoResult.value = NetworkResult.Loading()
+        val result = repository.uploadPhotoToFireStore(videoUri)
+        _uploadPhotoResult.value= result
+        Log.d("checking",result.toString())
     }
 
     fun getUserFullDetails(userId:String) = viewModelScope.launch {

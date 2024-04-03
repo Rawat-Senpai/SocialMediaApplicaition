@@ -26,6 +26,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-
+        postViewModel.updateUserOnlineStatus(userId,System.currentTimeMillis().toString())
     }
 }
