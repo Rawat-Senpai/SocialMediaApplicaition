@@ -60,7 +60,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
-
                 android:text="@string/txt_register_subheader"
                 android:textColor="@color/light_gray"
                 android:textSize="16sp" />
@@ -71,7 +70,6 @@
                 android:layout_height="100dp"
                 android:layout_gravity="center_horizontal"
                 android:src="@drawable/ic_default_person"
-                android:scaleType="fitXY"
                 android:layout_marginTop="10dp"/>
 
             <TextView

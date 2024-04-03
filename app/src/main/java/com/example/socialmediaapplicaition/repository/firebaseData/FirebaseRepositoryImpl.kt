@@ -343,5 +343,9 @@ class FirebaseRepositoryImpl @Inject constructor(private val firebaseFirestore: 
         }
     }
 
+    override suspend fun setUserStatus(userId: String, onlineString: String): NetworkResult<Unit> {
+    TODO()
+    }
+
 
 }

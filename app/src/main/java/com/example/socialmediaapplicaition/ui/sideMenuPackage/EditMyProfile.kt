@@ -91,10 +91,15 @@ class EditMyProfile : Fragment() {
     private fun setInitialState() {
 
         val myUserProfile = arguments?.getString("profile")
+
+        Log.d("checkingResponse",myUserProfile.toString())
         if(myUserProfile!= null){
+
+            Log.d("checkingResponse",myUserProfile.toString())
+
             user = Gson().fromJson<User>(myUserProfile,User::class.java)
             user?.let {
-
+                Log.d("checkingResponse",user.toString())
                 binding.apply {
 
                     Glide.with(userImage).load(user?.profile).placeholder(R.drawable.ic_default_person).into(userImage)

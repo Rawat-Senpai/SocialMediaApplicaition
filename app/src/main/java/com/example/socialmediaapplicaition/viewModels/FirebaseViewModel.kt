@@ -71,6 +71,9 @@ class FirebaseViewModel @Inject constructor(private val repository:FirebaseRepos
     private val _userSavedPost = MutableStateFlow<NetworkResult<ArrayList<Post>>?>(NetworkResult.Loading())
     val userSavedPost : MutableStateFlow<NetworkResult<ArrayList<Post>>?> = _userSavedPost
 
+    private val _updateUserOnlineStatus = MutableStateFlow<NetworkResult<Unit>>(NetworkResult.Loading())
+    val updateUserOnlineStatus :MutableStateFlow<NetworkResult<Unit>> = _updateUserOnlineStatus
+
     init {
         getAllUser()
         getAllPost()
@@ -256,5 +259,16 @@ class FirebaseViewModel @Inject constructor(private val repository:FirebaseRepos
         _userSavedPost.value=result
 
     }
+
+
+    fun updateUserOnlineStatus(userId:String,onlineStatus:String) = viewModelScope.launch {
+        val clearUserId = userId.removeSurrounding("\"")
+        _updateUserOnlineStatus.value = NetworkResult.Loading()
+        val result = repository.setUserStatus(userId,onlineStatus)
+        _updateUserOnlineStatus.value= result
+
+
+    }
+
 
 }

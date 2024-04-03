@@ -34,4 +34,7 @@ interface FirebaseRepository {
 
     suspend fun getUserSavedPost(userId:String):NetworkResult<ArrayList<Post>>
 
+    suspend fun setUserStatus(userId: String,onlineString: String):NetworkResult<Unit>
+
+
 }

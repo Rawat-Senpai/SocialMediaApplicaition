@@ -114,7 +114,7 @@ class ProfileDetailsFragment : Fragment() {
 
     private fun onPostClicked(postResponse: Post){
         val bundle = Bundle()
-        bundle.putString("userProfile", Gson().toJson(postResponse))
+        bundle.putString("post", Gson().toJson(postResponse))
         findNavController().navigate(R.id.action_profileDetailsFragment_to_postDetailsFragment, bundle)
     }
 
@@ -214,25 +214,20 @@ class ProfileDetailsFragment : Fragment() {
                 }
 
                 override fun onTransitionCompleted(layout: MotionLayout?, currentId: Int) {
-
                     if(currentId == R.id.start){
                         Glide.with(personImageSquare).load(userProfilePic).placeholder(R.drawable.ic_default_person).into(personImageSquare)
                     }else if (currentId == R.id.end){
                         Glide.with(personImageSquare).load(userProfilePic).placeholder(R.drawable.ic_default_person).circleCrop().into(personImageSquare)
                     }
-
                 }
-
                 override fun onTransitionTrigger(layout: MotionLayout?, triggerId: Int, positive: Boolean, progress: Float) {}
             })
 
             binding.editProfile.setOnClickListener(){
-
                 val user =User(userName,userProfilePic,userAbout,"")
                 val bundle = Bundle()
                 bundle.putString("profile", Gson().toJson(user))
                 findNavController().navigate(R.id.action_profileDetailsFragment_to_editMyProfile)
-
             }
 
 
