@@ -83,9 +83,7 @@ class SavedPostFragment : Fragment() {
                             Log.d("checkingData",it.message.toString())
                         }
 
-                        is NetworkResult.Loading -> {
-
-                        }
+                        is NetworkResult.Loading -> {}
 
                         is NetworkResult.Success -> {
                          Log.d("savedPost_activity",it.data.toString())

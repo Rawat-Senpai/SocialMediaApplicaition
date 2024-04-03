@@ -51,10 +51,8 @@ class ProfileDetailsFragment : Fragment() {
     var userName:String=""
     var userAbout:String=""
 
-    private lateinit var cameraLauncher: ActivityResultLauncher<Uri>
-    private lateinit var galleryLauncher: ActivityResultLauncher<String>
 
-    private var commonImageUri: Uri? = null
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -78,29 +76,6 @@ class ProfileDetailsFragment : Fragment() {
         bindObserver()
 
 
-
-
-        cameraLauncher = registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
-            if (success) {
-
-                commonImageUri?.let { uri ->
-
-                    viewModel.uploadImageToFireStore(commonImageUri!!)
-
-                }
-            } else {
-                Toast.makeText(requireContext(),"photo capture failed", Toast.LENGTH_SHORT).show()
-            }
-        }
-
-        galleryLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-            Log.d("Checking", "selectedPic")
-
-            if(uri!= null){
-                commonImageUri = uri
-                viewModel.uploadImageToFireStore(commonImageUri!!)
-            }
-        }
     }
 
     private fun setInitialState() {
@@ -114,7 +89,7 @@ class ProfileDetailsFragment : Fragment() {
             binding.apply {
 
                 Log.d("checkingUserId",myProfileId)
-
+                editProfile.isVisible = true
                 userProfilePic = tokenManager.getProfile().toString()
                 userName= tokenManager.getUserName().toString()
                 personName.text = tokenManager.getUserName()
@@ -129,6 +104,7 @@ class ProfileDetailsFragment : Fragment() {
 
         }else if (otherUserId != null){
             binding.apply {
+                editProfile.isVisible=false
                 Log.d("checkingUserId",otherUserId)
                 postViewModel.getUserProfileData(otherUserId)
                 postViewModel.filterPostUsingId(otherUserId)
@@ -260,70 +236,14 @@ class ProfileDetailsFragment : Fragment() {
             }
 
 
-
             backBtn.setOnClickListener(){
                 findNavController().popBackStack()
             }
 
 
-            personImageSquare.setOnClickListener(){
-                chooseImage(requireActivity())
-            }
-
-
 
         }
 
-    }
-    private fun chooseImage(context: Context) {
-        val optionsMenu = arrayOf<CharSequence>(
-            "Take Photo",
-            "Choose from Gallery",
-            "Exit"
-        )
-        val builder = AlertDialog.Builder(context)
-
-        builder.setItems(
-            optionsMenu
-        ) { dialogInterface, i ->
-            if (optionsMenu[i] == "Take Photo") {
-
-                if (Utils.checkPermission(requireActivity(), Manifest.permission.CAMERA)) {
-                    takeImageFromCameraUri()
-                } else {
-                    Utils.requestPermission(requireActivity(), Manifest.permission.CAMERA, Utils.CAMERA_PERMISSION_CODE)
-                }
-
-            } else if (optionsMenu[i] == "Choose from Gallery") {
-
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                    imageChooser()
-                } else {
-                    if (Utils.checkPermission(requireActivity(), Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                        imageChooser()
-                    } else {
-                        Utils.requestPermission(requireActivity(), Manifest.permission.READ_EXTERNAL_STORAGE, Utils.STORAGE_PERMISSION_CODE)
-                    }
-                }
-
-            } else if (optionsMenu[i] == "Exit") {
-                dialogInterface.dismiss()
-            }
-        }
-        builder.show()
-    }
-
-    private fun takeImageFromCameraUri() {
-        val values = ContentValues()
-        values.put(MediaStore.Images.Media.TITLE, "MyPicture")
-        values.put(MediaStore.Images.Media.DESCRIPTION, "Photo taken on " + System.currentTimeMillis())
-        commonImageUri = requireActivity().contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
-        cameraLauncher.launch(commonImageUri)
-
-    }
-
-    private fun imageChooser() {
-        galleryLauncher.launch("image/*")
     }
 
 

@@ -44,6 +44,7 @@
         tools:src="@drawable/ic_default_person"/>
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/clickPhoto"
         android:layout_width="45dp"
         android:layout_height="45dp"
         android:layout_marginTop="-40dp"
@@ -51,15 +52,14 @@
         app:layout_constraintTop_toBottomOf="@+id/userImage"
         app:cardCornerRadius="100dp">
 
-        <de.hdodenhof.circleimageview.CircleImageView
+        <ImageView
             android:layout_gravity="center"
             android:id="@+id/uploadPhoto"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:padding="18dp"
             android:scaleType="fitXY"
-            android:src="@drawable/ic_camera"
-   />
+            android:src="@drawable/ic_camera"/>
 
     </androidx.cardview.widget.CardView>
 

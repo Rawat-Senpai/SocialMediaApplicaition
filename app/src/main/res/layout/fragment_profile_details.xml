@@ -11,16 +11,7 @@
 
     <!-- Fixed layout -->
 
-    <ImageView
-        android:id="@+id/editProfile"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:elevation="10dp"
-        android:src="@drawable/ic_edit_profile"
-        android:layout_margin="20dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:tint="@color/white" />
+
 
 
 
@@ -47,6 +38,19 @@
         app:layout_constraintTop_toTopOf="parent"
         android:src="@drawable/ic_default_person"
         android:scaleType="centerCrop"/>
+
+
+    <ImageView
+        android:id="@+id/editProfile"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:elevation="5dp"
+        android:src="@drawable/ic_edit_profile"
+        android:layout_margin="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/white"
+        />
 
     <TextView
         android:id="@+id/personName"

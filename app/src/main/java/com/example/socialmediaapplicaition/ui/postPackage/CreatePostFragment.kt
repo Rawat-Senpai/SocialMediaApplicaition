@@ -100,7 +100,6 @@ class CreatePostFragment : Fragment() {
         }
 
         Log.d("shobhitChecking",tokenManager.getProfile().toString())
-
         Log.d("shobhitChecking",tokenManager.getUserName().toString())
         Log.d("shobhitChecking",tokenManager.getId().toString())
 
