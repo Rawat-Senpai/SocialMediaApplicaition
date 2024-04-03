@@ -112,7 +112,7 @@ class AuthRepositoryImpl @Inject constructor(private val firebaseAuth:FirebaseAu
 
     override suspend fun uploadVideosToFireStore(photoUri: Uri): NetworkResult<Uri> {
 
-        Log.d("CheckingResponse","here")
+
 
         return try {
             val storageRef = storage.reference
@@ -122,12 +122,12 @@ class AuthRepositoryImpl @Inject constructor(private val firebaseAuth:FirebaseAu
 
             // Get the download URL of the uploaded photo
             val downloadUrl = imageRef.downloadUrl.awaitFunction()
-            Log.d("ShobhitResponse",downloadUrl.toString())
-            Log.d("CheckingResponse","success")
+            Log.d("ShobhitResponse_",downloadUrl.toString())
+            Log.d("CheckingResponse__","success")
             NetworkResult.Success(downloadUrl)
 
         }catch (e:Exception){
-            Log.d("CheckingResponse",e.toString())
+            Log.d("CheckingResponse___",e.toString())
             NetworkResult.Error(e.message ?: "Failed to upload photo")
         }
     }

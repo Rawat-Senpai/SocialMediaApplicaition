@@ -1,9 +1,11 @@
 package com.example.socialmediaapplicaition.ui.chatFragment
 
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import android.view.contentcapture.ContentCaptureSession
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -41,13 +43,27 @@ class ChatAdapter (
                     if(chat.type==Constants.MESSAGE_TYPE_TEXT){
                         sentMessage.isVisible=true
                         sentImage.isVisible=false
+                        sentVideo.isVisible=false
                         sentMessage.text=chat.message
 
-                    }else{
+                    }else if (chat.type == Constants.MESSAGE_TYPE_IMAGE){
                         sentMessage.isVisible=false
                         sentImage.isVisible=true
+                        sentVideo.isVisible=false
                         Glide.with(root).load(chat.message).into(sentImage)
+                    }else if (chat.type ==  Constants.MESSAGE_TYPE_VIDEO){
+                        sentMessage.isVisible=false
+                        sentImage.isVisible=false
+                        sentVideo.isVisible=true
+                        sentVideo.setVideoURI(Uri.parse(chat.message))
+                         sentVideo.setOnClickListener(){
+                             if(!sentVideo.isPlaying){
+                                 sentVideo.start()
+                             }
+                         }
+
                     }
+
                     sentTime.text = Utils.convertMillisToTime(chat.timeStamp)
 
 
@@ -63,15 +79,24 @@ class ChatAdapter (
                     if(chat.type==Constants.MESSAGE_TYPE_TEXT){
                         recieveImage.isVisible=false
                         recievedMessage.isVisible=true
+                        recieveVideo.isVisible = false
                         recievedMessage.text= chat.message
-
-
-
-                    }else{
-                        recievedMessage.isVisible=false
-                        recieveImage.isVisible=true
+                    }else if(chat.type == Constants.MESSAGE_TYPE_IMAGE) {
+                        recievedMessage.isVisible = false
+                        recieveImage.isVisible = true
+                        recieveVideo.isVisible = false
                         Glide.with(root).load(chat.message).into(recieveImage)
-
+                    }
+                    else if (chat.type == Constants.MESSAGE_TYPE_VIDEO){
+                        recievedMessage.isVisible = false
+                        recieveImage.isVisible = false
+                        recieveVideo.isVisible = true
+                        recieveVideo.setVideoURI(Uri.parse(chat.message))
+                        recieveVideo.setOnClickListener(){
+                            if(!recieveVideo.isPlaying){
+                                recieveVideo.start()
+                            }
+                        }
 
 
                     }

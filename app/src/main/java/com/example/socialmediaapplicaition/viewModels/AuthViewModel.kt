@@ -80,7 +80,8 @@ class AuthViewModel @Inject constructor(private val repository: AuthRepository) 
 
     fun uploadVideoToFireStore(videoUri:Uri) = viewModelScope.launch {
         _uploadPhotoResult.value = NetworkResult.Loading()
-        val result = repository.uploadPhotoToFireStore(videoUri)
+        val result = repository.uploadVideosToFireStore(videoUri)
+        Log.d("checkingResponse",result.toString())
         _uploadPhotoResult.value= result
         Log.d("checking",result.toString())
     }

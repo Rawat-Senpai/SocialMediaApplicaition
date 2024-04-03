@@ -31,6 +31,7 @@ import com.example.socialmediaapplicaition.databinding.FragmentChatBinding
 import com.example.socialmediaapplicaition.models.ChatMessageModel
 import com.example.socialmediaapplicaition.models.ChatRoomModel
 import com.example.socialmediaapplicaition.models.User
+import com.example.socialmediaapplicaition.utils.Constants
 import com.example.socialmediaapplicaition.viewModels.FirebaseViewModel
 import com.example.socialmediaapplicaition.utils.NetworkResult
 import com.example.socialmediaapplicaition.utils.TokenManager
@@ -64,6 +65,9 @@ class ChatFragment : Fragment() {
     private var frontPersonName: String = ""
     private var frontPersonUserModel: User? = null
     private var myUserModel: User? = null
+    var currentMessage=""
+    var currentMessageType=Constants.MESSAGE_TYPE_TEXT
+
 
 
     // chat room id
@@ -132,6 +136,7 @@ class ChatFragment : Fragment() {
 
                 viewMode.uploadVideoToFireStore(data?.data!!)
                 // Handle the result here
+
             }
         }
 
@@ -203,9 +208,12 @@ class ChatFragment : Fragment() {
 
             send.setOnClickListener() {
 
+                currentMessageType=Constants.MESSAGE_TYPE_TEXT
+                currentMessage = messageText.text.trim().toString()
+
                 val chatRoomRequestModel = ChatRoomModel()
                 chatRoomRequestModel.chatroomId = chatRoomId
-                chatRoomRequestModel.lastMessage = messageText.text.trim().toString()
+                chatRoomRequestModel.lastMessage = currentMessage
                 chatRoomRequestModel.userList = arrayListOf(frontPersonUserModel!!, myUserModel!!)
                 chatRoomRequestModel.lastMessageSenderId = myUserId
                 chatRoomRequestModel.lastMessageTimestamp = System.currentTimeMillis()
@@ -213,7 +221,6 @@ class ChatFragment : Fragment() {
 
                 if (adapter.itemCount > 0) {
                     // There are items in the adapter, so scroll to the last item
-                    binding.recyclerView.smoothScrollToPosition(adapter.itemCount - 1)
                     binding.recyclerView.smoothScrollToPosition(adapter.itemCount - 1)
                 } else {
                     // The adapter is empty, handle this condition gracefully
@@ -307,95 +314,119 @@ class ChatFragment : Fragment() {
 
         viewLifecycleOwner.lifecycleScope.launch {
 
-            postViewModel.getAllChatChatMessages.collect(){
-                binding.progressBar.isVisible = it is NetworkResult.Loading
-                when(it){
+            launch {
+                postViewModel.getAllChatChatMessages.collect(){
+                    binding.progressBar.isVisible = it is NetworkResult.Loading
+                    when(it){
 
-                    is NetworkResult.Error -> {
-                        Log.d("ChatResponse",it.toString())
-                    }
-
-                    is NetworkResult.Loading -> {
-                            binding.progressBar.isVisible = true
-                    }
-
-                    is NetworkResult.Success -> {
-                        Log.d("ChatResponse",it.data.toString())
-                        Log.d("ChatResponseSize",it.data?.size.toString())
-                        Log.d("ChatResponseSize_",adapter.itemCount.toString())
-                        adapter.submitList(it.data)
-                        if (adapter.itemCount > 0) {
-                            // There are items in the adapter, so scroll to the last item
-                            binding.recyclerView.smoothScrollToPosition(adapter.itemCount )
-                        } else {
-                            // The adapter is empty, handle this condition gracefully
-                            Log.e("RecyclerView", "Adapter is empty, cannot scroll to position")
-                            // You can choose to display a message or take any other appropriate action
+                        is NetworkResult.Error -> {
+                            Log.d("ChatResponse",it.toString())
                         }
 
-                    }
-                    null -> {
+                        is NetworkResult.Loading -> {
+                            binding.progressBar.isVisible = true
+                        }
 
+                        is NetworkResult.Success -> {
+                            Log.d("ChatResponse",it.data.toString())
+                            Log.d("ChatResponseSize",it.data?.size.toString())
+                            Log.d("ChatResponseSize_",adapter.itemCount.toString())
+                            adapter.submitList(it.data)
+                            if (adapter.itemCount > 0) {
+                                // There are items in the adapter, so scroll to the last item
+                                binding.recyclerView.smoothScrollToPosition(adapter.itemCount )
+                            } else {
+                                // The adapter is empty, handle this condition gracefully
+                                Log.e("RecyclerView", "Adapter is empty, cannot scroll to position")
+                                // You can choose to display a message or take any other appropriate action
+                            }
+
+                        }
+                        null -> {
+
+                        }
                     }
                 }
             }
-        }
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            postViewModel.addChatRoomResultState.collect {
+            launch {
+                postViewModel.addChatRoomResultState.collect {
 
-                binding.progressBar.isVisible = it is NetworkResult.Loading
-                when (it) {
-                    is NetworkResult.Error -> {
-                        Log.d("TAGSignUp", it.message.toString())
-                        Toast.makeText(requireContext(), "error", Toast.LENGTH_SHORT).show()
-                    }
+                    binding.progressBar.isVisible = it is NetworkResult.Loading
+                    when (it) {
+                        is NetworkResult.Error -> {
+                            Log.d("TAGSignUp", it.message.toString())
+                            Toast.makeText(requireContext(), "error", Toast.LENGTH_SHORT).show()
+                        }
 
 
-                    is NetworkResult.Loading -> {
+                        is NetworkResult.Loading -> {
                             binding.progressBar.isVisible=true
-                    }
+                        }
 
-                    is NetworkResult.Success -> {
-                        val chatMessageModel = ChatMessageModel()
-                        chatMessageModel.message = binding.messageText.text.toString()
-                        chatMessageModel.removedByMe="0"
-                        chatMessageModel.removedByThem="0"
-                        chatMessageModel.reply=""
-                        chatMessageModel.senderId = tokenManager.getId().toString()
-                        chatMessageModel.timeStamp = System.currentTimeMillis()
-
-                        postViewModel.addChatMessageToDatabase(chatMessageModel,chatRoomId)
-                        binding.messageText.setText("")
-
-
-                    }
-
-                    else -> {
-
-                    }
-                }
-            }
-        }
+                        is NetworkResult.Success -> {
+                            val chatMessageModel = ChatMessageModel()
+                            chatMessageModel.message = currentMessage
+                            chatMessageModel.removedByMe="0"
+                            chatMessageModel.removedByThem="0"
+                            chatMessageModel.reply=""
+                            chatMessageModel.senderId = tokenManager.getId().toString()
+                            chatMessageModel.timeStamp = System.currentTimeMillis()
+                            chatMessageModel.type = currentMessageType
+                            postViewModel.addChatMessageToDatabase(chatMessageModel,chatRoomId)
+                            binding.messageText.setText("")
 
 
+                        }
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewMode.uploadPhotoResult.collect{
+                        else -> {
 
-                when(it){
-                    is NetworkResult.Error -> {}
-                    is NetworkResult.Loading -> {}
-                    is NetworkResult.Success -> {
-                        Log.d("response",it.data.toString())
-
-                    }
-                    null -> {
-
+                        }
                     }
                 }
             }
+
+            launch {
+                viewMode.uploadPhotoResult.collect{
+
+                    when(it){
+                        is NetworkResult.Error -> {}
+                        is NetworkResult.Loading -> {}
+                        is NetworkResult.Success -> {
+                            Log.d("response",it.data.toString())
+                            addVideoInChat(it.data.toString())
+                        }
+                        null -> {
+
+                        }
+                    }
+                }
+            }
+
         }
+
+    }
+
+    private fun addVideoInChat(videoLink: String) {
+        currentMessageType=Constants.MESSAGE_TYPE_VIDEO
+        currentMessage = videoLink
+        val chatRoomRequestModel = ChatRoomModel()
+        chatRoomRequestModel.chatroomId = chatRoomId
+        chatRoomRequestModel.lastMessage = "Video"
+        chatRoomRequestModel.userList = arrayListOf(frontPersonUserModel!!, myUserModel!!)
+        chatRoomRequestModel.lastMessageSenderId = myUserId
+        chatRoomRequestModel.lastMessageTimestamp = System.currentTimeMillis()
+        postViewModel.addChatRoomToDatabase(chatRoomRequestModel)
+
+        if (adapter.itemCount > 0) {
+            // There are items in the adapter, so scroll to the last item
+            binding.recyclerView.smoothScrollToPosition(adapter.itemCount - 1)
+        } else {
+            // The adapter is empty, handle this condition gracefully
+            Log.e("RecyclerView", "Adapter is empty, cannot scroll to position")
+            // You can choose to display a message or take any other appropriate action
+        }
+
 
     }
 
@@ -403,7 +434,7 @@ class ChatFragment : Fragment() {
     private fun onActionClicked(chat:ChatMessageModel,action:String){
         val bundle = Bundle()
         bundle.putString("currentChat", Gson().toJson(chat))
-        findNavController().navigate(R.id.action_chatHistoryFragment_to_chatFragment,bundle)
+//        findNavController().navigate(R.id.action_chatHistoryFragment_to_chatFragment,bundle)
 
     }
 

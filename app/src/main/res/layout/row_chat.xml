@@ -118,6 +118,15 @@
                         app:layout_constraintTop_toTopOf="parent"
                         android:visibility="gone"/>
 
+                    <VideoView
+                        android:id="@+id/recieveVideo"
+                        android:layout_width="@dimen/_120sdp"
+                        android:layout_height="@dimen/_120sdp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:visibility="gone"/>
+
 
                     <TextView
                         android:id="@+id/recievedMessage"
@@ -267,7 +276,15 @@
                     android:id="@+id/sentImage"
                     android:layout_width="@dimen/_120sdp"
                     android:layout_height="@dimen/_120sdp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:visibility="gone"/>
 
+                <VideoView
+                    android:id="@+id/sentVideo"
+                    android:layout_width="@dimen/_120sdp"
+                    android:layout_height="@dimen/_120sdp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
