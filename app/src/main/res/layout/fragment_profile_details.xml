@@ -11,10 +11,6 @@
 
     <!-- Fixed layout -->
 
-
-
-
-
     <ImageView
         android:id="@+id/backBtn"
         android:layout_width="35dp"
@@ -50,8 +46,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:tint="@color/white"
-        android:visibility="gone"
-        />
+        android:visibility="gone"/>
 
     <TextView
         android:id="@+id/personName"

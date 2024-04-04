@@ -1,20 +1,11 @@
 package com.example.socialmediaapplicaition.ui.sideMenuPackage
 
-import android.Manifest
-import android.content.ContentValues
-import android.content.Context
-import android.net.Uri
-import android.os.Build
+
 import android.os.Bundle
-import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -51,9 +42,6 @@ class ProfileDetailsFragment : Fragment() {
     var userName:String=""
     var userAbout:String=""
 
-
-
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -83,11 +71,9 @@ class ProfileDetailsFragment : Fragment() {
         val myProfileId = arguments?.getString("myProfileId")
         val otherUserId = arguments?.getString("otherProfileId")
 
-
-
         if(myProfileId != null){
             binding.apply {
-                editProfile.isVisible=true
+                editProfile.isVisible = true
                 Log.d("checkingUserId",myProfileId)
                 userProfilePic = tokenManager.getProfile().toString()
                 userName= tokenManager.getUserName().toString()
@@ -97,14 +83,11 @@ class ProfileDetailsFragment : Fragment() {
                 onlineStatus.text = "Online"
                 postViewModel.filterPostUsingId(myProfileId)
                 postViewModel.getUserProfileData(myProfileId)
-
             }
-
-
         }else if (otherUserId != null){
             binding.apply {
-
-                Log.d("checkingUserId",otherUserId)
+                editProfile.isVisible=false
+                Log.d("checkingUserId_",otherUserId)
                 postViewModel.getUserProfileData(otherUserId)
                 postViewModel.filterPostUsingId(otherUserId)
             }
