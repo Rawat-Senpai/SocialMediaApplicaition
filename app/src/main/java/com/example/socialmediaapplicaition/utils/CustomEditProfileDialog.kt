@@ -8,17 +8,15 @@ import android.view.WindowManager
 import android.widget.EditText
 import android.widget.TextView
 import com.example.socialmediaapplicaition.R
-import com.example.socialmediaapplicaition.models.User
 
 class CustomEditProfileDialog (context: Context, private val onActionClicked:(String) -> Unit,
-                               private val updateType:String ) : Dialog(context) {
+                               private val updateType:String , private val textValue :String) : Dialog(context) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         // Set dialog content
-        setContentView(R.layout.custom_dialog_layout)
-
+        setContentView(R.layout.layout_custom_dialog)
         // Set dialog window attributes
         val windowParams = window?.attributes
         windowParams?.gravity = Gravity.BOTTOM // Display the dialog at the bottom
@@ -36,6 +34,7 @@ class CustomEditProfileDialog (context: Context, private val onActionClicked:(St
 
         val headingText = findViewById<TextView>(R.id.headingText)
 
+        editText.setText(textValue)
 
         if(updateType == Constants.NAME){
             headingText.text = "Enter your name"

@@ -55,8 +55,19 @@ class SavedPostFragment : Fragment() {
         binding.recyclerView.layoutManager = StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL)
         binding.recyclerView.adapter = adapter
 
+        bindViews()
         bindObservers()
         setInitialState()
+    }
+
+    private fun bindViews() {
+
+        binding.apply {
+            backBtn.setOnClickListener(){
+                findNavController().popBackStack()
+            }
+        }
+
     }
 
     private fun setInitialState(){

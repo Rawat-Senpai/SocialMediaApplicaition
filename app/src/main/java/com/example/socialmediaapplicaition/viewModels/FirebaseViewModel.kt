@@ -56,6 +56,10 @@ class FirebaseViewModel @Inject constructor(private val repository:FirebaseRepos
     private val _searchContacts = MutableStateFlow<NetworkResult<List<ChatRoomModel>>?>(null)
     val searchContact : StateFlow<NetworkResult<List<ChatRoomModel>>?> = _searchContacts
 
+    private val _searchHistoryChat = MutableStateFlow<NetworkResult<List<ChatRoomModel>>?>(null)
+    val searchHistoryChat:StateFlow<NetworkResult<List<ChatRoomModel>>?> = _searchHistoryChat
+
+
     private val _getAllChatHistory = MutableStateFlow<NetworkResult<List<ChatRoomModel>>?>(null)
     val getAllChatHistory:StateFlow <NetworkResult<List<ChatRoomModel>>?> = _getAllChatHistory
 
@@ -172,19 +176,19 @@ class FirebaseViewModel @Inject constructor(private val repository:FirebaseRepos
     }
 
     fun searchContacts(keyPoint: String,yourUserId: String){
-
         getAllChatHistory.value?.data.let { users->
-
             val filteredUsers = users?.filter { user ->
-
                 val otherUser = if (user.userList[0].id != yourUserId) user.userList[0] else user.userList.getOrNull(1)
                 otherUser != null && otherUser.name.contains(keyPoint, ignoreCase = true)
             }
             Log.d("checkingSearchContact",filteredUsers.toString())
             _searchContacts.value=NetworkResult.Success(filteredUsers)
         }
-
     }
+
+
+
+
 
     fun getAllMessages(roomId:String)=viewModelScope.launch{
 

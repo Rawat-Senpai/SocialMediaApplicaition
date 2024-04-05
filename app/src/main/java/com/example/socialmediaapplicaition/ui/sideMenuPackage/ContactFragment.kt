@@ -30,7 +30,7 @@ class ContactFragment : Fragment() {
     @Inject
     lateinit var tokenManager: TokenManager
     private val viewModel by viewModels<FirebaseViewModel>()
-    private  var _binding :FragmentContactBinding ?= null
+    private var _binding: FragmentContactBinding? = null
 
     private lateinit var adapter: SideMenuContactAdapter
     val binding get() = _binding!!
@@ -40,16 +40,18 @@ class ContactFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        _binding = FragmentContactBinding.inflate(layoutInflater,container,false)
+        _binding = FragmentContactBinding.inflate(layoutInflater, container, false)
         return binding.root
 
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        adapter = SideMenuContactAdapter(::onActionClicked,tokenManager.getId().toString())
-        binding.recyclerView.layoutManager = LinearLayoutManager(context,
-            LinearLayoutManager.VERTICAL,false)
+        adapter = SideMenuContactAdapter(::onActionClicked, tokenManager.getId().toString())
+        binding.recyclerView.layoutManager = LinearLayoutManager(
+            context,
+            LinearLayoutManager.VERTICAL, false
+        )
         binding.recyclerView.adapter = adapter
         viewModel.getAllPreviousChat(tokenManager.getId().toString())
 
@@ -61,7 +63,12 @@ class ContactFragment : Fragment() {
         binding.apply {
 
             val textWatcher = object : TextWatcher {
-                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                override fun beforeTextChanged(
+                    s: CharSequence?,
+                    start: Int,
+                    count: Int,
+                    after: Int
+                ) {
                     // This method is called before the text in the EditText is changed
                 }
 
@@ -70,25 +77,14 @@ class ContactFragment : Fragment() {
 
                     val searchText = s.toString()
 
-                    if(s.toString()!=""){
-                        viewModel.searchContacts(searchText,tokenManager.getId().toString())
+                    if (s.toString() != "") {
+                        viewModel.searchContacts(searchText, tokenManager.getId().toString())
                     }
-
-
                 }
-
                 override fun afterTextChanged(s: Editable?) {
-
                 }
-
             }
-
-            binding.apply {
-                searchEdt.addTextChangedListener(textWatcher)
-            }
-
-
-
+            searchEdt.addTextChangedListener(textWatcher)
         }
     }
 
@@ -97,21 +93,24 @@ class ContactFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
 
             launch {
-                viewModel.getAllChatHistory.collect{it->
-                    binding.progressBar.isVisible=false
-                    when(it){
+                viewModel.getAllChatHistory.collect { it ->
+                    binding.progressBar.isVisible = false
+                    when (it) {
                         is NetworkResult.Error -> {
-                            Log.d("checkingHistory",it.toString())
+                            Log.d("checkingHistory", it.toString())
                         }
+
                         is NetworkResult.Loading -> {
-                            binding.progressBar.isVisible=true
-                            Log.d("checkingHistory",it.toString())
+                            binding.progressBar.isVisible = true
+                            Log.d("checkingHistory", it.toString())
                         }
+
                         is NetworkResult.Success -> {
-                            Log.d("checkingHistory",it.data.toString())
+                            Log.d("checkingHistory", it.data.toString())
                             adapter.submitList(it.data)
                         }
-                        null ->{
+
+                        null -> {
 
                         }
                     }
@@ -120,21 +119,24 @@ class ContactFragment : Fragment() {
 
             launch {
 
-                viewModel.searchContact.collect{it->
-                    binding.progressBar.isVisible=false
-                    when(it){
+                viewModel.searchContact.collect { it ->
+                    binding.progressBar.isVisible = false
+                    when (it) {
                         is NetworkResult.Error -> {
-                            Log.d("checkingHistory",it.toString())
+                            Log.d("checkingHistory", it.toString())
                         }
+
                         is NetworkResult.Loading -> {
-                            binding.progressBar.isVisible=true
-                            Log.d("checkingHistory",it.toString())
+                            binding.progressBar.isVisible = true
+                            Log.d("checkingHistory", it.toString())
                         }
+
                         is NetworkResult.Success -> {
-                            Log.d("checkContactSearch",it.data.toString())
+                            Log.d("checkContactSearch", it.data.toString())
                             adapter.submitList(it.data)
                         }
-                        null ->{
+
+                        null -> {
 
                         }
                     }
@@ -144,16 +146,16 @@ class ContactFragment : Fragment() {
 
         }
     }
-    private fun onActionClicked(user: User, action:String){
+
+    private fun onActionClicked(user: User, action: String) {
         val bundle = Bundle()
         bundle.putString("otherProfileId", Gson().toJson(user.id))
-        findNavController().navigate(R.id.action_contactFragment_to_profileDetailsFragment,bundle)
+        findNavController().navigate(R.id.action_contactFragment_to_profileDetailsFragment, bundle)
     }
 
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
-
     }
 
 }

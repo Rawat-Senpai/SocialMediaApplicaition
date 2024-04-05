@@ -133,7 +133,6 @@ class EditMyProfile : Fragment() {
     }
 
     private fun bindObserver() {
-
         viewLifecycleOwner.lifecycleScope.launch {
 
             launch {
@@ -155,11 +154,7 @@ class EditMyProfile : Fragment() {
                 }
             }
         }
-
-
-
     }
-
     private fun bindingView() {
         binding.apply {
 
@@ -173,22 +168,19 @@ class EditMyProfile : Fragment() {
 
             userName.setOnClickListener(){
                 updateType=Constants.NAME
-                val dialog = CustomEditProfileDialog(requireActivity(),::onActionClicked,updateType)
+                val dialog = CustomEditProfileDialog(requireActivity(),::onActionClicked,updateType,userName.text.toString())
                 dialog.show()
             }
 
-
-
             userStatus.setOnClickListener(){
                 updateType=Constants.STATUS
-                val dialog = CustomEditProfileDialog(requireActivity(),::onActionClicked,updateType)
+                val dialog = CustomEditProfileDialog(requireActivity(),::onActionClicked,updateType,userStatus.text.toString())
                 dialog.show()
             }
 
 
         }
     }
-
 
     private fun onActionClicked(value:String){
         viewModel.updateUserData(myUserId,updateType,value)
