@@ -19,6 +19,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.socialmediaapplicaition.R
 import com.example.socialmediaapplicaition.databinding.FragmentEditMyProfileBinding
@@ -32,6 +33,7 @@ import com.example.socialmediaapplicaition.viewModels.AuthViewModel
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import javax.annotation.meta.When
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -119,11 +121,9 @@ class EditMyProfile : Fragment() {
             user?.let {
                 Log.d("newProfile___",user.toString())
                 binding.apply {
-
-
                     Glide.with(userImage).load(user?.profile).placeholder(R.drawable.ic_default_person).into(userImage)
-                    UserName.setText(user?.name)
-                    status.setText(user?.status)
+                    userName.text = user?.name
+                    userStatus.text = user?.status
                     gmailText.text
                 }
             }
@@ -162,19 +162,24 @@ class EditMyProfile : Fragment() {
 
     private fun bindingView() {
         binding.apply {
+
+            backBtn.setOnClickListener(){
+                findNavController().popBackStack()
+            }
+
             clickPhoto.setOnClickListener(){
                 chooseImage(requireActivity())
             }
 
-            UserName.setOnClickListener(){
+            userName.setOnClickListener(){
                 updateType=Constants.NAME
                 val dialog = CustomEditProfileDialog(requireActivity(),::onActionClicked,updateType)
                 dialog.show()
             }
 
-             
 
-            status.setOnClickListener(){
+
+            userStatus.setOnClickListener(){
                 updateType=Constants.STATUS
                 val dialog = CustomEditProfileDialog(requireActivity(),::onActionClicked,updateType)
                 dialog.show()
@@ -187,6 +192,19 @@ class EditMyProfile : Fragment() {
 
     private fun onActionClicked(value:String){
         viewModel.updateUserData(myUserId,updateType,value)
+
+       when (updateType){
+           Constants.NAME -> {
+               binding.userName.text = value
+           }
+
+           Constants.STATUS ->{
+               binding.userStatus.text = value
+           }
+
+       }
+
+
     }
 
     private fun chooseImage(context: Context) {

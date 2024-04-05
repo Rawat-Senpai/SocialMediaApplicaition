@@ -39,7 +39,6 @@ class ContactFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
 
         _binding = FragmentContactBinding.inflate(layoutInflater,container,false)
         return binding.root
@@ -79,8 +78,9 @@ class ContactFragment : Fragment() {
                 }
 
                 override fun afterTextChanged(s: Editable?) {
-                    // This method is called after the text in the EditText has been changed
+
                 }
+
             }
 
             binding.apply {
@@ -95,6 +95,7 @@ class ContactFragment : Fragment() {
     private fun bindObserver() {
 
         viewLifecycleOwner.lifecycleScope.launch {
+
             launch {
                 viewModel.getAllChatHistory.collect{it->
                     binding.progressBar.isVisible=false

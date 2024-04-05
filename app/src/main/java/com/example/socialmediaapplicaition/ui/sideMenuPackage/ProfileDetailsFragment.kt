@@ -21,6 +21,7 @@ import com.example.socialmediaapplicaition.R
 import com.example.socialmediaapplicaition.databinding.FragmentProfileDetailsBinding
 import com.example.socialmediaapplicaition.models.Post
 import com.example.socialmediaapplicaition.models.User
+import com.example.socialmediaapplicaition.utils.Constants
 import com.example.socialmediaapplicaition.utils.NetworkResult
 import com.example.socialmediaapplicaition.utils.TokenManager
 import com.example.socialmediaapplicaition.viewModels.AuthViewModel
@@ -40,11 +41,12 @@ class ProfileDetailsFragment : Fragment() {
     private  var _binding: FragmentProfileDetailsBinding ?= null
     private val binding get() = _binding!!
     private lateinit var adapter: UsersPostAdapter
-    var mySavedId:String=""
-    var userProfilePic:String=""
-    var userName:String=""
-    var userAbout:String=""
-    var userPersonId:String=""
+    private var mySavedId:String=""
+    private var userProfilePic:String=""
+    private var userName:String=""
+    private var userAbout:String=""
+    private var userPersonId:String=""
+    private var userEmail:String=""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -216,7 +218,6 @@ class ProfileDetailsFragment : Fragment() {
                 override fun onTransitionChange(layout: MotionLayout?, startId: Int, endId: Int, progress: Float) {
                     Glide.with(personImageSquare).load(userProfilePic).placeholder(R.drawable.ic_default_person).circleCrop().into(personImageSquare)
                 }
-
                 override fun onTransitionCompleted(layout: MotionLayout?, currentId: Int) {
                     if(currentId == R.id.start){
                         Glide.with(personImageSquare).load(userProfilePic).placeholder(R.drawable.ic_default_person).into(personImageSquare)
@@ -228,7 +229,7 @@ class ProfileDetailsFragment : Fragment() {
             })
 
             binding.editProfile.setOnClickListener(){
-                val user =User(userName,userProfilePic,userAbout,"","","")
+                val user =User(userName,mySavedId,userProfilePic,userAbout,Constants.ONLINE,userEmail)
                 val bundle = Bundle()
                 bundle.putString("profile", Gson().toJson(user))
                 findNavController().navigate(R.id.action_profileDetailsFragment_to_editMyProfile,bundle)

@@ -100,7 +100,7 @@
             app:layout_constraintTop_toTopOf="@+id/personImage" />
 
         <TextView
-            android:id="@+id/UserName"
+            android:id="@+id/userName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="30dp"
@@ -150,7 +150,7 @@
             app:layout_constraintTop_toTopOf="@+id/statusImage" />
 
         <TextView
-            android:id="@+id/status"
+            android:id="@+id/userStatus"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="30dp"
