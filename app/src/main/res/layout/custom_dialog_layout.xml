@@ -2,9 +2,11 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="150dp"
+    android:paddingTop="10dp"
+    android:paddingHorizontal="10dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/black">
+    android:background="#243B55">
 
 
     <TextView
@@ -12,7 +14,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/white"
-        android:textSize="14dp"
+        android:textSize="16dp"
+        android:fontFamily="@font/inter_semibold"
+        android:letterSpacing="0.01"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Please change the number " />
@@ -25,11 +29,14 @@
         android:background="@null"
         android:fontFamily="@font/poppins_medium"
         android:maxLines="5"
+        android:padding="2dp"
         android:scrollbars="horizontal"
         android:textColor="@color/white"
         tools:text="checking the name "
+        android:layout_marginTop="3dp"
+        android:letterSpacing="0.01"
         android:gravity="start"
-        android:textSize="14sp"
+        android:textSize="15sp"
         app:layout_constraintBottom_toTopOf="@+id/cancleBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

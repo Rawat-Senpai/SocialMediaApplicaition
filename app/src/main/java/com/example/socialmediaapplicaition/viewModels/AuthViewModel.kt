@@ -103,8 +103,9 @@ class AuthViewModel @Inject constructor(private val repository: AuthRepository) 
 
     fun updateUserData(userId:String,value:String,updatedValue:String) = viewModelScope.launch {
         val clearUserId = userId.removeSurrounding("\"")
+        val newValue = value.removeSurrounding("\"")
         _updateUserProfileData.value = NetworkResult.Loading()
-        val result = repository.UpdateUserSpecificData(clearUserId,value,updatedValue)
+        val result = repository.UpdateUserSpecificData(clearUserId,newValue,updatedValue)
         _updateUserProfileData.value = result
     }
 

@@ -17,7 +17,6 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
-import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
@@ -38,12 +37,10 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class EditMyProfile : Fragment() {
 
-
     private var _binding :FragmentEditMyProfileBinding ?= null
     val binding get() = _binding!!
     var user: User?=null
     private val viewModel by viewModels<AuthViewModel> ()
-
     private lateinit var cameraLauncher: ActivityResultLauncher<Uri>
     private lateinit var galleryLauncher: ActivityResultLauncher<String>
     private var commonImageUri: Uri? = null
@@ -52,7 +49,7 @@ class EditMyProfile : Fragment() {
 
     @Inject
     lateinit var  tokenManager:TokenManager
-    var myUserId=""
+    private var myUserId=""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -74,6 +71,8 @@ class EditMyProfile : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
+
+        myUserId = tokenManager.getId().toString()
 
         setInitialState()
 
@@ -121,7 +120,7 @@ class EditMyProfile : Fragment() {
                 Log.d("newProfile___",user.toString())
                 binding.apply {
 
-                    myUserId=user?.id.toString().removeSurrounding("\"")
+
                     Glide.with(userImage).load(user?.profile).placeholder(R.drawable.ic_default_person).into(userImage)
                     UserName.setText(user?.name)
                     status.setText(user?.status)
@@ -168,40 +167,26 @@ class EditMyProfile : Fragment() {
             }
 
             UserName.setOnClickListener(){
-                editDataLayout.isVisible=true
                 updateType=Constants.NAME
-                val dialog = CustomEditProfileDialog(requireActivity())
+                val dialog = CustomEditProfileDialog(requireActivity(),::onActionClicked,updateType)
                 dialog.show()
-
-
             }
+
+             
 
             status.setOnClickListener(){
-                editDataLayout.isVisible=true
                 updateType=Constants.STATUS
-
-
-
+                val dialog = CustomEditProfileDialog(requireActivity(),::onActionClicked,updateType)
+                dialog.show()
             }
-
-            cancleBtn.setOnClickListener(){
-                editDataLayout.isVisible=false
-                updateType=""
-
-            }
-
-            saveBtn.setOnClickListener(){
-                viewModel.updateUserData(myUserId,updateType,editDataDetails.text.toString())
-                editDataLayout.isVisible=false
-                updateType=""
-            }
-
-
-
-
 
 
         }
+    }
+
+
+    private fun onActionClicked(value:String){
+        viewModel.updateUserData(myUserId,updateType,value)
     }
 
     private fun chooseImage(context: Context) {

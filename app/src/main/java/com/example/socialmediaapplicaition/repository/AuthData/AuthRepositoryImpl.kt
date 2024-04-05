@@ -150,7 +150,7 @@ class AuthRepositoryImpl @Inject constructor(private val firebaseAuth:FirebaseAu
                 .document(userId)
                 .update(value, updatedValue)
                 .addOnSuccessListener {
-                    Log.d("responseData", "Field successfully updated")
+                    Log.d("responseData_", "Field successfully updated")
                 }
                 .addOnFailureListener { e ->
                     Log.d("crash123", e.toString())

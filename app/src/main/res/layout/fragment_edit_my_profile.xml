@@ -119,7 +119,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout4"
+        android:id="@+id/statusLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
@@ -173,7 +173,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout4"
+        app:layout_constraintTop_toBottomOf="@+id/statusLayout"
         android:layout_marginTop="10dp">
 
         <ImageView
@@ -217,79 +217,6 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/editDataLayout"
-        android:layout_width="match_parent"
-        android:layout_height="120dp"
-        android:maxHeight="120dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
- >
-
-        <TextView
-            android:id="@+id/headingText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/white"
-            android:textSize="14dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="Please change the number " />
-
-
-        <EditText
-            android:id="@+id/editDataDetails"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:background="@null"
-            android:fontFamily="@font/poppins_medium"
-            android:maxLines="5"
-            android:scrollbars="horizontal"
-            android:textColor="@color/white"
-            tools:text="checking the name "
-            android:gravity="start"
-            android:textSize="14sp"
-            app:layout_constraintBottom_toTopOf="@+id/cancleBtn"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/headingText"
-           />
-
-        <TextView
-            android:id="@+id/cancleBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/poppins_medium"
-            android:padding="5dp"
-            android:text="Cancle"
-            android:textColor="@color/white"
-            android:textSize="18sp"
-            android:layout_marginEnd="10dp"
-            app:layout_constraintBottom_toBottomOf="@+id/saveBtn"
-            app:layout_constraintEnd_toStartOf="@+id/saveBtn"
-            app:layout_constraintTop_toTopOf="@+id/saveBtn" />
-
-        <TextView
-            android:id="@+id/saveBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/poppins_medium"
-            android:textSize="18sp"
-            android:text="Done"
-            android:textColor="@color/white"
-            android:padding="5dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginEnd="5dp"
-            android:layout_marginBottom="5dp"/>
-
-
-
-
-
-        
-    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

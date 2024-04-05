@@ -6,9 +6,12 @@ import android.os.Bundle
 import android.view.Gravity
 import android.view.WindowManager
 import android.widget.EditText
+import android.widget.TextView
 import com.example.socialmediaapplicaition.R
+import com.example.socialmediaapplicaition.models.User
 
-class CustomEditProfileDialog (context: Context) : Dialog(context) {
+class CustomEditProfileDialog (context: Context, private val onActionClicked:(String) -> Unit,
+                               private val updateType:String ) : Dialog(context) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,6 +31,28 @@ class CustomEditProfileDialog (context: Context) : Dialog(context) {
         window?.attributes = windowParams
         val editText = findViewById<EditText>(R.id.editDataDetails)
         editText.requestFocus()
+        val cancelBtn = findViewById<TextView>(R.id.cancleBtn)
+        val saveBtn = findViewById<TextView>(R.id.saveBtn)
+
+        val headingText = findViewById<TextView>(R.id.headingText)
+
+
+        if(updateType == Constants.NAME){
+            headingText.text = "Enter your name"
+        }else if (updateType == Constants.STATUS){
+            headingText.text = "Write something about yourself"
+        }
+
+        cancelBtn.setOnClickListener(){
+            dismiss()
+        }
+
+        saveBtn.setOnClickListener(){
+            onActionClicked(editText.text.toString())
+            dismiss()
+        }
+
+        setCanceledOnTouchOutside(false)
 
 
     }
