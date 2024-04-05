@@ -138,5 +138,30 @@ class AuthRepositoryImpl @Inject constructor(private val firebaseAuth:FirebaseAu
         firebaseAuth.signOut()
     }
 
+    override suspend fun UpdateUserSpecificData(
+        userId: String,
+        value: String,
+        updatedValue: String
+    ): NetworkResult<Unit>? {
+
+        return try {
+            // Update specific field in Firestore document
+            firestore.collection("users")
+                .document(userId)
+                .update(value, updatedValue)
+                .addOnSuccessListener {
+                    Log.d("responseData", "Field successfully updated")
+                }
+                .addOnFailureListener { e ->
+                    Log.d("crash123", e.toString())
+                }
+            NetworkResult.Success(Unit)
+        } catch (e: Exception) {
+            Log.d("crash123", e.toString())
+            NetworkResult.Error(e.toString())
+        }
+
+    }
+
 
 }

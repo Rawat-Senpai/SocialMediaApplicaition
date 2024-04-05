@@ -33,8 +33,8 @@ class AuthViewModel @Inject constructor(private val repository: AuthRepository) 
     val addUserResultState: StateFlow<NetworkResult<Unit>?> = _addUserResultState
 
 
-    private val _updateUserData = MutableStateFlow<NetworkResult<Unit>?>(null)
-    val updateUserData :MutableStateFlow<NetworkResult<Unit>?> = _updateUserData
+    private val _updateUserProfileData = MutableStateFlow<NetworkResult<Unit>?>(null)
+    val updateUserProfileData :MutableStateFlow<NetworkResult<Unit>?> = _updateUserProfileData
 
 
     private val _uploadPhotoResult = MutableStateFlow<NetworkResult<Uri>?>(null)
@@ -103,9 +103,9 @@ class AuthViewModel @Inject constructor(private val repository: AuthRepository) 
 
     fun updateUserData(userId:String,value:String,updatedValue:String) = viewModelScope.launch {
         val clearUserId = userId.removeSurrounding("\"")
-//        _updateUserOnlineStatus.value = NetworkResult.Loading()
-//        val result = repository.setUserStatus(clearUserId,onlineStatus)
-//        _updateUserOnlineStatus.value= result
+        _updateUserProfileData.value = NetworkResult.Loading()
+        val result = repository.UpdateUserSpecificData(clearUserId,value,updatedValue)
+        _updateUserProfileData.value = result
     }
 
     fun logout(){

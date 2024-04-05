@@ -21,7 +21,17 @@ object Constants {
     const val SAVE="SAVE"
     const val REMOVE="REMOVE"
 
-
+/*
+    val name: String="",
+    val id: String="",
+    val profile: String="",
+    val status:String="Hey there, lets connect ",
+    val onlineStatus:String ="Offline",
+ */
+    const val NAME ="name"
+    const val ONLINE_STATUS="onlineStatus"
+    const val PROFILE="profile"
+    const val STATUS="status"
 
 
 

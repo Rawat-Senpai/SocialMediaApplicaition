@@ -22,12 +22,15 @@ import com.bumptech.glide.Glide
 import com.example.socialmediaapplicaition.R
 import com.example.socialmediaapplicaition.databinding.FragmentEditMyProfileBinding
 import com.example.socialmediaapplicaition.models.User
+import com.example.socialmediaapplicaition.utils.Constants
 import com.example.socialmediaapplicaition.utils.NetworkResult
+import com.example.socialmediaapplicaition.utils.TokenManager
 import com.example.socialmediaapplicaition.utils.Utils
 import com.example.socialmediaapplicaition.viewModels.AuthViewModel
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class EditMyProfile : Fragment() {
@@ -41,6 +44,10 @@ class EditMyProfile : Fragment() {
     private lateinit var cameraLauncher: ActivityResultLauncher<Uri>
     private lateinit var galleryLauncher: ActivityResultLauncher<String>
     private var commonImageUri: Uri? = null
+
+    @Inject
+    lateinit var  tokenManager:TokenManager
+    var myUserId=""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -107,6 +114,8 @@ class EditMyProfile : Fragment() {
             user?.let {
                 Log.d("newProfile___",user.toString())
                 binding.apply {
+
+                    myUserId=user?.id.toString().removeSurrounding("\"")
                     Glide.with(userImage).load(user?.profile).placeholder(R.drawable.ic_default_person).into(userImage)
                     UserName.setText(user?.name)
                     status.setText(user?.status)
@@ -132,7 +141,7 @@ class EditMyProfile : Fragment() {
 
                         }
                         is NetworkResult.Success -> {
-
+                            viewModel.updateUserData(myUserId,Constants.PROFILE,it.data.toString())
                         }
                         null -> {
 
@@ -140,8 +149,6 @@ class EditMyProfile : Fragment() {
                     }
                 }
             }
-
-
         }
 
 

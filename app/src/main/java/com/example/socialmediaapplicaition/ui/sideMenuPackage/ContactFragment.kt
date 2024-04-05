@@ -131,7 +131,6 @@ class ContactFragment : Fragment() {
                         }
                         is NetworkResult.Success -> {
                             Log.d("checkContactSearch",it.data.toString())
-//                            adapter.submitList(it.data)
                             adapter.submitList(it.data)
                         }
                         null ->{
@@ -148,7 +147,6 @@ class ContactFragment : Fragment() {
         val bundle = Bundle()
         bundle.putString("otherProfileId", Gson().toJson(user.id))
         findNavController().navigate(R.id.action_contactFragment_to_profileDetailsFragment,bundle)
-
     }
 
     override fun onDestroy() {

@@ -16,5 +16,6 @@ interface AuthRepository {
     suspend fun uploadVideosToFireStore(videoUri:Uri):NetworkResult<Uri>
     suspend fun getUserData(uid:String):NetworkResult<User>
     fun logout()
+    suspend fun UpdateUserSpecificData(clearUserId: String, value: String, updatedValue: String): NetworkResult<Unit>?
 
 }
