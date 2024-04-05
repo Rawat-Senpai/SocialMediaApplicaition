@@ -249,6 +249,7 @@ class PostFragment : Fragment() {
             viewModel.getUserFullDetails(viewModel.currentUser?.uid.toString())
 
             addPost.setOnClickListener() {
+//                startActivity(Intent(context,NewActivity::class.java))
                 findNavController().navigate(R.id.action_mainFragment_to_createPostFragmnet)
             }
         }

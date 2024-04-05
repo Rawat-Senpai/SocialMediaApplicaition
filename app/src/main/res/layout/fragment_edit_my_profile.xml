@@ -99,7 +99,7 @@
             app:layout_constraintStart_toEndOf="@+id/personImage"
             app:layout_constraintTop_toTopOf="@+id/personImage" />
 
-        <EditText
+        <TextView
             android:id="@+id/UserName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -107,9 +107,9 @@
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
             android:background="@null"
-            android:textColorHint="@color/grey"
-            android:hint="Enter you name"
+            tools:text="Senpai"
             android:textSize="16sp"
+            android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -149,7 +149,7 @@
             app:layout_constraintStart_toEndOf="@+id/statusImage"
             app:layout_constraintTop_toTopOf="@+id/statusImage" />
 
-        <EditText
+        <TextView
             android:id="@+id/status"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -157,9 +157,9 @@
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
             android:background="@null"
-            android:textColorHint="@color/grey"
-            android:hint="Hey There , Let's Connect "
             android:textSize="16sp"
+            tools:text="hey there , lets connect"
+            android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -206,10 +206,8 @@
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
             android:background="@null"
-            android:textColor="@color/white"
-            android:hint="Enter you name"
-            android:textColorHint="@color/grey"
             android:textSize="16sp"
+            android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

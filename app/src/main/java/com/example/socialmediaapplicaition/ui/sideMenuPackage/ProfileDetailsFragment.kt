@@ -5,7 +5,10 @@ import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -20,7 +23,6 @@ import com.example.socialmediaapplicaition.models.Post
 import com.example.socialmediaapplicaition.models.User
 import com.example.socialmediaapplicaition.utils.NetworkResult
 import com.example.socialmediaapplicaition.utils.TokenManager
-import com.example.socialmediaapplicaition.utils.Utils
 import com.example.socialmediaapplicaition.viewModels.AuthViewModel
 import com.example.socialmediaapplicaition.viewModels.FirebaseViewModel
 import com.google.gson.Gson
@@ -38,9 +40,11 @@ class ProfileDetailsFragment : Fragment() {
     private  var _binding: FragmentProfileDetailsBinding ?= null
     private val binding get() = _binding!!
     private lateinit var adapter: UsersPostAdapter
+    var mySavedId:String=""
     var userProfilePic:String=""
     var userName:String=""
     var userAbout:String=""
+    var userPersonId:String=""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -53,8 +57,11 @@ class ProfileDetailsFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
 
+        super.onViewCreated(view, savedInstanceState)
+        binding.personImageSquare.visibility = View.GONE
+
+        mySavedId=tokenManager.getId().toString().removeSurrounding("\"")
         adapter = UsersPostAdapter(::onPostClicked)
         binding.postRecyclerView.layoutManager = StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL)
         binding.postRecyclerView.adapter = adapter
@@ -73,23 +80,26 @@ class ProfileDetailsFragment : Fragment() {
 
         if(myProfileId != null){
             binding.apply {
-                editProfile.isVisible = true
+                userPersonId=myProfileId.removeSurrounding("\"")
+
                 Log.d("checkingUserId",myProfileId)
                 userProfilePic = tokenManager.getProfile().toString()
                 userName= tokenManager.getUserName().toString()
                 personName.text = tokenManager.getUserName()
                 userStatus.text = tokenManager.getStatus()
+                personImageSquare.visibility = View.VISIBLE
                 Glide.with(personImageSquare).load(userProfilePic).placeholder(R.drawable.ic_default_person).into(personImageSquare)
                 onlineStatus.text = "Online"
-                postViewModel.filterPostUsingId(myProfileId)
-                postViewModel.getUserProfileData(myProfileId)
+                postViewModel.filterPostUsingId(userPersonId)
+                postViewModel.getUserProfileData(userPersonId)
             }
         }else if (otherUserId != null){
             binding.apply {
-                editProfile.isVisible=false
-                Log.d("checkingUserId_",otherUserId)
-                postViewModel.getUserProfileData(otherUserId)
-                postViewModel.filterPostUsingId(otherUserId)
+                userPersonId=otherUserId.removeSurrounding("\"")
+
+                Log.d("checkingUserId_",userPersonId)
+                postViewModel.getUserProfileData(userPersonId)
+                postViewModel.filterPostUsingId(userPersonId)
             }
         }
     }
@@ -188,6 +198,18 @@ class ProfileDetailsFragment : Fragment() {
 
         binding.apply {
 
+            if(userPersonId==mySavedId){
+                Log.d("shobhitTesting","visible")
+                val clickableArea: View = motionLayout.findViewById(R.id.editProfile)
+                motionLayout.getConstraintSet(R.id.start).getConstraint(clickableArea.id).propertySet.mVisibilityMode =1
+                clickableArea.visibility = VISIBLE
+            }else{
+                Log.d("shobhitTesting","gone")
+                val clickableArea: ImageView = motionLayout.findViewById(R.id.editProfile)
+                motionLayout.getConstraintSet(R.id.start).getConstraint(clickableArea.id).propertySet.mVisibilityMode=1
+                clickableArea.visibility = GONE
+            }
+
             motionLayout.setTransitionListener(object : MotionLayout.TransitionListener {
                 override fun onTransitionStarted(layout: MotionLayout?, startId: Int, endId: Int) {}
 
@@ -206,10 +228,10 @@ class ProfileDetailsFragment : Fragment() {
             })
 
             binding.editProfile.setOnClickListener(){
-                val user =User(userName,userProfilePic,userAbout,"")
+                val user =User(userName,userProfilePic,userAbout,"","","")
                 val bundle = Bundle()
                 bundle.putString("profile", Gson().toJson(user))
-                findNavController().navigate(R.id.action_profileDetailsFragment_to_editMyProfile)
+                findNavController().navigate(R.id.action_profileDetailsFragment_to_editMyProfile,bundle)
             }
 
 

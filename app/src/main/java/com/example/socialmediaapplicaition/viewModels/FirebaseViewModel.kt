@@ -266,8 +266,6 @@ class FirebaseViewModel @Inject constructor(private val repository:FirebaseRepos
         _updateUserOnlineStatus.value = NetworkResult.Loading()
         val result = repository.setUserStatus(clearUserId,onlineStatus)
         _updateUserOnlineStatus.value= result
-
-
     }
 
 

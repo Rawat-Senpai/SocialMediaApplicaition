@@ -16,13 +16,18 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.example.socialmediaapplicaition.R
 import com.example.socialmediaapplicaition.databinding.FragmentEditMyProfileBinding
 import com.example.socialmediaapplicaition.models.User
+import com.example.socialmediaapplicaition.utils.NetworkResult
 import com.example.socialmediaapplicaition.utils.Utils
+import com.example.socialmediaapplicaition.viewModels.AuthViewModel
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class EditMyProfile : Fragment() {
@@ -31,6 +36,7 @@ class EditMyProfile : Fragment() {
     private var _binding :FragmentEditMyProfileBinding ?= null
     val binding get() = _binding!!
     var user: User?=null
+    private val viewModel by viewModels<AuthViewModel> ()
 
     private lateinit var cameraLauncher: ActivityResultLauncher<Uri>
     private lateinit var galleryLauncher: ActivityResultLauncher<String>
@@ -62,8 +68,8 @@ class EditMyProfile : Fragment() {
             if (success) {
 
                 commonImageUri?.let { uri ->
-
                     binding.userImage.setImageURI(uri)
+
                 }
             } else {
                 Toast.makeText(requireContext(),"photo capture failed", Toast.LENGTH_SHORT).show()
@@ -92,21 +98,19 @@ class EditMyProfile : Fragment() {
 
         val myUserProfile = arguments?.getString("profile")
 
-        Log.d("checkingResponse",myUserProfile.toString())
+        Log.d("newProfile",myUserProfile.toString())
         if(myUserProfile!= null){
 
-            Log.d("checkingResponse",myUserProfile.toString())
+            Log.d("newProfile",myUserProfile.toString())
 
             user = Gson().fromJson<User>(myUserProfile,User::class.java)
             user?.let {
-                Log.d("checkingResponse",user.toString())
+                Log.d("newProfile___",user.toString())
                 binding.apply {
-
                     Glide.with(userImage).load(user?.profile).placeholder(R.drawable.ic_default_person).into(userImage)
                     UserName.setText(user?.name)
                     status.setText(user?.status)
-                    gmailText.text =user?.userEmail
-
+                    gmailText.text
                 }
             }
 
@@ -115,6 +119,32 @@ class EditMyProfile : Fragment() {
     }
 
     private fun bindObserver() {
+
+        viewLifecycleOwner.lifecycleScope.launch {
+
+            launch {
+                viewModel.uploadPhotoResult.collect(){
+                    when(it){
+                        is NetworkResult.Error -> {
+
+                        }
+                        is NetworkResult.Loading -> {
+
+                        }
+                        is NetworkResult.Success -> {
+
+                        }
+                        null -> {
+
+                        }
+                    }
+                }
+            }
+
+
+        }
+
+
 
     }
 
