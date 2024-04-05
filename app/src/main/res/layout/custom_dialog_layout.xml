@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="150dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/black">
+
+
+    <TextView
+        android:id="@+id/headingText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:textSize="14dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Please change the number " />
+
+
+    <EditText
+        android:id="@+id/editDataDetails"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@null"
+        android:fontFamily="@font/poppins_medium"
+        android:maxLines="5"
+        android:scrollbars="horizontal"
+        android:textColor="@color/white"
+        tools:text="checking the name "
+        android:gravity="start"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@+id/cancleBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/headingText"
+        />
+
+    <TextView
+        android:id="@+id/cancleBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_medium"
+        android:padding="5dp"
+        android:text="Cancle"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintBottom_toBottomOf="@+id/saveBtn"
+        app:layout_constraintEnd_toStartOf="@+id/saveBtn"
+        app:layout_constraintTop_toTopOf="@+id/saveBtn" />
+
+    <TextView
+        android:id="@+id/saveBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_medium"
+        android:textSize="18sp"
+        android:text="Done"
+        android:textColor="@color/white"
+        android:padding="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="5dp"/>
+
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -12,10 +12,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
@@ -23,6 +25,7 @@ import com.example.socialmediaapplicaition.R
 import com.example.socialmediaapplicaition.databinding.FragmentEditMyProfileBinding
 import com.example.socialmediaapplicaition.models.User
 import com.example.socialmediaapplicaition.utils.Constants
+import com.example.socialmediaapplicaition.utils.CustomEditProfileDialog
 import com.example.socialmediaapplicaition.utils.NetworkResult
 import com.example.socialmediaapplicaition.utils.TokenManager
 import com.example.socialmediaapplicaition.utils.Utils
@@ -44,6 +47,8 @@ class EditMyProfile : Fragment() {
     private lateinit var cameraLauncher: ActivityResultLauncher<Uri>
     private lateinit var galleryLauncher: ActivityResultLauncher<String>
     private var commonImageUri: Uri? = null
+    private var updateType=""
+    private var updateValue=""
 
     @Inject
     lateinit var  tokenManager:TokenManager
@@ -68,6 +73,7 @@ class EditMyProfile : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
 
         setInitialState()
 
@@ -160,6 +166,41 @@ class EditMyProfile : Fragment() {
             clickPhoto.setOnClickListener(){
                 chooseImage(requireActivity())
             }
+
+            UserName.setOnClickListener(){
+                editDataLayout.isVisible=true
+                updateType=Constants.NAME
+                val dialog = CustomEditProfileDialog(requireActivity())
+                dialog.show()
+
+
+            }
+
+            status.setOnClickListener(){
+                editDataLayout.isVisible=true
+                updateType=Constants.STATUS
+
+
+
+            }
+
+            cancleBtn.setOnClickListener(){
+                editDataLayout.isVisible=false
+                updateType=""
+
+            }
+
+            saveBtn.setOnClickListener(){
+                viewModel.updateUserData(myUserId,updateType,editDataDetails.text.toString())
+                editDataLayout.isVisible=false
+                updateType=""
+            }
+
+
+
+
+
+
         }
     }
 

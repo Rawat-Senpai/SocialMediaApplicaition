@@ -65,8 +65,6 @@ class SideMenuContactAdapter (private val onActionClicked:(User, String) -> Unit
     override fun onBindViewHolder(holder: UserPreviousChatViewHolder, position: Int) {
         val post = getItem(position)
         holder.bind(post)
-
-
     }
 
     class ComparatorDiffUtil : DiffUtil.ItemCallback<ChatRoomModel>() {
