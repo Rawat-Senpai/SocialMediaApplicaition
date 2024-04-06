@@ -3,13 +3,6 @@
     xmlns:motion="http://schemas.android.com/apk/res-auto"
     xmlns:app="urn:oasis:names:tc:xliff:document:1.2">
 
-<!--    <Transition-->
-<!--        motion:constraintSetEnd="@+id/end"-->
-<!--        motion:constraintSetStart="@id/start"-->
-<!--        motion:duration="1000">-->
-<!--       <KeyFrameSet>-->
-<!--       </KeyFrameSet>-->
-<!--    </Transition>-->
 
     <ConstraintSet android:id="@+id/start">
         <Constraint

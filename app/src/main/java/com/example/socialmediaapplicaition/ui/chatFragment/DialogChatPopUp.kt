@@ -30,6 +30,8 @@ class DialogChatPopUp(
 
         binding.apply {
 
+            repliedTextRecieve.text = currentChat.message
+
             thumbsUp.setOnClickListener {
                 onChatActionClicked(
                     currentChat,

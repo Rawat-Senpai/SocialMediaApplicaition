@@ -13,6 +13,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -38,6 +40,7 @@ import com.example.socialmediaapplicaition.viewModels.AuthViewModel
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import pl.droidsonroids.gif.GifImageView
 import javax.inject.Inject
 
 
@@ -226,6 +229,7 @@ class ChatFragment : Fragment() {
                 chatRoomRequestModel.lastMessageSenderId = myUserId
                 chatRoomRequestModel.lastMessageTimestamp = System.currentTimeMillis()
                 postViewModel.addChatRoomToDatabase(chatRoomRequestModel)
+                replyTextView.isVisible=false
 
                 if (adapter.itemCount > 0) {
                     // There are items in the adapter, so scroll to the last item
@@ -330,7 +334,12 @@ class ChatFragment : Fragment() {
                         }
 
                         is NetworkResult.Loading -> {
-                            binding.progressBar.isVisible = true
+
+                            val clickableArea: GifImageView = binding.motionLayout.findViewById(R.id.progressBar)
+                            binding.motionLayout.getConstraintSet(R.id.start).getConstraint(clickableArea.id).propertySet.mVisibilityMode=1
+                            clickableArea.visibility = View.VISIBLE
+
+//                            binding.progressBar.isVisible = true
                         }
 
                         is NetworkResult.Success -> {
@@ -441,21 +450,33 @@ class ChatFragment : Fragment() {
     private  fun onChatActionClicked(chat:ChatMessageModel, action:String){
 
 
-//        val chatMessageModel = ChatMessageModel()
-//        chatMessageModel.message = currentMessage
-//        chatMessageModel.senderId = tokenManager.getId().toString()
-//        chatMessageModel.timeStamp = System.currentTimeMillis()
-//        chatMessageModel.type = currentMessageType
-//        postViewModel.addChatMessageToDatabase(chatMessageModel,chatRoomId)
-//        binding.messageText.setText("")
-
         when(action){
             Constants.ACTION_DELETE->{
                 postViewModel.deleteChatMessage(chat,myUserId,chatRoomId)
-
             }
+
             Constants.ACTION_REPLY->{
+
                 replyGlobal = chat.message
+                binding.apply {
+
+                    val clickableArea: TextView = motionLayout.findViewById(R.id.replyTextView)
+                    motionLayout.getConstraintSet(R.id.start).getConstraint(clickableArea.id).propertySet.mVisibilityMode=1
+                    motionLayout.getConstraintSet(R.id.end).getConstraint(clickableArea.id).propertySet.mVisibilityMode=1
+
+
+                    clickableArea.visibility = View.VISIBLE
+                    replyTextView.text= chat.message
+
+
+                    replyTextView.isVisible=true
+                    cancelReply.setOnClickListener{
+                        replyGlobal=""
+                        replyTextView.isVisible=false
+                    }
+
+                }
+
             }
             else -> {
 

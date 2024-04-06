@@ -195,11 +195,11 @@ class FirebaseViewModel @Inject constructor(private val repository:FirebaseRepos
 
 
     fun getAllMessages(roomId:String)=viewModelScope.launch{
-
+        _getAllChatMessages.value = NetworkResult.Loading()
 
         try {
             repository.getAllChats(roomId).collect{result->
-
+                _getAllChatMessages.value = NetworkResult.Loading()
                 when(result){
                     is NetworkResult.Error ->{
                         _getAllChatMessages.value = NetworkResult.Error(result.toString())

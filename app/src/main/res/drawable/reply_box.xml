@@ -9,7 +9,7 @@
                 android:left="1px"
                 android:right="1px"
                 android:top="1px"/>
-            <solid android:color="#DAD7D7" />
+            <solid android:color="#656565" />
 
             <corners
                 android:bottomLeftRadius="@dimen/_7sdp"
