@@ -40,6 +40,11 @@ class ChatAdapter (
                     llRecieveLayout.isVisible=false
                     llSentLayout.isVisible=true
 
+                    if(chat.reply!=""){
+                        repliedTextSender.text=chat.message
+                        repliedTextSender.visibility=View.VISIBLE
+                    }
+
                     // checking message type
                     if(chat.type==Constants.MESSAGE_TYPE_TEXT){
                         sentMessage.isVisible=true
@@ -75,6 +80,12 @@ class ChatAdapter (
 
                     llRecieveLayout.isVisible=true
                     llSentLayout.isVisible=false
+
+                    if(chat.reply!=""){
+                        repliedTextRecieve.visibility=View.VISIBLE
+                        repliedTextRecieve.text=chat.reply
+                    }
+
 
                     // checking message type
                     if(chat.type==Constants.MESSAGE_TYPE_TEXT){
