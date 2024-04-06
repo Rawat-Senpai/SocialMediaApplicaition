@@ -65,8 +65,8 @@ class ChatFragment : Fragment() {
     private var frontPersonName: String = ""
     private var frontPersonUserModel: User? = null
     private var myUserModel: User? = null
-    var currentMessage=""
-    var currentMessageType=Constants.MESSAGE_TYPE_TEXT
+    private var currentMessage=""
+    private var currentMessageType=Constants.MESSAGE_TYPE_TEXT
 
 
 
@@ -87,7 +87,7 @@ class ChatFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
+
         _binding = FragmentChatBinding.inflate(layoutInflater, container, false)
         return binding.root
 
@@ -114,7 +114,10 @@ class ChatFragment : Fragment() {
         cameraLauncher = registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
             if (success) {
 
-                commonImageUri?.let { uri -> }
+                commonImageUri?.let { uri ->
+                    currentMessageType= Constants.MESSAGE_TYPE_IMAGE
+                    viewMode.uploadVideoToFireStore(uri)
+                }
 
             } else {
                 Toast.makeText(requireContext(),"photo capture failed", Toast.LENGTH_SHORT).show()
@@ -126,14 +129,17 @@ class ChatFragment : Fragment() {
 
             if(uri!= null){
                 commonImageUri = uri
+                currentMessageType= Constants.MESSAGE_TYPE_IMAGE
+                viewMode.uploadVideoToFireStore(commonImageUri!!)
             }
+
         }
 
         videoLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
                 val data: Intent? = result.data
                 Log.d("checkingData",data?.data.toString())
-
+                currentMessageType= Constants.MESSAGE_TYPE_VIDEO
                 viewMode.uploadVideoToFireStore(data?.data!!)
                 // Handle the result here
 
@@ -302,11 +308,9 @@ class ChatFragment : Fragment() {
         cameraLauncher.launch(commonImageUri)
 
     }
-    private fun imageChooser() {
-        val videoPickerIntent = Intent(Intent.ACTION_PICK, MediaStore.Video.Media.EXTERNAL_CONTENT_URI)
-        videoLauncher.launch(videoPickerIntent)
 
-//        galleryLauncher.launch("image/*")
+    private fun imageChooser() {
+        galleryLauncher.launch("image/*")
     }
 
 
@@ -407,12 +411,11 @@ class ChatFragment : Fragment() {
 
     }
 
-    private fun addVideoInChat(videoLink: String) {
-        currentMessageType=Constants.MESSAGE_TYPE_VIDEO
-        currentMessage = videoLink
+    private fun addVideoInChat(link: String) {
+        currentMessage = link
         val chatRoomRequestModel = ChatRoomModel()
         chatRoomRequestModel.chatroomId = chatRoomId
-        chatRoomRequestModel.lastMessage = "Video"
+        chatRoomRequestModel.lastMessage = currentMessageType
         chatRoomRequestModel.userList = arrayListOf(frontPersonUserModel!!, myUserModel!!)
         chatRoomRequestModel.lastMessageSenderId = myUserId
         chatRoomRequestModel.lastMessageTimestamp = System.currentTimeMillis()
