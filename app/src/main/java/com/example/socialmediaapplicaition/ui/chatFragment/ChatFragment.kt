@@ -81,6 +81,8 @@ class ChatFragment : Fragment() {
     private lateinit var videoLauncher: ActivityResultLauncher<Intent>
     private var commonImageUri: Uri? = null
 
+    private var replyGlobal=""
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -130,6 +132,8 @@ class ChatFragment : Fragment() {
                 currentMessageType= Constants.MESSAGE_TYPE_IMAGE
                 viewMode.uploadVideoToFireStore(commonImageUri!!)
             }
+
+
 
         }
 
@@ -369,16 +373,12 @@ class ChatFragment : Fragment() {
                         is NetworkResult.Success -> {
                             val chatMessageModel = ChatMessageModel()
                             chatMessageModel.message = currentMessage
-                            chatMessageModel.removedByMe="0"
-                            chatMessageModel.removedByThem="0"
-                            chatMessageModel.reply=""
                             chatMessageModel.senderId = tokenManager.getId().toString()
                             chatMessageModel.timeStamp = System.currentTimeMillis()
+                            chatMessageModel.reply=replyGlobal
                             chatMessageModel.type = currentMessageType
                             postViewModel.addChatMessageToDatabase(chatMessageModel,chatRoomId)
                             binding.messageText.setText("")
-
-
                         }
 
                         else -> {
@@ -438,8 +438,32 @@ class ChatFragment : Fragment() {
 
     }
 
-    private fun onChatActionClicked(chat:ChatMessageModel,action:String){
-        Toast.makeText(requireContext(),"clicked",Toast.LENGTH_SHORT).show()
+    private  fun onChatActionClicked(chat:ChatMessageModel, action:String){
+
+
+//        val chatMessageModel = ChatMessageModel()
+//        chatMessageModel.message = currentMessage
+//        chatMessageModel.senderId = tokenManager.getId().toString()
+//        chatMessageModel.timeStamp = System.currentTimeMillis()
+//        chatMessageModel.type = currentMessageType
+//        postViewModel.addChatMessageToDatabase(chatMessageModel,chatRoomId)
+//        binding.messageText.setText("")
+
+        when(action){
+            Constants.ACTION_DELETE->{
+                postViewModel.deleteChatMessage(chat,myUserId,chatRoomId)
+
+            }
+            Constants.ACTION_REPLY->{
+                replyGlobal = chat.message
+            }
+            else -> {
+
+            }
+        }
+
+
+
     }
 
 

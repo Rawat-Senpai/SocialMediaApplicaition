@@ -36,5 +36,5 @@ interface FirebaseRepository {
 
     suspend fun setUserStatus(userId: String,onlineString: String):NetworkResult<Unit>
 
-
+    suspend fun deleteChatMessage(chat:ChatMessageModel, userId: String,chatRoomId:String): NetworkResult<Unit>
 }

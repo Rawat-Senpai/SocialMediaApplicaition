@@ -208,12 +208,12 @@ class FirebaseRepositoryImpl @Inject constructor(private val firebaseFirestore: 
         chatRoomId: String
     ): NetworkResult<Unit> {
         return try {
-
-
+            chat.id=  UUID.randomUUID().toString()
             firebaseFirestore.collection("chat_room")
                 .document(chatRoomId)
                 .collection("chats")
-                .add(chat)
+                .document(chat.id)
+                .set(chat)
                 .addDataToFirestore()
 
             Log.d("responseData", "successfully")
@@ -355,6 +355,32 @@ class FirebaseRepositoryImpl @Inject constructor(private val firebaseFirestore: 
                 .addOnFailureListener { e ->
                     Log.d("crash123", e.toString())
                 }
+            NetworkResult.Success(Unit)
+        } catch (e: Exception) {
+            Log.d("crash123", e.toString())
+            NetworkResult.Error(e.toString())
+        }
+    }
+
+    override suspend fun deleteChatMessage(
+        chat: ChatMessageModel,
+        userId: String,
+        chatRoomId:String
+    ): NetworkResult<Unit> {
+        return try {
+
+            chat.removedBy.add(userId)
+
+            firebaseFirestore.collection("chat_room")
+                .document(chatRoomId)
+                .collection("chats")
+                .document(chat.id)
+                .set(chat)
+                .addDataToFirestore()
+
+
+
+
             NetworkResult.Success(Unit)
         } catch (e: Exception) {
             Log.d("crash123", e.toString())

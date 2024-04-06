@@ -78,6 +78,10 @@ class FirebaseViewModel @Inject constructor(private val repository:FirebaseRepos
     private val _updateUserOnlineStatus = MutableStateFlow<NetworkResult<Unit>>(NetworkResult.Loading())
     val updateUserOnlineStatus :MutableStateFlow<NetworkResult<Unit>> = _updateUserOnlineStatus
 
+    private val _deleteChatMessage = MutableStateFlow<NetworkResult<Unit>>(NetworkResult.Loading())
+    val deleteChatMessage :MutableStateFlow<NetworkResult<Unit>> = _deleteChatMessage
+
+
     init {
         getAllUser()
         getAllPost()
@@ -271,6 +275,15 @@ class FirebaseViewModel @Inject constructor(private val repository:FirebaseRepos
         val result = repository.setUserStatus(clearUserId,onlineStatus)
         _updateUserOnlineStatus.value= result
     }
+
+
+    fun deleteChatMessage(chat:ChatMessageModel, userId:String,chatRoomId: String)=viewModelScope.launch{
+        _deleteChatMessage.value = NetworkResult.Loading()
+        val result = repository.deleteChatMessage(chat,userId,chatRoomId)
+        _deleteChatMessage.value=result
+
+    }
+
 
 
 }
