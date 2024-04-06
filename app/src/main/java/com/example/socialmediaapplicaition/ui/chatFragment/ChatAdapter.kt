@@ -34,11 +34,21 @@ class ChatAdapter (
                     itemView.layoutParams = RecyclerView.LayoutParams(0, 0)
                 }
 
+
+
+
+
                 if(chat.senderId==myUserId){
                     // layout for my chat
                     // sent layout
+                
+
+
+
+
                     llRecieveLayout.isVisible=false
                     llSentLayout.isVisible=true
+
 
                     if(chat.reply!=""){
                         repliedTextSender.text=chat.message

@@ -401,7 +401,7 @@ class FirebaseRepositoryImpl @Inject constructor(private val firebaseFirestore: 
             } else {
                 chat.emojiReacted.add(userReaction)
             }
-            
+
             firebaseFirestore.collection("chat_room")
                 .document(chatRoomId)
                 .collection("chats")
