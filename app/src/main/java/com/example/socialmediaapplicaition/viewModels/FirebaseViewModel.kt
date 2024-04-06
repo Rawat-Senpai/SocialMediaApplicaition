@@ -7,6 +7,7 @@ import com.example.socialmediaapplicaition.models.ChatMessageModel
 import com.example.socialmediaapplicaition.models.ChatRoomModel
 import com.example.socialmediaapplicaition.models.PersonComments
 import com.example.socialmediaapplicaition.models.Post
+import com.example.socialmediaapplicaition.models.Reactions
 import com.example.socialmediaapplicaition.models.User
 import com.example.socialmediaapplicaition.repository.firebaseData.FirebaseRepository
 import com.example.socialmediaapplicaition.utils.NetworkResult
@@ -281,7 +282,12 @@ class FirebaseViewModel @Inject constructor(private val repository:FirebaseRepos
         _deleteChatMessage.value = NetworkResult.Loading()
         val result = repository.deleteChatMessage(chat,userId,chatRoomId)
         _deleteChatMessage.value=result
+    }
 
+    fun updateChatReaction(chat:ChatMessageModel, user:Reactions,chatRoomId: String)=viewModelScope.launch{
+        _deleteChatMessage.value = NetworkResult.Loading()
+        val result = repository.updateChatReaction(chat,user,chatRoomId)
+        _deleteChatMessage.value=result
     }
 
 

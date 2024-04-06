@@ -16,4 +16,5 @@ data class Reactions(
     var senderId:String="",
     var senderName:String="",
     var senderImage:String="",
+    var senderReaction:String=""
 )

@@ -30,6 +30,7 @@ import com.example.socialmediaapplicaition.R
 import com.example.socialmediaapplicaition.databinding.FragmentChatBinding
 import com.example.socialmediaapplicaition.models.ChatMessageModel
 import com.example.socialmediaapplicaition.models.ChatRoomModel
+import com.example.socialmediaapplicaition.models.Reactions
 import com.example.socialmediaapplicaition.models.User
 import com.example.socialmediaapplicaition.utils.Constants
 import com.example.socialmediaapplicaition.viewModels.FirebaseViewModel
@@ -75,6 +76,8 @@ class ChatFragment : Fragment() {
     private var chatRoomId:String =""
     // my unique id
     private var myUserId:String = ""
+    private var myUserName:String=""
+    private var myUserImage:String=""
     // adapter
     private lateinit var adapter: ChatAdapter
 
@@ -135,9 +138,6 @@ class ChatFragment : Fragment() {
                 currentMessageType= Constants.MESSAGE_TYPE_IMAGE
                 viewMode.uploadVideoToFireStore(commonImageUri!!)
             }
-
-
-
         }
 
         videoLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -147,19 +147,16 @@ class ChatFragment : Fragment() {
                 currentMessageType= Constants.MESSAGE_TYPE_VIDEO
                 viewMode.uploadVideoToFireStore(data?.data!!)
                 // Handle the result here
-
             }
         }
-
-
-
     }
 
     // set initial state
     private fun getInitialState() {
 
         myUserId = tokenManager.getId().toString()
-
+        myUserName=tokenManager.getUserName().toString()
+        myUserImage=tokenManager.getProfile().toString()
         // when user is coming from search
         val userChat = arguments?.getString("user")
 
@@ -479,6 +476,14 @@ class ChatFragment : Fragment() {
 
             }
             else -> {
+                val reactionModel = Reactions()
+                reactionModel.senderId=myUserId
+                reactionModel.senderReaction=action
+                reactionModel.senderImage=myUserImage
+                reactionModel.senderName = myUserName
+
+                postViewModel.updateChatReaction(chat,reactionModel,chatRoomId)
+
 
             }
         }

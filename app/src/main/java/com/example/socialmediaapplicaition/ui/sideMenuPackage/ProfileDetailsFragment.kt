@@ -209,6 +209,7 @@ class ProfileDetailsFragment : Fragment() {
                 Log.d("shobhitTesting","gone")
                 val clickableArea: ImageView = motionLayout.findViewById(R.id.editProfile)
                 motionLayout.getConstraintSet(R.id.start).getConstraint(clickableArea.id).propertySet.mVisibilityMode=1
+                motionLayout.getConstraintSet(R.id.end).getConstraint(clickableArea.id).propertySet.mVisibilityMode=1
                 clickableArea.visibility = GONE
             }
 
@@ -239,8 +240,6 @@ class ProfileDetailsFragment : Fragment() {
             backBtn.setOnClickListener(){
                 findNavController().popBackStack()
             }
-
-
 
         }
 

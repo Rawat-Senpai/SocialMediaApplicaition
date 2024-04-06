@@ -17,7 +17,6 @@ class CommentAdapter () : ListAdapter<PersonComments, CommentAdapter.CommentView
 
     inner class CommentViewHolder(private val binding: LayoutCommentsBinding) :
         RecyclerView.ViewHolder(binding.root) {
-
             fun bind(comment:PersonComments){
                 binding.apply {
                     Glide.with(root).load(comment.personProfile).placeholder(R.drawable.ic_default_person).into(myImage)
@@ -25,8 +24,6 @@ class CommentAdapter () : ListAdapter<PersonComments, CommentAdapter.CommentView
                     personName.text = comment.personName
                 }
             }
-
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CommentViewHolder {

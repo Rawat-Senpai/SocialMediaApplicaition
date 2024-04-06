@@ -5,6 +5,7 @@ import com.example.socialmediaapplicaition.models.ChatMessageModel
 import com.example.socialmediaapplicaition.models.ChatRoomModel
 import com.example.socialmediaapplicaition.models.PersonComments
 import com.example.socialmediaapplicaition.models.Post
+import com.example.socialmediaapplicaition.models.Reactions
 import com.example.socialmediaapplicaition.models.User
 import com.example.socialmediaapplicaition.utils.Constants
 import com.example.socialmediaapplicaition.utils.NetworkResult
@@ -378,8 +379,35 @@ class FirebaseRepositoryImpl @Inject constructor(private val firebaseFirestore: 
                 .set(chat)
                 .addDataToFirestore()
 
+            NetworkResult.Success(Unit)
+        } catch (e: Exception) {
+            Log.d("crash123", e.toString())
+            NetworkResult.Error(e.toString())
+        }
+    }
 
+    override suspend fun updateChatReaction(
+        chat: ChatMessageModel,
+        userReaction: Reactions,
+        chatRoomId: String
+    ): NetworkResult<Unit> {
+        return try {
 
+            val containsId = chat.emojiReacted.any { it.senderId == userReaction.senderId }
+
+            if (containsId) {
+                chat.emojiReacted.removeIf{it.senderId == userReaction.senderId}
+                chat.emojiReacted.add(userReaction)
+            } else {
+                chat.emojiReacted.add(userReaction)
+            }
+            
+            firebaseFirestore.collection("chat_room")
+                .document(chatRoomId)
+                .collection("chats")
+                .document(chat.id)
+                .set(chat)
+                .addDataToFirestore()
 
             NetworkResult.Success(Unit)
         } catch (e: Exception) {
