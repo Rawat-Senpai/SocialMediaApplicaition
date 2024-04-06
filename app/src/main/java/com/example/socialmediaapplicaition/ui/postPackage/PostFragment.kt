@@ -76,16 +76,11 @@ class PostFragment : Fragment() {
         binding.recyclerView.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         binding.recyclerView.adapter = adapter
-
         viewModel.getUserFullDetails(tokenManager.getId().toString())
-
-
 
         bindObserver()
         bindViews()
         bindSideMenu()
-
-
         // update onlineStatus
         postViewModel.updateUserOnlineStatus(tokenManager.getId().toString(), Constants.ONLINE)
 

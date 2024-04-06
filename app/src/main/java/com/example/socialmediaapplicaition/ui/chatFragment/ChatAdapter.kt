@@ -28,14 +28,15 @@ class ChatAdapter (
 
         fun bind(chat: ChatMessageModel) {
 
-
-
             binding.apply {
+                if(chat.removedBy.contains(myUserId)){
+                    binding.root.isVisible=false
+                    itemView.layoutParams = RecyclerView.LayoutParams(0, 0)
+                }
 
                 if(chat.senderId==myUserId){
                     // layout for my chat
                     // sent layout
-
                     llRecieveLayout.isVisible=false
                     llSentLayout.isVisible=true
 
@@ -98,17 +99,10 @@ class ChatAdapter (
                             }
                         }
 
-
                     }
                     recieveTime.text = Utils.convertMillisToTime(chat.timeStamp)
 
-
-
-
-
                 }
-
-
 
                 root.setOnLongClickListener(){
                     onActionClicked(chat)
