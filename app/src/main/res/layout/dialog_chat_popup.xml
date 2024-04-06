@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:background="@drawable/background_curve_solid"
+    android:paddingVertical="10dp"
+    android:paddingHorizontal="20dp">
+
+    <TextView
+        android:id="@+id/repliedTextRecieve"
+        tools:text="this is thre replyed toast "
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_2sdp"
+        android:background="@drawable/reply_box"
+        android:paddingHorizontal="@dimen/_10sdp"
+        android:paddingTop="@dimen/_5sdp"
+        android:paddingBottom="@dimen/_5sdp"
+        android:gravity="start"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_9sdp"/>
+
+    <LinearLayout
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/thumbsUp"
+            android:layout_width="@dimen/_13sdp"
+            android:layout_height="@dimen/_13sdp"
+            android:src="@drawable/emoji_thumbsup"
+            android:layout_weight="1" />
+
+        <ImageView
+            android:id="@+id/thumbsDown"
+            android:layout_width="@dimen/_13sdp"
+            android:layout_height="@dimen/_13sdp"
+            android:src="@drawable/emoji_thoumbsdown"
+            android:layout_weight="1" />
+
+        <ImageView
+            android:id="@+id/laughing"
+            android:layout_width="@dimen/_13sdp"
+            android:layout_height="@dimen/_13sdp"
+            android:src="@drawable/emoji_loughing"
+            android:layout_weight="1" />
+
+        <ImageView
+            android:id="@+id/surprised"
+            android:layout_width="@dimen/_13sdp"
+            android:layout_height="@dimen/_13sdp"
+            android:src="@drawable/emoji_surpriced"
+            android:layout_weight="1" />
+
+        <ImageView
+            android:id="@+id/sed"
+            android:layout_width="@dimen/_13sdp"
+            android:layout_height="@dimen/_13sdp"
+            android:src="@drawable/emoji_sed"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+
+
+    <LinearLayout
+        android:id="@+id/replyOnChat"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_medium"
+            android:layout_weight="1"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:padding="@dimen/_5sdp"
+            android:textSize="@dimen/_13sdp"
+            android:text="Reply" />
+
+
+        <ImageView
+            android:layout_width="@dimen/_12sdp"
+            android:layout_height="@dimen/_12sdp"
+            android:src="@drawable/ic_reply_icon"
+            android:layout_gravity="center" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/delteChat"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_medium"
+            android:layout_weight="1"
+            android:textColor="#E73436"
+            android:padding="@dimen/_5sdp"
+            android:textStyle="bold"
+            android:textSize="@dimen/_13sdp"
+            android:text="Delete" />
+
+
+        <ImageView
+            android:layout_width="@dimen/_12sdp"
+            android:layout_height="@dimen/_12sdp"
+            android:src="@drawable/ic_delete"
+            android:layout_gravity="center"
+            app:tint="#E73436" />
+
+
+    </LinearLayout>
+
+
+
+</LinearLayout>

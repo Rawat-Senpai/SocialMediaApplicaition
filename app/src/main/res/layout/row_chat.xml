@@ -100,24 +100,68 @@
                     app:layout_constraintTop_toTopOf="parent"
                     android:visibility="gone"/>
 
-                <TextView
-                    android:id="@+id/recievedMessage"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/chat_recieve_layout"
-                    tools:text="Hello checking text "
-                    android:layout_marginStart="5dp"
-                    android:paddingStart="@dimen/_13sdp"
-                    android:paddingTop="@dimen/_7sdp"
-                    android:paddingEnd="@dimen/_15sdp"
-                    android:paddingBottom="@dimen/_7sdp"
-                    android:shadowDx="1"
-                    android:shadowDy="1"
-                    android:shadowRadius="1"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_11sdp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/recievedMessage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/chat_recieve_layout"
+                        tools:text="Hello checking text "
+                        android:layout_marginStart="5dp"
+                        android:paddingStart="@dimen/_13sdp"
+                        android:paddingTop="@dimen/_7sdp"
+                        android:paddingEnd="@dimen/_15sdp"
+                        android:paddingBottom="@dimen/_7sdp"
+                        android:shadowDx="1"
+                        android:shadowDy="1"
+                        android:shadowRadius="1"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_11sdp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+
+                    <ImageView
+                        android:id="@+id/emojiReceived"
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:layout_marginStart="40dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+
+                    <ImageView
+                        android:id="@+id/emojiReceivedMe"
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:layout_marginStart="4dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/emojiReceived" />
+
+<!--                    <ImageView-->
+<!--                        android:id="@id/emojiReceived"-->
+<!--                        android:layout_width="15dp"-->
+<!--                        android:layout_height="15dp"-->
+<!--                        android:layout_marginStart="40dp"-->
+<!--                        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                        app:layout_constraintStart_toStartOf="parent" />-->
+
+<!--                    <ImageView-->
+<!--                        android:id="@id/emojiReceivedMe"-->
+<!--                        android:layout_width="15dp"-->
+<!--                        android:layout_height="15dp"-->
+<!--                        android:layout_marginStart="4dp"-->
+<!--                        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                        app:layout_constraintStart_toEndOf="@+id/emojiReceived" />-->
+
+
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 
             </androidx.appcompat.widget.LinearLayoutCompat>

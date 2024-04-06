@@ -13,8 +13,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
-import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -434,11 +432,14 @@ class ChatFragment : Fragment() {
     }
 
 
-    private fun onActionClicked(chat:ChatMessageModel,action:String){
-        val bundle = Bundle()
-        bundle.putString("currentChat", Gson().toJson(chat))
-//        findNavController().navigate(R.id.action_chatHistoryFragment_to_chatFragment,bundle)
+    private fun onActionClicked(chat:ChatMessageModel ){
 
+        DialogChatPopUp(chat,::onChatActionClicked).show(childFragmentManager, "MyDialogFragmentTag")
+
+    }
+
+    private fun onChatActionClicked(chat:ChatMessageModel,action:String){
+        Toast.makeText(requireContext(),"clicked",Toast.LENGTH_SHORT).show()
     }
 
 

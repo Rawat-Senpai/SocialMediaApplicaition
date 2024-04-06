@@ -18,7 +18,7 @@ import com.example.socialmediaapplicaition.utils.Constants
 import com.example.socialmediaapplicaition.utils.Utils
 
 class ChatAdapter (
-    private val onActionClicked:(ChatMessageModel, String) -> Unit,
+    private val onActionClicked:(ChatMessageModel) -> Unit,
     private val myUserId:String
 ) : ListAdapter<ChatMessageModel, ChatAdapter.ChatViewHolder>(ComparatorDiffUtil()) {
 
@@ -110,8 +110,9 @@ class ChatAdapter (
 
 
 
-                root.setOnClickListener{
-                    onActionClicked(chat,"")
+                root.setOnLongClickListener(){
+                    onActionClicked(chat)
+                    true
                 }
             }
         }
