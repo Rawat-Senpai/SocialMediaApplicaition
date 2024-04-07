@@ -18,7 +18,7 @@ Overall, our app is a friendly place for people to connect, share, and chat with
 
 ├── data                # For data handling.   
 |   ├── AuthData        # For all the functionality related Autentication 
-│   └── repository      # For all the functionality related Post, chats , upload photo , etc .
+│   └── repository      # For all the functionality related
 |
 ├── model               # Model classes
 |
@@ -28,8 +28,8 @@ Overall, our app is a friendly place for people to connect, share, and chat with
 ├── ui                  # Activity/View layer
 │   ├── auth            # Autnetication  Screen  View 
 │   ├── chat            # Chat Screen View, Adapters
-|   ├── post		     #	Post Screens ,Adapters 
-│   └── sideMenu         # Detail Screen Activity 
+|   ├── post		        #	Post Screens ,Adapters 
+│   └── sideMenu        # Detail Screen Activity 
 |
 ├── utils               # Utility Classes / Kotlin extensions
 |
