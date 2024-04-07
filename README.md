@@ -24,7 +24,9 @@ A|B
 ![](![profile_gif](https://github.com/Rawat-Senpai/SocialMediaApplicaition/assets/88794531/88ef6dd9-096b-4290-a7b7-b86f74ef7bab))|![](![chat_gif](https://github.com/Rawat-Senpai/SocialMediaApplicaition/assets/88794531/2d16cdf9-cbb9-4504-af84-ff9e5e1a3044)
 )
 
-
+A|B
+--|--
+![](https://github.com/Rawat-Senpai/SocialMediaApplicaition/assets/88794531/88ef6dd9-096b-4290-a7b7-b86f74ef7bab)|![]([https://example.com/b.gif](https://github.com/Rawat-Senpai/SocialMediaApplicaition/assets/88794531/2d16cdf9-cbb9-4504-af84-ff9e5e1a3044))
 
 
 
