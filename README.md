@@ -21,11 +21,7 @@ This GitHub repository contains a motion layout design inspired by the home page
 
 A|B
 --|--
-![]([https://example.com/a.gif](https://github.com/Rawat-Senpai/SocialMediaApplicaition/assets/88794531/9c686e36-d899-4b0a-ad38-46d84f79a8fe 
-))|![]([https://example.com/b.gif](https://github.com/Rawat-Senpai/SocialMediaApplicaition/assets/88794531/73c211a7-275e-4e35-88a2-0052857b8a7a
-))
-
-
+![](https://example.com/a.gif)|![](https://example.com/b.gif)
 
 
 
