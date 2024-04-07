@@ -1,11 +1,13 @@
 package com.example.socialmediaapplicaition.ui.chatFragment
 
 import android.net.Uri
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.view.contentcapture.ContentCaptureSession
+import android.widget.ImageView
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -35,19 +37,49 @@ class ChatAdapter (
                 }
 
 
-
-
-
                 if(chat.senderId==myUserId){
                     // layout for my chat
                     // sent layout
-                
-
-
 
 
                     llRecieveLayout.isVisible=false
                     llSentLayout.isVisible=true
+
+
+                    val myEmojiList =ArrayList<ImageView>()
+                    myEmojiList.add(emojiSent)
+                    myEmojiList.add(emojiSentMe)
+
+                    chat.emojiReacted.forEachIndexed { index, item ->
+
+                        Log.d("chheckingDistance",index.toString())
+                        if(index<2){
+                            when(item.senderReaction){
+
+                                Constants.ACTION_SED->{
+                                    Glide.with(myEmojiList[index]).load(R.drawable.emoji_sed).into(myEmojiList[index])
+                                }
+
+                                Constants.ACTION_LAUGHING->{
+                                    Glide.with(myEmojiList[index]).load(R.drawable.emoji_loughing).into(myEmojiList[index])
+                                }
+
+                                Constants.ACTION_SURPRISED->{
+                                    Glide.with(myEmojiList[index]).load(R.drawable.emoji_surpriced).into(myEmojiList[index])
+                                }
+
+                                Constants.ACTION_THUMBS_UP->{
+                                    Glide.with(myEmojiList[index]).load(R.drawable.emoji_thumbsup).into(myEmojiList[index])
+                                }
+
+                                Constants.ACTION_THUMBS_DOWN->{
+                                    Glide.with(myEmojiList[index]).load(R.drawable.emoji_thoumbsdown).into(myEmojiList[index])
+                                }
+
+                            }
+                        }
+
+                    }
 
 
                     if(chat.reply!=""){
@@ -77,16 +109,51 @@ class ChatAdapter (
                                  sentVideo.start()
                              }
                          }
-
                     }
 
                     sentTime.text = Utils.convertMillisToTime(chat.timeStamp)
 
-
-
                 }else{
                     // layout for front person
                     // recieved layout
+
+
+                    val myEmojiList =ArrayList<ImageView>()
+                    myEmojiList.add(emojiReceived)
+                    myEmojiList.add(emojiReceivedMe)
+
+                    chat.emojiReacted.forEachIndexed { index, item ->
+                        Log.d("chheckingDistance1",index.toString())
+                        if(index<2){
+                            when(item.senderReaction){
+
+                                Constants.ACTION_SED->{
+                                    Glide.with(myEmojiList[index]).load(R.drawable.emoji_sed).into(myEmojiList[index])
+                                }
+
+                                Constants.ACTION_LAUGHING->{
+                                    Glide.with(myEmojiList[index]).load(R.drawable.emoji_loughing).into(myEmojiList[index])
+                                }
+
+                                Constants.ACTION_SURPRISED->{
+                                    Glide.with(myEmojiList[index]).load(R.drawable.emoji_surpriced).into(myEmojiList[index])
+                                }
+
+                                Constants.ACTION_THUMBS_UP->{
+                                    Glide.with(myEmojiList[index]).load(R.drawable.emoji_thumbsup).into(myEmojiList[index])
+                                }
+
+                                Constants.ACTION_THUMBS_DOWN->{
+                                    Glide.with(myEmojiList[index]).load(R.drawable.emoji_thoumbsdown).into(myEmojiList[index])
+                                }
+
+                            }
+
+                        }
+
+
+
+                    }
 
                     llRecieveLayout.isVisible=true
                     llSentLayout.isVisible=false

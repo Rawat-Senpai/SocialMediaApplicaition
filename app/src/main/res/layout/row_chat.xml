@@ -128,7 +128,7 @@
                         android:id="@+id/emojiReceived"
                         android:layout_width="15dp"
                         android:layout_height="15dp"
-                        android:layout_marginStart="40dp"
+                        android:layout_marginStart="25dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent" />
 
@@ -140,23 +140,6 @@
                         android:layout_marginStart="4dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/emojiReceived" />
-
-<!--                    <ImageView-->
-<!--                        android:id="@id/emojiReceived"-->
-<!--                        android:layout_width="15dp"-->
-<!--                        android:layout_height="15dp"-->
-<!--                        android:layout_marginStart="40dp"-->
-<!--                        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--                        app:layout_constraintStart_toStartOf="parent" />-->
-
-<!--                    <ImageView-->
-<!--                        android:id="@id/emojiReceivedMe"-->
-<!--                        android:layout_width="15dp"-->
-<!--                        android:layout_height="15dp"-->
-<!--                        android:layout_marginStart="4dp"-->
-<!--                        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--                        app:layout_constraintStart_toEndOf="@+id/emojiReceived" />-->
-
 
 
 
@@ -318,12 +301,10 @@
                     android:layout_width="@dimen/_15sdp"
                     android:layout_height="@dimen/_15sdp"
                     android:elevation="5dp"
-                    android:visibility="gone"
-                    android:paddingStart="@dimen/_4sdp"
+                    android:layout_marginRight="5dp"
                     android:scaleType="fitXY"
                     app:layout_constraintBottom_toBottomOf="@+id/sentMessage"
-                    app:layout_constraintEnd_toEndOf="@+id/sentMessage"
-                    app:layout_constraintStart_toStartOf="@+id/sentMessage"
+                    app:layout_constraintEnd_toStartOf="@+id/emojiSentMe"
                     app:layout_constraintTop_toBottomOf="@+id/sentMessage" />
 
 
@@ -331,12 +312,11 @@
                     android:id="@+id/emojiSentMe"
                     android:layout_width="@dimen/_15sdp"
                     android:layout_height="@dimen/_15sdp"
-                    android:paddingStart="@dimen/_4sdp"
+                    android:layout_marginRight="25dp"
+                    android:elevation="4dp"
                     android:scaleType="fitXY"
-                    android:visibility="gone"
-                    app:layout_constraintBottom_toBottomOf="@+id/sentMessage"
-                    app:layout_constraintEnd_toEndOf="@+id/sentMessage"
-                    app:layout_constraintStart_toStartOf="@+id/sentMessage" />
+                    app:layout_constraintBottom_toBottomOf="@+id/emojiSent"
+                    app:layout_constraintEnd_toEndOf="@+id/sentMessage" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
