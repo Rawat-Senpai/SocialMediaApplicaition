@@ -13,24 +13,10 @@ In chats, users can react to messages and share things like videos and pictures,
 
 Overall, our app is a friendly place for people to connect, share, and chat with each other easily.
 
+![github](https://github.com/Rawat-Senpai/SocialMediaApplicaition/assets/88794531/bd3b2a1e-8a80-40f9-9005-92c2c419f9ea)
 
-## Project Description
 
-├── data                # For data handling.   
-|   ├── AuthData        # For all the functionality related Autentication 
-│   └── repository      # For all the functionality related
-|
-├── model               # Model classes
-|
-├── di                  # Dependency Injection               
-│   └── module          # DI Modules
-|
-├── ui                  # Activity/View layer
-│   ├── auth            # Autnetication  Screen  View 
-│   ├── chat            # Chat Screen View, Adapters
-|   ├── post		        #	Post Screens ,Adapters 
-│   └── sideMenu        # Detail Screen Activity 
-|
-├── utils               # Utility Classes / Kotlin extensions
-|
-└──viewModels 			 # AuthViewModel ,firebaseViewModel
+
+
+
+
