@@ -34,7 +34,6 @@ class FirebaseViewModel @Inject constructor(private val repository: FirebaseRepo
     private val _addLikeResponse = MutableStateFlow<NetworkResult<Unit>?>(null)
     val addLikeResponse: StateFlow<NetworkResult<Unit>?> = _addLikeResponse
 
-
     private val _savePostResponse = MutableStateFlow<NetworkResult<Unit>?>(null)
     val savePostResponse: StateFlow<NetworkResult<Unit>?> = _savePostResponse
 

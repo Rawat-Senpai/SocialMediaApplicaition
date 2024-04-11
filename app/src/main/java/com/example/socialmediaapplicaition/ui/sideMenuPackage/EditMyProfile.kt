@@ -82,8 +82,9 @@ class EditMyProfile : Fragment() {
             if (success) {
 
                 commonImageUri?.let { uri ->
-                    binding.userImage.setImageURI(uri)
-
+                    Log.d("newProfile","data is here ")
+                    Glide.with(binding.userImage).load(uri).into(binding.userImage)
+                    viewModel.uploadImageToFireStore(uri)
                 }
             } else {
                 Toast.makeText(requireContext(),"photo capture failed", Toast.LENGTH_SHORT).show()
@@ -94,10 +95,11 @@ class EditMyProfile : Fragment() {
             Log.d("Checking", "selectedPic")
 
             if(uri!= null){
-
-
+                Log.d("newProfile","data is here ")
                 commonImageUri = uri
-                binding.userImage.setImageURI(commonImageUri!!)
+//                binding.userImage.setImageURI(commonImageUri!!)
+                Glide.with(binding.userImage).load(uri).into(binding.userImage)
+                viewModel.uploadImageToFireStore(uri)
             }
 
         }
