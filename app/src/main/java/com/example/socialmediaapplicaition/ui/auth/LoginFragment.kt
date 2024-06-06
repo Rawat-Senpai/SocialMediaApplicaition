@@ -24,15 +24,15 @@ import kotlinx.coroutines.launch
 class LoginFragment : Fragment() {
 
     private val viewModel by viewModels<AuthViewModel>()
-    private  var _binding : FragmentLoginBinding?= null
-    private val  binding get() = _binding!!
+    private var _binding: FragmentLoginBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentLoginBinding.inflate(layoutInflater,container,false)
-        return  binding.root
+        _binding = FragmentLoginBinding.inflate(layoutInflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -43,22 +43,35 @@ class LoginFragment : Fragment() {
 
     }
 
-    private fun bindViews(){
+    private fun bindViews() {
 
-        binding.apply{
+        binding.apply {
 
-            btnLogin.setOnClickListener(){
+            btnLogin.setOnClickListener() {
                 val email = txtEmail.text.toString()
                 val password = txtPassword.text.toString()
 
-                viewModel.login(email,password)
+
+                if (email == "") {
+
+                    Toast.makeText(requireContext(), "Please Use valid email", Toast.LENGTH_SHORT).show()
+                } else if (!email.contains("@") || !email.contains(".com") || !email.contains(".com")) {
+                    Toast.makeText(requireContext(), "Please Use valid email", Toast.LENGTH_SHORT).show()
+                } else if (email.length <= 4){
+                    Toast.makeText(requireContext(), "Please Use valid email", Toast.LENGTH_SHORT).show()
+                } else if (password == ""){
+                    Toast.makeText(requireContext(), "Please enter password", Toast.LENGTH_SHORT).show()
+                }else{
+                    viewModel.login(email, password)
+                }
+
+
             }
 
 
-            btnSignUp.setOnClickListener(){
+            btnSignUp.setOnClickListener() {
                 findNavController().navigate(R.id.action_loginFragment_to_signUpFragment)
             }
-
 
 
         }
@@ -72,19 +85,21 @@ class LoginFragment : Fragment() {
             viewModel.loginFlow.collect { it ->
                 binding.progressBar.isVisible = it is NetworkResult.Loading
 
-                when(it){
+                when (it) {
 
                     is NetworkResult.Error -> {
-                        Log.d("TAG",it.message.toString())
+                        Log.d("TAG", it.message.toString())
 
-                        Toast.makeText(requireContext(),"error",Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), "error", Toast.LENGTH_SHORT).show()
 
                     }
+
                     is NetworkResult.Loading -> {
-                        binding.progressBar.isVisible=true
+                        binding.progressBar.isVisible = true
                     }
+
                     is NetworkResult.Success -> {
-                        Log.d("TAG","Success")
+                        Log.d("TAG", "Success")
                         findNavController().navigate(R.id.action_loginFragment_to_mainFragment)
                     }
 

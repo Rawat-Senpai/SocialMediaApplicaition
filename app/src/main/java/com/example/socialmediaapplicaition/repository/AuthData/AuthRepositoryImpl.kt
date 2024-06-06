@@ -111,9 +111,6 @@ class AuthRepositoryImpl @Inject constructor(private val firebaseAuth:FirebaseAu
 
 
     override suspend fun uploadVideosToFireStore(photoUri: Uri): NetworkResult<Uri> {
-
-
-
         return try {
             val storageRef = storage.reference
             val imageRef = storageRef.child("videos/${UUID.randomUUID()}")

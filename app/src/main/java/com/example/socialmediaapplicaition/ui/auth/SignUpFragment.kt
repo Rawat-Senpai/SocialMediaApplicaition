@@ -34,18 +34,15 @@ import com.example.socialmediaapplicaition.viewModels.AuthViewModel
 class SignUpFragment : Fragment() {
 
 
-
-    private var _binding:FragmentSignUpBinding?= null
+    private var _binding: FragmentSignUpBinding? = null
     private val binding get() = _binding!!
-    private val viewModel by viewModels<AuthViewModel> ()
+    private val viewModel by viewModels<AuthViewModel>()
 
     private lateinit var cameraLauncher: ActivityResultLauncher<Uri>
     private lateinit var galleryLauncher: ActivityResultLauncher<String>
 
     private var commonImageUri: Uri? = null
-    private  var imageUrl :String = "";
-
-
+    private var imageUrl: String = "";
 
 
     override fun onCreateView(
@@ -53,7 +50,7 @@ class SignUpFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        _binding= FragmentSignUpBinding.inflate(layoutInflater,container,false)
+        _binding = FragmentSignUpBinding.inflate(layoutInflater, container, false)
         return binding.root
 
     }
@@ -63,22 +60,24 @@ class SignUpFragment : Fragment() {
 
         bindObserver()
 
-        cameraLauncher = registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
-            if (success) {
+        cameraLauncher =
+            registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
+                if (success) {
 
-                commonImageUri?.let { uri ->
-                    viewModel.uploadImageToFireStore(uri)
-                    binding.imageView.setImageURI(uri)
+                    commonImageUri?.let { uri ->
+                        viewModel.uploadImageToFireStore(uri)
+                        binding.imageView.setImageURI(uri)
+                    }
+                } else {
+                    Toast.makeText(requireContext(), "photo capture failed", Toast.LENGTH_SHORT)
+                        .show()
                 }
-            } else {
-                Toast.makeText(requireContext(),"photo capture failed",Toast.LENGTH_SHORT).show()
             }
-        }
 
         galleryLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
             Log.d("Checking", "selectedPic")
 
-            if(uri!= null){
+            if (uri != null) {
                 commonImageUri = uri
                 viewModel.uploadImageToFireStore(commonImageUri!!)
                 binding.imageView.setImageURI(commonImageUri!!)
@@ -87,14 +86,35 @@ class SignUpFragment : Fragment() {
         }
 
         binding.apply {
-            btnSignUp.setOnClickListener(){
+            btnSignUp.setOnClickListener() {
                 val name = txtUsername.text.toString()
-                val email= txtEmail.text.toString()
+                val email = txtEmail.text.toString()
                 val password = txtPassword.text.toString()
-                viewModel.signup(name,email,password)
+
+                if (name == "") {
+                    Toast.makeText(requireContext(), "Please Use valid name", Toast.LENGTH_SHORT)
+                        .show()
+                } else if (email == "") {
+
+                    Toast.makeText(requireContext(), "Please Use valid email", Toast.LENGTH_SHORT)
+                        .show()
+                } else if (!email.contains("@") || !email.contains(".com") || !email.contains(".com")) {
+                    Toast.makeText(requireContext(), "Please Use valid email", Toast.LENGTH_SHORT)
+                        .show()
+                } else if (email.length <= 4) {
+                    Toast.makeText(requireContext(), "Please Use valid email", Toast.LENGTH_SHORT)
+                        .show()
+                } else if (password == "") {
+                    Toast.makeText(requireContext(), "Please enter password", Toast.LENGTH_SHORT)
+                        .show()
+                } else {
+                    viewModel.signup(name, email, password)
+                }
+
+
             }
 
-            imageView.setOnClickListener{
+            imageView.setOnClickListener {
                 chooseImage(requireActivity())
             }
         }
@@ -141,11 +161,13 @@ class SignUpFragment : Fragment() {
                         Toast.makeText(requireContext(), "error", Toast.LENGTH_SHORT).show()
 
                     }
+
                     is NetworkResult.Success -> {
                         Log.d("TAGSignUp", "Success")
                         Log.d("TAGSignUp", it.data.toString())
                         findNavController().navigate(R.id.action_signUpFragment_to_mainFragment)
                     }
+
                     else -> {
 
                     }
@@ -154,15 +176,16 @@ class SignUpFragment : Fragment() {
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.uploadPhotoResult.collect{
+            viewModel.uploadPhotoResult.collect {
 
-                when(it){
+                when (it) {
                     is NetworkResult.Error -> {}
                     is NetworkResult.Loading -> {}
                     is NetworkResult.Success -> {
-                        Log.d("response",it.data.toString())
-                        imageUrl= it.data.toString()
+                        Log.d("response", it.data.toString())
+                        imageUrl = it.data.toString()
                     }
+
                     null -> {
 
                     }
@@ -173,15 +196,15 @@ class SignUpFragment : Fragment() {
     }
 
     private fun addUserToDatabase(networkResult: NetworkResult.Success<FirebaseUser>) {
-        Log.d("TAGSignUp","insideAddUser")
+        Log.d("TAGSignUp", "insideAddUser")
         val name = binding.txtUsername.text.toString()
-        val requestModel = User(name,networkResult.data?.uid.toString(),imageUrl)
+        val requestModel = User(name, networkResult.data?.uid.toString(), imageUrl)
         viewModel.addUserToDatabase(requestModel)
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        _binding=  null
+        _binding = null
     }
 
     private fun chooseImage(context: Context) {
@@ -200,7 +223,11 @@ class SignUpFragment : Fragment() {
                 if (Utils.checkPermission(requireActivity(), Manifest.permission.CAMERA)) {
                     takeImageFromCameraUri()
                 } else {
-                    Utils.requestPermission(requireActivity(), Manifest.permission.CAMERA,Utils.CAMERA_PERMISSION_CODE)
+                    Utils.requestPermission(
+                        requireActivity(),
+                        Manifest.permission.CAMERA,
+                        Utils.CAMERA_PERMISSION_CODE
+                    )
                 }
 
             } else if (optionsMenu[i] == "Choose from Gallery") {
@@ -208,10 +235,18 @@ class SignUpFragment : Fragment() {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                     imageChooser()
                 } else {
-                    if (Utils.checkPermission(requireActivity(), Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                    if (Utils.checkPermission(
+                            requireActivity(),
+                            Manifest.permission.READ_EXTERNAL_STORAGE
+                        )
+                    ) {
                         imageChooser()
                     } else {
-                        Utils.requestPermission(requireActivity(), Manifest.permission.READ_EXTERNAL_STORAGE, Utils.STORAGE_PERMISSION_CODE)
+                        Utils.requestPermission(
+                            requireActivity(),
+                            Manifest.permission.READ_EXTERNAL_STORAGE,
+                            Utils.STORAGE_PERMISSION_CODE
+                        )
                     }
                 }
 
@@ -225,8 +260,14 @@ class SignUpFragment : Fragment() {
     private fun takeImageFromCameraUri() {
         val values = ContentValues()
         values.put(MediaStore.Images.Media.TITLE, "MyPicture")
-        values.put(MediaStore.Images.Media.DESCRIPTION, "Photo taken on " + System.currentTimeMillis())
-        commonImageUri = requireActivity().contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
+        values.put(
+            MediaStore.Images.Media.DESCRIPTION,
+            "Photo taken on " + System.currentTimeMillis()
+        )
+        commonImageUri = requireActivity().contentResolver.insert(
+            MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+            values
+        )
         cameraLauncher.launch(commonImageUri)
     }
 
